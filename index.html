@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SNAPSHOT</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
+  <script type="text/javascript" src="scripts/addSourcesAndLayers.js"></script>
+  <script type="text/javascript" src ="scripts/draggable.js"></script>
+  <script type="text/javascript" src="scripts/DICTIONARIES.js"></script>
+  <script type="text/javascript" src="scripts/INTRO.js"></script>
+  <script type="text/javascript" src="scripts/snapshotHoverStates.js"></script>
+  <script type="text/javascript" src="scripts/customRanges.js"></script>
+  <script type="text/javascript" src="scripts/featureStatus.js"></script>
+  <script type="text/javascript" src="scripts/numberFormats.js"></script>
+  <script type="text/javascript" src="scripts/coloring.js"></script>
+  <script type="text/javascript" src="scripts/main.js"></script>
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/draggable.css">
+</head>
+<body>
+
+  <div id="map"></div>
+  <div id="move" style="z-index:50"></div>
+  <div id="T">
+    <table class="tableB" id="tabeleta">
+      <tr>
+        <td>Geography</td>
+        <td>
+          <div id="geo-select" onclick="update()">
+            <select style="width:199px;">
+              <option value="nation">Nation</option>
+              <option value="state">State</option>
+              <option value="county">County</option>
+              <option value="tract">Tract</option>
+              <option value="group">Group</option>
+              <option value="metroSA">Metro Stat Area</option>
+              <option value="urban">Urban Areas</option>
+              <option value="zip">Zip Codes</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Concept</td>
+        <td>
+          <div id="concept-select">
+            <select style="width:199px;">
+              <option value="TOTAL POPULATION">TOTAL POPULATION</option>
+              <option value="URBAN AND RURAL">URBAN AND RURAL</option>
+              <option value="HISPANIC OR LATINO ORIGIN">HISPANIC OR LATINO ORIGIN</option>
+              <option value="RACE (TOTAL RACES TALLIED)">RACE (TOTAL RACES TALLIED)</option>
+              <option value="RACE">RACE</option>
+              <option value="SEX BY AGE">SEX BY AGE</option>
+              <option value="MEDIAN AGE BY SEX">MEDIAN AGE BY SEX</option>
+              <option value="OCCUPANCY STATUS">OCCUPANCY STATUS</option>
+              <option value="VACANCY STATUS">VACANCY STATUS</option>
+              <option value="POPULATION IN HOUSING UNITS BY TENURE">POP IN HOUSING UNITS BY TENURE</option>
+              <option value="GROUP QUARTERS POPULATION BY TYPE">GROUP QUARTERS POP BY TYPE</option>
+              </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Variable</td>
+        <td>
+          <div id="variable-select" onclick="update()">
+            <select id="SS" style="width:199px;">
+              <option value="P001001">P001001</option>
+
+              <option value="P002002">P002002</option>
+              <option value="P002002P">P002002P</option>
+              <option value="P002003">P002003</option>
+              <option value="P002003P">P002003P</option>
+              <option value="P002004">P002004</option>
+              <option value="P002004P">P002004P</option>
+              <option value="P002005">P002005</option>
+              <option value="P002005P">P002005P</option>
+
+              <option value="P004002">P004002</option>
+              <option value="P004002P">P004002P</option>
+              <option value="P004003">P004003</option>
+              <option value="P004003P">P004003P</option>
+
+              <option value="P006002">P006002</option>
+              <option value="P006002P">P006002P</option>
+              <option value="P006003">P006003</option>
+              <option value="P006003P">P006003P</option>
+              <option value="P006004">P006004</option>
+              <option value="P006004P">P006004P</option>
+              <option value="P006005">P006005</option>
+              <option value="P006005P">P006005P</option>
+              <option value="P006006">P006006</option>
+              <option value="P006006P">P006006P</option>
+              <option value="P006007">P006007</option>
+              <option value="P006007P">P006007P</option>
+
+              <option value="P008002">P008002</option>
+              <option value="P008002P">P008002P</option>
+              <option value="P008003">P008003</option>
+              <option value="P008003P">P008003P</option>
+              <option value="P008004">P008004</option>
+              <option value="P008004P">P008004P</option>
+              <option value="P008005">P008005</option>
+              <option value="P008005P">P008005P</option>
+              <option value="P008006">P008006</option>
+              <option value="P008006P">P008006P</option>
+              <option value="P008007">P008007</option>
+              <option value="P008007P">P008007P</option>
+              <option value="P008008">P008008</option>
+              <option value="P008008P">P008008P</option>
+              <option value="P008009">P008009</option>
+              <option value="P008009P">P008009P</option>
+
+              <option value="P012001">P012001</option>
+              <option value="P012002">P012002</option>
+              <option value="P012002P">P012002P</option>
+              <option value="P012026">P012026</option>
+              <option value="P012026P">P012026P</option>
+
+              <option value="P013001">P013001</option>
+              <option value="P013002">P013002</option>
+              <option value="P013003">P013003</option>
+
+              <option value="H003001">H003001</option>
+              <option value="H003002">H003002</option>
+              <option value="H003002P">H003002P</option>
+              <option value="H003003">H003003</option>
+              <option value="H003003P">H003003P</option>
+
+              <option value="H005001">H005001</option>
+              <option value="H005002">H005002</option>
+              <option value="H005002P">H005002P</option>
+              <option value="H005003">H005003</option>
+              <option value="H005003P">H005003P</option>
+              <option value="H005004">H005004</option>
+              <option value="H005004P">H005004P</option>
+              <option value="H005005">H005005</option>
+              <option value="H005005P">H005005P</option>
+              <option value="H005006">H005006</option>
+              <option value="H005006P">H005006P</option>
+              <option value="H005007">H005007</option>
+              <option value="H005007P">H005007P</option>
+              <option value="H005008">H005008</option>
+              <option value="H005008P">H005008P</option>
+            </select>
+        </div>
+      </td>
+      </tr>
+      <tr>
+        <td>Scale</td>
+        <td>
+          <div id="scale-select">
+            <select style="width:199px;">
+              <option value="Linear" onclick="update()">Linear</option>
+              <option value="Quantile" onclick="update()">Quantile</option>
+              <option value="Custom Linear" onclick="customL()">Custom Linear</option>
+              <option value="Custom Quantile" onclick="customQ()">Custom Quantile</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Color</td>
+        <td>
+          <div id="color-select" onclick="customColors=[null,null,null,null,null]; update()">
+            <select style="width:199px;">
+              <option value="Viridis">Viridis</option>
+              <option value="Red">Red</option>
+              <option value="Blue">Blue</option>
+              <option value="Green">Green</option>
+              <option value="Purple">Purple</option>
+              <option value="Black">Black</option>
+              <option value="Rainbow">Rainbow</option>
+              <option value="Viridis Light">Viridis Light</option>
+              <option value="Greyscale">Greyscale</option>
+              <option value="Heat">Heat</option>
+              <option value="Magma">Magma</option>
+              <option value="Brown-Teal">Brown-Teal</option>
+              <option value="Blue-Red">Blue-Red</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Num Format&nbsp&nbsp</td>
+        <td>
+          <div id="numformat-select" onclick="update()">
+            <select style="width:199px;">
+              <option value="short">Short</option>
+              <option value="comma">Commas</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div>
+  </div>
+  <div id="legend">
+    <div id="sqaures">
+      <div style="padding:3px;">
+        <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
+        <div id="leg-square-0" class="legend-square" style="background:red;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
+        <div id="leg-square-1" class="legend-square" style="background:orange;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
+        <div id="leg-square-2" class="legend-square" style="background:yellow;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
+        <div id="leg-square-3" class="legend-square" style="background:green;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
+        <div id="leg-square-4" class="legend-square" style="background:blue;"></div>
+      </div>
+    </div>
+    <div id="labels" style="padding-top:13px; position:absolute; top:0px; left:60px;">
+      <div class="legend-label" ><span id='leg-label-0'>1</span></div>
+      <div class="legend-label" ><span id='leg-label-1'>2</span></div>
+      <div class="legend-label" ><span id='leg-label-2'>3</span></div>
+      <div class="legend-label" ><span id='leg-label-3'>4</span></div>
+      <div class="legend-label" ><span id='leg-label-4'>5</span></div>
+    </div>
+  </div>
+  <div id="intro">
+    <div>
+      <span id = "intro-title"></span>
+    </div>
+    <br>
+    <div style="width:480px; padding: 5px; border-radius: 10px;">
+      <span id = "intro-text" style="font-weight:bold;"></span>
+      <button id="next-1" class="next-button" style="opacity: 0" onclick="holder()">➜</button>
+    </div>
+  </div>
+  <div id="current-view">
+    <span style="font-size:20px;">Current Map View:<br></span>
+    <span id="cur-view" style="font-size:15px;">North America</span>
+  </div>
+<script>
+yeet()
+function yeet(){
+  $('#cpick-0').on('change', function() { addCustomColor(0) });
+  $('#cpick-1').on('change', function() { addCustomColor(1) });
+  $('#cpick-2').on('change', function() { addCustomColor(2) });
+  $('#cpick-3').on('change', function() { addCustomColor(3) });
+  $('#cpick-4').on('change', function() { addCustomColor(4) });
+}
+
+  var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
+  var LINEAR_RANGE = [-69.42,69.42];
+  var customColors = [null, null, null, null, null]
+  $(document).on('mousemove', function(e){
+    $('#move').css({
+      left:  e.pageX+10,
+      top:   e.pageY+10
+    });
+  });
+
+function addCustomColor(i){
+  customColors[i] = $('#cpick-'.concat(i)).val()
+  //console.log(customColors)
+  update()
+}
+
+function createSelect(id,list) {
+  var x = document.getElementById(id);
+  var length = x.length;
+  for (i = length-1; i >= 0; i--) {
+    x.options[i] = null;
+  }
+  for (const [key, value] of Object.entries(list)) {
+    var z = document.createElement("option");
+    z.setAttribute("value", key);
+    var t = document.createTextNode(value);
+    z.appendChild(t);
+    x.appendChild(z);
+  }
+  update()
+}
+
+  function updateGeo(){
+    v = $('#geo-select').find(":selected").val();
+    hideAllLayers()
+    map.setLayoutProperty(v.concat('-fills'),'visibility','visible')
+    map.setLayoutProperty(v.concat('-lines'),'visibility','visible')
+  }
+
+function getQuantileValues(variable, geo){
+  doot = DATA.filter(function(d){ return d["SIZE"] == geo.toUpperCase() });
+  if (!variable.endsWith('P')){
+    datBoi = doot.map(function(d) { return d[variable] })
+  }
+  else {
+    var cat = variable.slice(0,-1);
+    var cat_total = variable.slice(0,4).concat("001");
+    datBoi = doot.map(function(d) { return (d[cat] / (1 + d[PERCENT_DICT[cat]])) })
+  }
+  datBoi = datBoi.sort(function(a, b){return a - b});
+
+  var scale = $('#scale-select').find(":selected").val();
+  if (scale == 'Quantile'){
+    QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1]
+  }
+  var quants = [];
+  QUARTILE_RANGE.forEach((q) => {
+    quants.push(d3.quantile(datBoi, q));
+  });
+  return quants
+}
+
+function updateVariable(){
+  variable = $('#variable-select').find(":selected").val();
+  setFeatStates(variable)
+  geo = $('#geo-select').find(":selected").val();
+  var quants = getQuantileValues(variable, geo)
+  hover([variable],geo);
+  layer_name = geo.concat('-fills')
+  colorLayer(layer_name, variable, quants)
+}
+
+function update(){
+  updateGeo()
+  updateVariable()
+}
+
+function featureQuery(){
+  var geo = $('#geo-select').find(":selected").val();
+  var source = SOURCE_DICT[geo]
+  F = map.queryRenderedFeatures()
+  G = []
+  H = []
+  F.forEach((element) => {
+    if(element.source == source && !H.includes(element.id)){
+      G.push(element)
+      H.push(element.id)
+    }
+  });
+}
+
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: 'mapbox://styles/mapbox/light-v10', // style URL
+  center: [-104.800644, 38.846127],
+  zoom: 3.6,
+  pitch: 0,
+  interactive: true,
+});
+//map.scrollZoom.disable();
+
+var hoveredStateId = null;
+
+map.on('load', function () {
+  addSources()
+  addNativelandLayers()
+  addNationLayers()
+  addStateLayers()
+  addCountyLayers()
+  addTractLayers()
+  addGroupLayers()
+  addMetroSALayers()
+  addUrbanLayers()
+  addZipLayers()
+  console.log('Layers loaded')
+
+  var DATA = [];
+  loadDataFromCSV()
+
+  //Intro()
+
+
+
+
+});
+</script>
+</body>
+</html>

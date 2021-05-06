@@ -1,0 +1,41 @@
+.draggable {
+  position: fixed;
+  left:0%;
+  top:0%;
+  padding: 0.5em;
+  height:10px;
+  margin:5px;
+}
+.widnow{
+  border-radius:10px;
+  border: 3px solid rgba(0, 0, 0, 0.7);
+  font-family: sans-serif;
+  width:100%;
+}
+.title_bar{
+  border-radius:5px;
+  height: 15px;
+  width: 100%;
+  padding-top:0px;
+  padding-bottom: 10px;
+  text-align:left;
+  color: white;
+}
+.button{
+  width: 15px;
+  height: 15px;
+  float:right;
+  cursor:pointer;
+  text-align:center;
+  font-size: 15px;
+  display:inline;
+}
+.box{
+  background-color: rgb(255,255,255,0.7);
+  font-family: sans-serif;
+  border-radius:5px;
+}
+.bar-title{
+  position: relative;
+  font-size: 16px;
+}
