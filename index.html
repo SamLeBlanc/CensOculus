@@ -49,7 +49,7 @@
       <tr>
         <td>Concept</td>
         <td>
-          <div id="concept-select">
+          <div id="concept-select" onclick="update()">
             <select style="width:199px;">
               <option value="TOTAL POPULATION">TOTAL POPULATION</option>
               <option value="URBAN AND RURAL">URBAN AND RURAL</option>
@@ -148,6 +148,79 @@
               <option value="H005007P">H005007P</option>
               <option value="H005008">H005008</option>
               <option value="H005008P">H005008P</option>
+
+              <option value="H011001">H011001</option>
+              <option value="H011002">H011002</option>
+              <option value="H011002P">H011002P</option>
+              <option value="H011003">H011003</option>
+              <option value="H011003P">H011003P</option>
+              <option value="H011004">H011004</option>
+              <option value="H011004P">H011004P</option>
+
+              <option value="PCT020001">PCT020001</option>
+              <option value="PCT020001P">PCT020001P</option>
+              <option value="PCT020002">PCT020002</option>
+              <option value="PCT020002P">PCT020002P</option>
+              <option value="PCT020003">PCT020003</option>
+              <option value="PCT020003P">PCT020003P</option>
+              <option value="PCT020004">PCT020004</option>
+              <option value="PCT020004P">PCT020004P</option>
+              <option value="PCT020005">PCT020005</option>
+              <option value="PCT020005P">PCT020005P</option>
+              <option value="PCT020006">PCT020006</option>
+              <option value="PCT020006P">PCT020006P</option>
+              <option value="PCT020007">PCT020007</option>
+              <option value="PCT020007P">PCT020007P</option>
+              <option value="PCT020008">PCT020008</option>
+              <option value="PCT020008P">PCT020008P</option>
+              <option value="PCT020009">PCT020009</option>
+              <option value="PCT020009P">PCT020009P</option>
+              <option value="PCT020010">PCT020010</option>
+              <option value="PCT020010P">PCT020010P</option>
+              <option value="PCT020011">PCT020011</option>
+              <option value="PCT020011P">PCT020011P</option>
+              <option value="PCT020012">PCT020012</option>
+              <option value="PCT020012P">PCT020012P</option>
+              <option value="PCT020013">PCT020013</option>
+              <option value="PCT020013P">PCT020013P</option>
+              <option value="PCT020014">PCT020014</option>
+              <option value="PCT020014P">PCT020014P</option>
+              <option value="PCT020015">PCT020015</option>
+              <option value="PCT020015P">PCT020015P</option>
+              <option value="PCT020016">PCT020016</option>
+              <option value="PCT020016P">PCT020016P</option>
+              <option value="PCT020017">PCT020017</option>
+              <option value="PCT020017P">PCT020017P</option>
+              <option value="PCT020018">PCT020018</option>
+              <option value="PCT020018P">PCT020018P</option>
+              <option value="PCT020019">PCT020019</option>
+              <option value="PCT020019P">PCT020019P</option>
+              <option value="PCT020020">PCT020020</option>
+              <option value="PCT020020P">PCT020020P</option>
+              <option value="PCT020021">PCT020021</option>
+              <option value="PCT020021P">PCT020021P</option>
+              <option value="PCT020022">PCT020022</option>
+              <option value="PCT020022P">PCT020022P</option>
+              <option value="PCT020023">PCT020023</option>
+              <option value="PCT020023P">PCT020023P</option>
+              <option value="PCT020024">PCT020024</option>
+              <option value="PCT020024P">PCT020024P</option>
+              <option value="PCT020025">PCT020025</option>
+              <option value="PCT020025P">PCT020025P</option>
+              <option value="PCT020026">PCT020026</option>
+              <option value="PCT020026P">PCT020026P</option>
+              <option value="PCT020027">PCT020027</option>
+              <option value="PCT020027P">PCT020027P</option>
+              <option value="PCT020028">PCT020028</option>
+              <option value="PCT020028P">PCT020028P</option>
+              <option value="PCT020029">PCT020029</option>
+              <option value="PCT020029P">PCT020029P</option>
+              <option value="PCT020030">PCT020030</option>
+              <option value="PCT020030P">PCT020030P</option>
+              <option value="PCT020031">PCT020031</option>
+              <option value="PCT020031P">PCT020031P</option>
+              <option value="PCT020032">PCT020032</option>
+              <option value="PCT020032P">PCT020032P</option>
             </select>
         </div>
       </td>
@@ -224,8 +297,8 @@
         <div id="leg-square-4" class="legend-square" style="background:blue;"></div>
       </div>
     </div>
-    <div id="labels" style="padding-top:13px; position:absolute; top:0px; left:60px;">
-      <div class="legend-label" ><span id='leg-label-0'>1</span></div>
+    <div id="labels" ondblclick="getCustomRange();" style="padding-top:13px; position:absolute; top:0px; left:60px;">
+      <div class="legend-label" ><span onclick="customQ" id='leg-label-0'>1</span></div>
       <div class="legend-label" ><span id='leg-label-1'>2</span></div>
       <div class="legend-label" ><span id='leg-label-2'>3</span></div>
       <div class="legend-label" ><span id='leg-label-3'>4</span></div>
@@ -244,10 +317,9 @@
   </div>
   <div id="current-view">
     <span style="font-size:20px;">Current Map View:<br></span>
-    <span id="cur-view" style="font-size:15px;">North America</span>
+    <span id="cur-view" style="font-size:15px;">May 7 10:43am</span>
   </div>
 <script>
-console.log('suck me off')
 yeet()
 function yeet(){
   $('#cpick-0').on('change', function() { addCustomColor(0) });
@@ -271,6 +343,12 @@ function addCustomColor(i){
   customColors[i] = $('#cpick-'.concat(i)).val()
   //console.log(customColors)
   update()
+}
+
+function getCustomRange(){
+  s = $('#scale-select').find(":selected").val();
+  if (s.includes('Linear')) customL();
+  else if (s.includes('Quantile')) customQ();
 }
 
 function createSelect(id,list) {
@@ -297,7 +375,11 @@ function createSelect(id,list) {
   }
 
 function getQuantileValues(variable, geo){
-  doot = DATA.filter(function(d){ return d["SIZE"] == geo.toUpperCase() });
+  if (variable.startsWith("H011") || variable.startsWith("PCT")){
+    doot = DATA1.filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
+  } else {
+    doot = DATA.filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
+  }
   if (!variable.endsWith('P')){
     datBoi = doot.map(function(d) { return d[variable] })
   }
@@ -376,9 +458,10 @@ map.on('load', function () {
   console.log('Layers loaded')
 
   var DATA = [];
+  var DATA1 = [];
   loadDataFromCSV()
 
-  //Intro()
+  //update()
 
 
 
