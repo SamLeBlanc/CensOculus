@@ -1,10 +1,6 @@
 function setFeatStates(variable){
   geo = $('#geo-select').find(":selected").val();
-  if (variable.startsWith("H011") || variable.startsWith("PCT")){
-    doot = DATA1.filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-  } else {
-    doot = DATA.filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-  }
+  doot = dataByGroup().filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   doot.forEach(function(d){
     n = {}
     if (variable.endsWith("P")){

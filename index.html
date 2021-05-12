@@ -49,19 +49,18 @@
       <tr>
         <td>Concept</td>
         <td>
-          <div id="concept-select" onclick="update()">
+          <div id="concept-select" onclick="updateConcept()">
             <select style="width:199px;">
-              <option value="TOTAL POPULATION">TOTAL POPULATION</option>
-              <option value="URBAN AND RURAL">URBAN AND RURAL</option>
-              <option value="HISPANIC OR LATINO ORIGIN">HISPANIC OR LATINO ORIGIN</option>
-              <option value="RACE (TOTAL RACES TALLIED)">RACE (TOTAL RACES TALLIED)</option>
-              <option value="RACE">RACE</option>
-              <option value="SEX BY AGE">SEX BY AGE</option>
-              <option value="MEDIAN AGE BY SEX">MEDIAN AGE BY SEX</option>
-              <option value="OCCUPANCY STATUS">OCCUPANCY STATUS</option>
-              <option value="VACANCY STATUS">VACANCY STATUS</option>
-              <option value="POPULATION IN HOUSING UNITS BY TENURE">POP IN HOUSING UNITS BY TENURE</option>
-              <option value="GROUP QUARTERS POPULATION BY TYPE">GROUP QUARTERS POP BY TYPE</option>
+              <option value="P1">[P1] TOTAL POPULATION </option>
+              <option value="P2">[P2] URBAN AND RURAL</option>
+              <option value="P3">[P3] RACE</option>
+              <option value="P4">[P4] HISPANIC OR LATINO ORIGIN</option>
+              <option value="P5">[P5] HISPANIC OR LATINO ORIGIN BY RACE</option>
+              <option value="P6">[P6] RACE (TOTAL RACES TALLIED)</option>
+              <option value="P7">[P7] HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
+              <option value="P8">[P8] RACE</option>
+              <option value="P9">[P9] HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
+              <option value="P10">[P10] RACE FOR THE POPULATION 18 YEARS AND OVER</option>
               </select>
           </div>
         </td>
@@ -71,156 +70,6 @@
         <td>
           <div id="variable-select" onclick="update()">
             <select id="SS" style="width:199px;">
-              <option value="P001001">P001001</option>
-
-              <option value="P002002">P002002</option>
-              <option value="P002002P">P002002P</option>
-              <option value="P002003">P002003</option>
-              <option value="P002003P">P002003P</option>
-              <option value="P002004">P002004</option>
-              <option value="P002004P">P002004P</option>
-              <option value="P002005">P002005</option>
-              <option value="P002005P">P002005P</option>
-
-              <option value="P004002">P004002</option>
-              <option value="P004002P">P004002P</option>
-              <option value="P004003">P004003</option>
-              <option value="P004003P">P004003P</option>
-
-              <option value="P006002">P006002</option>
-              <option value="P006002P">P006002P</option>
-              <option value="P006003">P006003</option>
-              <option value="P006003P">P006003P</option>
-              <option value="P006004">P006004</option>
-              <option value="P006004P">P006004P</option>
-              <option value="P006005">P006005</option>
-              <option value="P006005P">P006005P</option>
-              <option value="P006006">P006006</option>
-              <option value="P006006P">P006006P</option>
-              <option value="P006007">P006007</option>
-              <option value="P006007P">P006007P</option>
-
-              <option value="P008002">P008002</option>
-              <option value="P008002P">P008002P</option>
-              <option value="P008003">P008003</option>
-              <option value="P008003P">P008003P</option>
-              <option value="P008004">P008004</option>
-              <option value="P008004P">P008004P</option>
-              <option value="P008005">P008005</option>
-              <option value="P008005P">P008005P</option>
-              <option value="P008006">P008006</option>
-              <option value="P008006P">P008006P</option>
-              <option value="P008007">P008007</option>
-              <option value="P008007P">P008007P</option>
-              <option value="P008008">P008008</option>
-              <option value="P008008P">P008008P</option>
-              <option value="P008009">P008009</option>
-              <option value="P008009P">P008009P</option>
-
-              <option value="P012001">P012001</option>
-              <option value="P012002">P012002</option>
-              <option value="P012002P">P012002P</option>
-              <option value="P012026">P012026</option>
-              <option value="P012026P">P012026P</option>
-
-              <option value="P013001">P013001</option>
-              <option value="P013002">P013002</option>
-              <option value="P013003">P013003</option>
-
-              <option value="H003001">H003001</option>
-              <option value="H003002">H003002</option>
-              <option value="H003002P">H003002P</option>
-              <option value="H003003">H003003</option>
-              <option value="H003003P">H003003P</option>
-
-              <option value="H005001">H005001</option>
-              <option value="H005002">H005002</option>
-              <option value="H005002P">H005002P</option>
-              <option value="H005003">H005003</option>
-              <option value="H005003P">H005003P</option>
-              <option value="H005004">H005004</option>
-              <option value="H005004P">H005004P</option>
-              <option value="H005005">H005005</option>
-              <option value="H005005P">H005005P</option>
-              <option value="H005006">H005006</option>
-              <option value="H005006P">H005006P</option>
-              <option value="H005007">H005007</option>
-              <option value="H005007P">H005007P</option>
-              <option value="H005008">H005008</option>
-              <option value="H005008P">H005008P</option>
-
-              <option value="H011001">H011001</option>
-              <option value="H011002">H011002</option>
-              <option value="H011002P">H011002P</option>
-              <option value="H011003">H011003</option>
-              <option value="H011003P">H011003P</option>
-              <option value="H011004">H011004</option>
-              <option value="H011004P">H011004P</option>
-
-              <option value="PCT020001">PCT020001</option>
-              <option value="PCT020001P">PCT020001P</option>
-              <option value="PCT020002">PCT020002</option>
-              <option value="PCT020002P">PCT020002P</option>
-              <option value="PCT020003">PCT020003</option>
-              <option value="PCT020003P">PCT020003P</option>
-              <option value="PCT020004">PCT020004</option>
-              <option value="PCT020004P">PCT020004P</option>
-              <option value="PCT020005">PCT020005</option>
-              <option value="PCT020005P">PCT020005P</option>
-              <option value="PCT020006">PCT020006</option>
-              <option value="PCT020006P">PCT020006P</option>
-              <option value="PCT020007">PCT020007</option>
-              <option value="PCT020007P">PCT020007P</option>
-              <option value="PCT020008">PCT020008</option>
-              <option value="PCT020008P">PCT020008P</option>
-              <option value="PCT020009">PCT020009</option>
-              <option value="PCT020009P">PCT020009P</option>
-              <option value="PCT020010">PCT020010</option>
-              <option value="PCT020010P">PCT020010P</option>
-              <option value="PCT020011">PCT020011</option>
-              <option value="PCT020011P">PCT020011P</option>
-              <option value="PCT020012">PCT020012</option>
-              <option value="PCT020012P">PCT020012P</option>
-              <option value="PCT020013">PCT020013</option>
-              <option value="PCT020013P">PCT020013P</option>
-              <option value="PCT020014">PCT020014</option>
-              <option value="PCT020014P">PCT020014P</option>
-              <option value="PCT020015">PCT020015</option>
-              <option value="PCT020015P">PCT020015P</option>
-              <option value="PCT020016">PCT020016</option>
-              <option value="PCT020016P">PCT020016P</option>
-              <option value="PCT020017">PCT020017</option>
-              <option value="PCT020017P">PCT020017P</option>
-              <option value="PCT020018">PCT020018</option>
-              <option value="PCT020018P">PCT020018P</option>
-              <option value="PCT020019">PCT020019</option>
-              <option value="PCT020019P">PCT020019P</option>
-              <option value="PCT020020">PCT020020</option>
-              <option value="PCT020020P">PCT020020P</option>
-              <option value="PCT020021">PCT020021</option>
-              <option value="PCT020021P">PCT020021P</option>
-              <option value="PCT020022">PCT020022</option>
-              <option value="PCT020022P">PCT020022P</option>
-              <option value="PCT020023">PCT020023</option>
-              <option value="PCT020023P">PCT020023P</option>
-              <option value="PCT020024">PCT020024</option>
-              <option value="PCT020024P">PCT020024P</option>
-              <option value="PCT020025">PCT020025</option>
-              <option value="PCT020025P">PCT020025P</option>
-              <option value="PCT020026">PCT020026</option>
-              <option value="PCT020026P">PCT020026P</option>
-              <option value="PCT020027">PCT020027</option>
-              <option value="PCT020027P">PCT020027P</option>
-              <option value="PCT020028">PCT020028</option>
-              <option value="PCT020028P">PCT020028P</option>
-              <option value="PCT020029">PCT020029</option>
-              <option value="PCT020029P">PCT020029P</option>
-              <option value="PCT020030">PCT020030</option>
-              <option value="PCT020030P">PCT020030P</option>
-              <option value="PCT020031">PCT020031</option>
-              <option value="PCT020031P">PCT020031P</option>
-              <option value="PCT020032">PCT020032</option>
-              <option value="PCT020032P">PCT020032P</option>
             </select>
         </div>
       </td>
@@ -317,10 +166,20 @@
   </div>
   <div id="current-view">
     <span style="font-size:20px;">Current Map View:<br></span>
-    <span id="cur-view" style="font-size:15px;">May 7 10:43am</span>
+    <span id="cur-view" style="font-size:15px;">May 12 10:16am</span>
   </div>
 <script>
 yeet()
+
+var CONCEPT = "P6"
+
+function updateConcept(){
+  CONCEPT = $('#concept-select').find(":selected").val();
+  createSelect2("SS",VARIABLE_LIST_BY_CONCEPT[CONCEPT])
+  update()
+
+}
+
 function yeet(){
   $('#cpick-0').on('change', function() { addCustomColor(0) });
   $('#cpick-1').on('change', function() { addCustomColor(1) });
@@ -341,7 +200,6 @@ function yeet(){
 
 function addCustomColor(i){
   customColors[i] = $('#cpick-'.concat(i)).val()
-  //console.log(customColors)
   update()
 }
 
@@ -351,16 +209,16 @@ function getCustomRange(){
   else if (s.includes('Quantile')) customQ();
 }
 
-function createSelect(id,list) {
+function createSelect2(id,list) {
   var x = document.getElementById(id);
   var length = x.length;
   for (i = length-1; i >= 0; i--) {
     x.options[i] = null;
   }
-  for (const [key, value] of Object.entries(list)) {
+  for (const item of list) {
     var z = document.createElement("option");
-    z.setAttribute("value", key);
-    var t = document.createTextNode(value);
+    z.setAttribute("value", item);
+    var t = document.createTextNode(item);
     z.appendChild(t);
     x.appendChild(z);
   }
@@ -374,12 +232,21 @@ function createSelect(id,list) {
     map.setLayoutProperty(v.concat('-lines'),'visibility','visible')
   }
 
+function dataByGroup(){
+  if (CONCEPT == 'P1') return P1
+  if (CONCEPT == 'P2') return P2
+  if (CONCEPT == 'P3') return P3
+  if (CONCEPT == 'P4') return P4
+  if (CONCEPT == 'P5') return P5
+  if (CONCEPT == 'P6') return P6
+  if (CONCEPT == 'P7') return P7
+  if (CONCEPT == 'P8') return P8
+  if (CONCEPT == 'P9') return P9
+  if (CONCEPT == 'P10') return P10
+}
+
 function getQuantileValues(variable, geo){
-  if (variable.startsWith("H011") || variable.startsWith("PCT")){
-    doot = DATA1.filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-  } else {
-    doot = DATA.filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-  }
+  doot = dataByGroup().filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   if (!variable.endsWith('P')){
     datBoi = doot.map(function(d) { return d[variable] })
   }
@@ -459,6 +326,16 @@ map.on('load', function () {
 
   var DATA = [];
   var DATA1 = [];
+  var P1 = [];
+  var P2 = [];
+  var P3 = [];
+  var P4 = [];
+  var P5 = [];
+  var P6 = [];
+  var P7 = [];
+  var P8 = [];
+  var P9 = [];
+  var P10 = [];
   loadDataFromCSV()
 
   //update()
