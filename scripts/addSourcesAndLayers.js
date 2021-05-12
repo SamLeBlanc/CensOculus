@@ -80,19 +80,6 @@ function addNationLayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
   });
   map.addLayer({
@@ -123,19 +110,6 @@ function addStateLayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
   });
   map.addLayer({
@@ -166,19 +140,6 @@ function addCountyLayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
   });
   map.addLayer({
@@ -209,19 +170,6 @@ function addTractLayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
     });
   map.addLayer({
@@ -252,19 +200,6 @@ function addGroupLayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
   });
   map.addLayer({
@@ -295,19 +230,6 @@ function addMetroSALayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
   });
   map.addLayer({
@@ -338,19 +260,6 @@ function addUrbanLayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
   });
   map.addLayer({
@@ -381,19 +290,6 @@ function addZipLayers(){
     'layout': {'visibility': 'none'},
     'paint': {
         'fill-opacity': 0.7,
-        'fill-color':
-        ['case',
-          ['!=', ['feature-state', 'P006003P'], null],
-          ['interpolate',
-          ['linear'], ['feature-state', 'P006003P'],
-            0, '#f9e721',
-            0.25, '#5ac865',
-            0.5, '#21908d',
-            0.75, '#3b1c8c',
-            1, '#450256'
-        ],
-          'rgba(255, 255, 255, 0)'
-        ]
       }
   });
   map.addLayer({
