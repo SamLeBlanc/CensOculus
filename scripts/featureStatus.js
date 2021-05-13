@@ -6,7 +6,7 @@ function setFeatStates(variable){
     n = {}
     if (variable.endsWith("P")){
       v = variable.slice(0,-1)
-      n[variable] = d[v] / (1 + d[v.slice(0,4).concat("001")])
+      n[variable] = d[v] / (1 + d[v.slice(0,4).concat("001")]);
     } else {
       n[variable] = d[variable]
     }
