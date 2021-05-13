@@ -1,11 +1,12 @@
 function setFeatStates(variable){
   geo = $('#geo-select').find(":selected").val();
-  doot = dataByGroup().filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
+  concept = $('#concept-select').find(":selected").val();
+  doot = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   doot.forEach(function(d){
     n = {}
     if (variable.endsWith("P")){
       v = variable.slice(0,-1)
-      n[variable] = d[v] / (1 + d[PERCENT_DICT[v]])
+      n[variable] = d[v] / (1 + d[v.slice(0,4).concat("001")])
     } else {
       n[variable] = d[variable]
     }

@@ -79,7 +79,7 @@ function addNationLayers(){
     'source-layer': '00US_nation10-19oe1f',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
   });
   map.addLayer({
@@ -109,7 +109,7 @@ function addStateLayers(){
     'source-layer': '00US_states10-dyd7cv',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
   });
   map.addLayer({
@@ -139,7 +139,7 @@ function addCountyLayers(){
     'source-layer': '00US_countys10-06iixg',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
   });
   map.addLayer({
@@ -169,7 +169,7 @@ function addTractLayers(){
     'source-layer': '00US_tracts101-47boqk',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
     });
   map.addLayer({
@@ -199,7 +199,7 @@ function addGroupLayers(){
     'source-layer': '00US_groups101-5zqy3o',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
   });
   map.addLayer({
@@ -229,7 +229,7 @@ function addMetroSALayers(){
     'source-layer': '00US_metroSA10-3ga0t5',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
   });
   map.addLayer({
@@ -259,7 +259,7 @@ function addUrbanLayers(){
     'source-layer': '00US_urban10-ayziii',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
   });
   map.addLayer({
@@ -289,7 +289,7 @@ function addZipLayers(){
     'source-layer': '00US_zip10-cz976w',
     'layout': {'visibility': 'none'},
     'paint': {
-        'fill-opacity': 0.7,
+        'fill-opacity': 0,
       }
   });
   map.addLayer({
