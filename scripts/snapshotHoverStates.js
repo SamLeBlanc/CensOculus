@@ -44,11 +44,16 @@ function hover(s,key){
   map.on('mousemove', LAYER_DICT[key], function (e) {
     if (e.features.length > 0) {
       if (hoveredStateId) {
+        map.getCanvas().style.cursor = "crosshair";
         var geoid = e.features[0].properties.GEOID10
+        var name = e.features[0].properties.NAME10
         var obj = map.getFeatureState({ source: SOURCE_DICT[key], sourceLayer: SOURCELAYER_DICT[key], id: geoid });
-        var arr = createMoveTableArray(s,geoid,obj)
+        var title = function (g, n) {
+          if (n) return n
+          else return g
+        };
+        var arr = createMoveTableArray(s, title(geoid,name), obj)
         addTable3(arr)
-
         map.setFeatureState(
           { source: SOURCE_DICT[key], id: hoveredStateId, sourceLayer:SOURCELAYER_DICT[key]}, { hover: false });
         }
@@ -62,6 +67,7 @@ function hover(s,key){
           map.setFeatureState({ source: SOURCE_DICT[key], id: hoveredStateId, sourceLayer:SOURCELAYER_DICT[key]}, { hover: false });
         }
         hoveredStateId = null;
+        map.getCanvas().style.cursor = "";
         $('#move').text("")
       });
     }
