@@ -19,7 +19,6 @@
   <script type="text/javascript" src="scripts/featureStatus.js"></script>
   <script type="text/javascript" src="scripts/numberFormats.js"></script>
   <script type="text/javascript" src="scripts/coloring.js"></script>
-  <script type="text/javascript" src="scripts/main.js"></script>
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/draggable.css">
 </head>
@@ -32,7 +31,7 @@
       <tr>
         <td>Geography</td>
         <td>
-          <div id="geo-select" onclick="update()">
+          <div id="geo-select" onchange="update()">
             <select style="width:199px;">
               <option value="nation">Nation</option>
               <option value="state">State</option>
@@ -42,6 +41,9 @@
               <option value="metroSA">Metro Stat Area</option>
               <option value="urban">Urban Areas</option>
               <option value="zip">Zip Codes</option>
+              <option value="uschool">Unified School District</option>
+              <option value="csub">County Subdivision</option>
+              <option value="place">Place</option>
             </select>
           </div>
         </td>
@@ -49,7 +51,7 @@
       <tr>
         <td>Concept</td>
         <td>
-          <div id="concept-select" onclick="updateConcept()">
+          <div id="concept-select" onchange="updateConcept()">
             <select style="width:199px;">
               <option value="P1">[P1] TOTAL POPULATION </option>
               <option value="P2">[P2] URBAN AND RURAL</option>
@@ -61,18 +63,19 @@
               <option value="P8">[P8] RACE</option>
               <option value="P9">[P9] HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
               <option value="P10">[P10] RACE FOR THE POPULATION 18 YEARS AND OVER</option>
-              </select>
+            </select>
           </div>
         </td>
       </tr>
       <tr>
         <td>Variable</td>
         <td>
-          <div id="variable-select" onclick="update()">
+          <div id="variable-select" onchange="update()">
             <select id="SS" style="width:199px;">
+              <option value="P001001" onclick="update()" selected>P001001</option>
             </select>
-        </div>
-      </td>
+          </div>
+        </td>
       </tr>
       <tr>
         <td>Scale</td>
@@ -90,7 +93,7 @@
       <tr>
         <td>Color</td>
         <td>
-          <div id="color-select" onclick="customColors=[null,null,null,null,null]; update()">
+          <div id="color-select" onchange="customColors=[null,null,null,null,null]; update()">
             <select style="width:199px;">
               <option value="Viridis">Viridis</option>
               <option value="Red">Red</option>
@@ -112,7 +115,7 @@
       <tr>
         <td>Num Format&nbsp&nbsp</td>
         <td>
-          <div id="numformat-select" onclick="update()">
+          <div id="numformat-select" onchange="update()">
             <select style="width:199px;">
               <option value="short">Short</option>
               <option value="comma">Commas</option>
@@ -123,6 +126,7 @@
     </table>
     <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div>
   </div>
+
   <div id="legend">
     <div id="sqaures">
       <div style="padding:3px;">
@@ -166,27 +170,28 @@
   </div>
   <div id="current-view">
     <span style="font-size:20px;">Current Map View:<br></span>
-    <span id="cur-view" style="font-size:15px;">May 12 10:16am</span>
+    <span id="cur-view" style="font-size:15px;">May 14 12:23am</span>
   </div>
-<script>
-yeet()
+  <script>
 
-var CONCEPT = "P6"
+  yeet()
 
-function updateConcept(){
-  CONCEPT = $('#concept-select').find(":selected").val();
-  createSelect2("SS",VARIABLE_LIST_BY_CONCEPT[CONCEPT])
-  update()
+  function updateConcept(){
+    console.log('update concept')
+    concept = $('#concept-select').find(":selected").val();
+    createSelect2("SS",VARIABLE_LIST_BY_CONCEPT[concept])
+    if (LORAX[concept].length == 0){
+      loadDataFromCSV(concept)
+    }
+  }
 
-}
-
-function yeet(){
-  $('#cpick-0').on('change', function() { addCustomColor(0) });
-  $('#cpick-1').on('change', function() { addCustomColor(1) });
-  $('#cpick-2').on('change', function() { addCustomColor(2) });
-  $('#cpick-3').on('change', function() { addCustomColor(3) });
-  $('#cpick-4').on('change', function() { addCustomColor(4) });
-}
+  function yeet(){
+    $('#cpick-0').on('change', function() { addCustomColor(0) });
+    $('#cpick-1').on('change', function() { addCustomColor(1) });
+    $('#cpick-2').on('change', function() { addCustomColor(2) });
+    $('#cpick-3').on('change', function() { addCustomColor(3) });
+    $('#cpick-4').on('change', function() { addCustomColor(4) });
+  }
 
   var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
   var LINEAR_RANGE = [-69.42,69.42];
@@ -198,33 +203,37 @@ function yeet(){
     });
   });
 
-function addCustomColor(i){
-  customColors[i] = $('#cpick-'.concat(i)).val()
-  update()
-}
-
-function getCustomRange(){
-  s = $('#scale-select').find(":selected").val();
-  if (s.includes('Linear')) customL();
-  else if (s.includes('Quantile')) customQ();
-}
-
-function createSelect2(id,list) {
-  var x = document.getElementById(id);
-  var length = x.length;
-  for (i = length-1; i >= 0; i--) {
-    x.options[i] = null;
+  function addCustomColor(i){
+    customColors[i] = $('#cpick-'.concat(i)).val()
+    //console.log(customColors)
+    update()
   }
-  for (const item of list) {
-    var z = document.createElement("option");
-    z.setAttribute("value", item);
-    var t = document.createTextNode(item);
-    z.appendChild(t);
-    x.appendChild(z);
-  }
-  update()
-}
 
+  function getCustomRange(){
+    s = $('#scale-select').find(":selected").val();
+    if (s.includes('Linear')) customL();
+    else if (s.includes('Quantile')) customQ();
+  }
+
+  function createSelect2(id,list) {
+    var x = document.getElementById(id);
+    var length = x.length;
+    for (i = length-1; i >= 0; i--) {
+      x.options[i] = null;
+    }
+    for (const item of list) {
+      var z = document.createElement("option");
+      z.setAttribute("value", item);
+      var t = document.createTextNode(item);
+      z.appendChild(t);
+      x.appendChild(z);
+      var z = document.createElement("option");
+      z.setAttribute("value", item.concat("P"));
+      var t = document.createTextNode(item.concat("P"));
+      z.appendChild(t);
+      x.appendChild(z);
+    }
+  }
   function updateGeo(){
     v = $('#geo-select').find(":selected").val();
     hideAllLayers()
@@ -232,97 +241,58 @@ function createSelect2(id,list) {
     map.setLayoutProperty(v.concat('-lines'),'visibility','visible')
   }
 
-function dataByGroup(){
-  if (CONCEPT == 'P1') return P1
-  if (CONCEPT == 'P2') return P2
-  if (CONCEPT == 'P3') return P3
-  if (CONCEPT == 'P4') return P4
-  if (CONCEPT == 'P5') return P5
-  if (CONCEPT == 'P6') return P6
-  if (CONCEPT == 'P7') return P7
-  if (CONCEPT == 'P8') return P8
-  if (CONCEPT == 'P9') return P9
-  if (CONCEPT == 'P10') return P10
-}
-
-function getQuantileValues(variable, geo){
-  doot = dataByGroup().filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-  if (!variable.endsWith('P')){
-    datBoi = doot.map(function(d) { return d[variable] })
-  }
-  else {
-    var cat = variable.slice(0,-1);
-    var cat_total = variable.slice(0,4).concat("001");
-    datBoi = doot.map(function(d) { return (d[cat] / (1 + d[PERCENT_DICT[cat]])) })
-  }
-  datBoi = datBoi.sort(function(a, b){return a - b});
-
-  var scale = $('#scale-select').find(":selected").val();
-  if (scale == 'Quantile'){
-    QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1]
-  }
-  var quants = [];
-  QUARTILE_RANGE.forEach((q) => {
-    quants.push(d3.quantile(datBoi, q));
-  });
-  return quants
-}
-
-function updateVariable(){
-  variable = $('#variable-select').find(":selected").val();
-  setFeatStates(variable)
-  geo = $('#geo-select').find(":selected").val();
-  var quants = getQuantileValues(variable, geo)
-  hover([variable],geo);
-  layer_name = geo.concat('-fills')
-  colorLayer(layer_name, variable, quants)
-}
-
-function update(){
-  updateGeo()
-  updateVariable()
-}
-
-function featureQuery(){
-  var geo = $('#geo-select').find(":selected").val();
-  var source = SOURCE_DICT[geo]
-  F = map.queryRenderedFeatures()
-  G = []
-  H = []
-  F.forEach((element) => {
-    if(element.source == source && !H.includes(element.id)){
-      G.push(element)
-      H.push(element.id)
+  function getQuantileValues(variable, geo){
+    concept = $('#concept-select').find(":selected").val();
+    doot = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
+    if (!variable.endsWith('P')){
+      datBoi = doot.map(function(d) { return d[variable] })
     }
-  });
-}
+    else {
+      var cat = variable.slice(0,-1);
+      var cat_total = variable.slice(0,4).concat("001");
+      datBoi = doot.map(function(d) { return (d[cat] / (1 + d[cat_total])) })
+    }
+    datBoi = datBoi.sort(function(a, b){return a - b});
 
+    var scale = $('#scale-select').find(":selected").val();
+    if (scale == 'Quantile'){
+      QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1]
+    }
+    var quants = [];
+    QUARTILE_RANGE.forEach((q) => {
+      quants.push(d3.quantile(datBoi, q));
+    });
+    return quants
+  }
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
-var map = new mapboxgl.Map({
-  container: 'map', // container id
-  style: 'mapbox://styles/mapbox/light-v10', // style URL
-  center: [-104.800644, 38.846127],
-  zoom: 3.6,
-  pitch: 0,
-  interactive: true,
-});
-//map.scrollZoom.disable();
+  function updateVariable(){
+    variable = $('#variable-select').find(":selected").val();
+    setFeatStates(variable)
+    geo = $('#geo-select').find(":selected").val();
+    var quants = getQuantileValues(variable, geo)
+    hover([variable],geo);
+    layer_name = geo.concat('-fills')
+    colorLayer(layer_name, variable, quants)
+  }
 
-var hoveredStateId = null;
+  function update(){
+    updateGeo()
+    updateVariable()
+  }
 
-map.on('load', function () {
-  addSources()
-  addNativelandLayers()
-  addNationLayers()
-  addStateLayers()
-  addCountyLayers()
-  addTractLayers()
-  addGroupLayers()
-  addMetroSALayers()
-  addUrbanLayers()
-  addZipLayers()
-  console.log('Layers loaded')
+  function featureQuery(){
+    var geo = $('#geo-select').find(":selected").val();
+    var source = SOURCE_DICT[geo]
+    F = map.queryRenderedFeatures()
+    G = []
+    H = []
+    F.forEach((element) => {
+      if(element.source == source && !H.includes(element.id)){
+        G.push(element)
+        H.push(element.id)
+      }
+    });
+  }
 
   var DATA = [];
   var DATA1 = [];
@@ -336,14 +306,43 @@ map.on('load', function () {
   var P8 = [];
   var P9 = [];
   var P10 = [];
-  loadDataFromCSV()
+  LORAX = {
+    "P1" : P1,
+    "P2" : P2,
+    "P3" : P3,
+    "P4" : P4,
+    "P5" : P5,
+    "P6" : P6,
+    "P7" : P7,
+    "P8" : P8,
+    "P9" : P9,
+    "P10" : P10,
+  }
 
-  //update()
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
+  var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/light-v10', // style URL
+    center: [-104.800644, 38.846127],
+    zoom: 3.6,
+    pitch: 0,
+    interactive: true,
+  });
+  //map.scrollZoom.disable();
+
+  var hoveredStateId = null;
+
+  map.on('load', function () {
+    updateConcept()
+    addSources()
+    addFillAndLineLayers()
+    console.log('Layers loaded')
+    update()
 
 
 
 
-});
+  });
 </script>
 </body>
 </html>

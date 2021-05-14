@@ -22,26 +22,20 @@ function colorLayer(layer_name, variable, quants){
       var n = Math.max(arr[i],0)
       $("#leg-label-".concat(i)).text(formatNumber(n))
     }
-    map.setPaintProperty(layer_name, 'fill-opacity', ['case',
-    ['==', ['feature-state', 'P001001'], 0],
-    0,
-    0.7
-  ]);
-  map.setPaintProperty(layer_name, 'fill-color', ['case',
-  ['==', ['feature-state', 'P001001'], 0],
-  'grey',
-  ['!=', ['feature-state', variable], null],
-  ['interpolate',
-  ['linear'], ['feature-state', variable],
-  arr[0], colors[0],
-  arr[1], colors[1],
-  arr[2], colors[2],
-  arr[3], colors[3],
-  arr[4], colors[4]
-],
-'rgba(255, 255, 255, 0)'
-]);
-},100 );
+    map.setPaintProperty(layer_name, 'fill-color', ['case',
+      ['!=', ['feature-state', variable], null],
+      ['interpolate',
+      ['linear'], ['feature-state', variable],
+      arr[0], colors[0],
+      arr[1], colors[1],
+      arr[2], colors[2],
+      arr[3], colors[3],
+      arr[4], colors[4]
+    ],
+    'rgba(255, 0, 255, 0)'
+    ]);
+    map.setPaintProperty(layer_name, 'fill-opacity', 0.7)
+  },100 );
 }
 
 function updateLegend(){
