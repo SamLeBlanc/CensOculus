@@ -74,7 +74,6 @@ def api_data_to_dataframe(geo, api_arr, data):
     df['SIZE'] = geo.upper()
     return df
 
-group_list = ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"]
 def clean_data(df, geo, sub_hoard,):
     api_data = get_census10_api_data(geo, sub_hoard);
     df1 = api_data_to_dataframe(geo, sub_hoard, api_data);
@@ -83,6 +82,7 @@ def clean_data(df, geo, sub_hoard,):
     df = pd.concat([df, df1],sort=True)
     return df
 
+group_list = ["H6", "H7", "H8", "H9", "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19", "H20", "H21", "H22", ]
 # for group in group_list:
 #     df69 = pd.read_csv(f'/home/sam/2010Variables.csv')
 #     hoard = df69[df69["Group"] == group]["Name"].values
@@ -102,13 +102,16 @@ def clean_data(df, geo, sub_hoard,):
 #         df.to_csv(index=True,path_or_buf="/home/sam/" + f'{group}_{sub_H}.csv');
 #         print(df.sort_values(by=['GEOID10']))
 
-for group in ["P8","P9","P10"]:
+for group in group_list:
     for i in range(1,10):
         file_path = f"/home/sam/{group}_{i}.csv"
         if path.exists(file_path):
-            dfA = pd.read_csv(f"/home/sam/{group}_0.csv")
-            dfB = pd.read_csv(f"/home/sam/{group}_{i}.csv")
+            dfA = pd.read_csv(f"/home/sam/{group}_0.csv",dtype={"GEOID10": object})
+            dfB = pd.read_csv(f"/home/sam/{group}_{i}.csv",dtype={"GEOID10": object})
+            print(dfA, dfB)
             output1 = pd.merge(dfA, dfB, on='GEOID10', how='outer')
             output1.drop(output1.filter(regex='_y$').columns.tolist(),axis=1, inplace=True)
+            output1 = output1.rename(columns={'SIZE_x':'SIZE'})
             print(output1)
-            output1.to_csv(index=False,path_or_buf="/home/sam/" + f'{group}_0.csv');
+            print(output1.columns)
+            output1.to_csv(index=False,path_or_buf="/home/sam/" + f'{group}_x.csv');

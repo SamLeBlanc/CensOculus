@@ -19,7 +19,6 @@ table.QQ, table.QQ td, table.QQ th{ border: 1px solid red; border-bottom: 1pt so
 @keyframes blinker { 50% { opacity: 0; } }
 table.tableB { }
 table.tableB td, table.tableB th{ border: 1px solid transparent;}
-
 input[type="color"] {
   opacity: 0;
   display: block;
