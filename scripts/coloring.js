@@ -1,13 +1,13 @@
 function colorLayer(layer_name, variable, quants){
   var scale = $('#scale-select').find(":selected").val();
-  colors = updateLegend()
-  if (JSON.stringify(LINEAR_RANGE)==JSON.stringify([-69.42,69.42])){
-    var min = quants[0];
-    var max = quants[4];
+
+  if (LINEAR_RANGE.every(element => element !== null)){
+    var extrema = LINEAR_RANGE;
   } else {
-    var min = LINEAR_RANGE[0];
-    var max = LINEAR_RANGE[1];
+    var extrema = [quants[0],quants[4]];
   }
+  var min = extrema[0];
+  var max = extrema[1];
   var range = max - min;
   if (scale == 'Linear' || scale == 'Custom Linear'){
     var arr = [min, min+range*0.25, min+range*0.5, min+range*0.75, max];
@@ -15,13 +15,10 @@ function colorLayer(layer_name, variable, quants){
     var arr = quants;
   }
   for (i=0; i < arr.length; i++){
-    arr[i] += ((i-2) * .00001)
+    arr[i] += ((i-2) * .0000001)
   }
+  colors = updateLegend(arr)
   setTimeout(function(){
-    for (i=0; i<5; i++){
-      var n = Math.max(arr[i],0)
-      $("#leg-label-".concat(i)).text(formatNumber(n))
-    }
     map.setPaintProperty(layer_name, 'fill-color', ['case',
       ['!=', ['feature-state', variable], null],
       ['interpolate',
@@ -38,7 +35,8 @@ function colorLayer(layer_name, variable, quants){
   },100 );
 }
 
-function updateLegend(){
+
+function updateLegend(arr){
   var scheme = $('#color-select').find(":selected").val();
   var colors = COLOR_DICT[scheme]
 
@@ -52,6 +50,7 @@ function updateLegend(){
       colors[i] = `rgba(${c1.r}, ${c1.g}, ${c1.b}, 1)`
     }
     $("#leg-square-".concat(i)).css("background", colors[i])
+    $("#leg-label-".concat(i)).text(formatNumber(Math.max(arr[i],0)))
   }
   return colors
 }

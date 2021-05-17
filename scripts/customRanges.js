@@ -20,7 +20,8 @@ function inZeroOne(arr){
 }
 
 function customL(){
-  var str = prompt("Custom Linear Scaling. \nPlease enter the minimum and maximum values your custom linear range. The values must be entered as an *array* of length 2, and must be in STRICTLY INCREASING order. ", "[  ,  ]");
+  var str = prompt("Custom Linear Scaling. \nPlease enter the *min* and *max* values for your custom linear range. \
+  The values must be entered as an *array* of length 2, and must be in STRICTLY INCREASING order. ", "[  ,  ]");
   if (str !== null){
     try {
       X = JSON.parse(str)
@@ -44,7 +45,10 @@ function customL(){
 }
 
 function customQ(){
-  var str = prompt("Custom Quantile Scaling. \nPlease enter a range of quantile values to scale over. The range must be entered as an *array* of length 5, from 0 to 1 inclusive, and must be in STRICTLY INCREASING order. The numbers represent the data quantiles, where 0 is the minimum, 1 is the maximum and 0.5 is the median.\n\nMin, Q1, Med, Q3, Max: [0, 0.25, 0.5, 0.75, 1]\nAccentuate Low Values: [0, 0.1, 0.3, 0.6, 1]\nAccentuate High Values: [0, 0.4, 0.7, 0.9, 1]", "[  ,  ,  ,  ,  ]");
+  var str = prompt("Custom Quantile Scaling. \nPlease enter a range of five quantile values to scale over. \
+  The range must be entered as an *array* of length 5, from 0 to 1 inclusive, and must be in STRICTLY INCREASING order. \
+  The numbers represent the data quantiles, where 0 is the min, 1 is the max and 0.5 is the median.\
+  \n\nDefault: Min, Q1, Med, Q3, Max: [0, 0.25, 0.5, 0.75, 1]\nAccentuate Low Values: [0, 0.1, 0.3, 0.6, 1]\nAccentuate High Values: [0, 0.4, 0.7, 0.9, 1]", "[  ,  ,  ,  ,  ]");
   console.log(str)
   if (str !== null){
     try {

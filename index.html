@@ -9,6 +9,8 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
   <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
   <script type="text/javascript" src="scripts/addSourcesAndLayers.js"></script>
   <script type="text/javascript" src ="scripts/draggable.js"></script>
@@ -24,325 +26,378 @@
 </head>
 <body>
 
-  <div id="map"></div>
-  <div id="move" style="z-index:50"></div>
-  <div id="T">
-    <table class="tableB" id="tabeleta">
-      <tr>
-        <td>Geography</td>
-        <td>
-          <div id="geo-select" onchange="update()">
-            <select style="width:199px;">
-              <option value="nation">Nation</option>
-              <option value="state">State</option>
-              <option value="county">County</option>
-              <option value="tract">Tract</option>
-              <option value="group">Group</option>
-              <option value="metroSA">Metro Stat Area</option>
-              <option value="urban">Urban Areas</option>
-              <option value="zip">Zip Codes</option>
-              <option value="uschool">Unified School District</option>
-              <option value="csub">County Subdivision</option>
-              <option value="place">Place</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Concept</td>
-        <td>
-          <div id="concept-select" onchange="updateConcept()">
-            <select style="width:199px;">
-              <option value="P1">[P1] TOTAL POPULATION </option>
-              <option value="P2">[P2] URBAN AND RURAL</option>
-              <option value="P3">[P3] RACE</option>
-              <option value="P4">[P4] HISPANIC OR LATINO ORIGIN</option>
-              <option value="P5">[P5] HISPANIC OR LATINO ORIGIN BY RACE</option>
-              <option value="P6">[P6] RACE (TOTAL RACES TALLIED)</option>
-              <option value="P7">[P7] HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
-              <option value="P8">[P8] RACE</option>
-              <option value="P9">[P9] HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
-              <option value="P10">[P10] RACE FOR THE POPULATION 18 YEARS AND OVER</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Variable</td>
-        <td>
-          <div id="variable-select" onchange="update()">
-            <select id="SS" style="width:199px;">
-              <option value="P001001" onclick="update()" selected>P001001</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Scale</td>
-        <td>
-          <div id="scale-select">
-            <select style="width:199px;">
-              <option value="Linear" onclick="update()">Linear</option>
-              <option value="Quantile" onclick="update()">Quantile</option>
-              <option value="Custom Linear" onclick="customL()">Custom Linear</option>
-              <option value="Custom Quantile" onclick="customQ()">Custom Quantile</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Color</td>
-        <td>
-          <div id="color-select" onchange="customColors=[null,null,null,null,null]; update()">
-            <select style="width:199px;">
-              <option value="Viridis">Viridis</option>
-              <option value="Red">Red</option>
-              <option value="Blue">Blue</option>
-              <option value="Green">Green</option>
-              <option value="Purple">Purple</option>
-              <option value="Black">Black</option>
-              <option value="Rainbow">Rainbow</option>
-              <option value="Viridis Light">Viridis Light</option>
-              <option value="Greyscale">Greyscale</option>
-              <option value="Heat">Heat</option>
-              <option value="Magma">Magma</option>
-              <option value="Brown-Teal">Brown-Teal</option>
-              <option value="Blue-Red">Blue-Red</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Num Format&nbsp&nbsp</td>
-        <td>
-          <div id="numformat-select" onchange="update()">
-            <select style="width:199px;">
-              <option value="short">Short</option>
-              <option value="comma">Commas</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-    </table>
-    <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div>
-  </div>
+  <style>
 
-  <div id="legend">
-    <div id="sqaures">
-      <div style="padding:3px;">
-        <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
-        <div id="leg-square-0" class="legend-square" style="background:red;"></div>
-      </div>
-      <div style="padding:3px;">
-        <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
-        <div id="leg-square-1" class="legend-square" style="background:orange;"></div>
-      </div>
-      <div style="padding:3px;">
-        <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
-        <div id="leg-square-2" class="legend-square" style="background:yellow;"></div>
-      </div>
-      <div style="padding:3px;">
-        <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
-        <div id="leg-square-3" class="legend-square" style="background:green;"></div>
-      </div>
-      <div style="padding:3px;">
-        <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
-        <div id="leg-square-4" class="legend-square" style="background:blue;"></div>
-      </div>
-    </div>
-    <div id="labels" ondblclick="getCustomRange();" style="padding-top:13px; position:absolute; top:0px; left:60px;">
-      <div class="legend-label" ><span onclick="customQ" id='leg-label-0'>1</span></div>
-      <div class="legend-label" ><span id='leg-label-1'>2</span></div>
-      <div class="legend-label" ><span id='leg-label-2'>3</span></div>
-      <div class="legend-label" ><span id='leg-label-3'>4</span></div>
-      <div class="legend-label" ><span id='leg-label-4'>5</span></div>
-    </div>
-  </div>
-  <div id="intro">
-    <div>
-      <span id = "intro-title"></span>
-    </div>
-    <br>
-    <div style="width:480px; padding: 5px; border-radius: 10px;">
-      <span id = "intro-text" style="font-weight:bold;"></span>
-      <button id="next-1" class="next-button" style="opacity: 0" onclick="holder()">➜</button>
-    </div>
-  </div>
-  <div id="current-view">
-    <span style="font-size:20px;">Current Map View:<br></span>
-    <span id="cur-view" style="font-size:15px;">May 14 12:23am</span>
-  </div>
-  <script>
+  .backdrop-blur {
+    background-color: rgba(255, 255, 255, .7);
+  }
 
-  yeet()
-
-  function updateConcept(){
-    console.log('update concept')
-    concept = $('#concept-select').find(":selected").val();
-    createSelect2("SS",VARIABLE_LIST_BY_CONCEPT[concept])
-    if (LORAX[concept].length == 0){
-      loadDataFromCSV(concept)
+  /* if backdrop support: very transparent and blurred */
+  @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    .backdrop-blur {
+      background-color: rgba(255, 255, 255, .3);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
     }
   }
+</style>
 
-  function yeet(){
-    $('#cpick-0').on('change', function() { addCustomColor(0) });
-    $('#cpick-1').on('change', function() { addCustomColor(1) });
-    $('#cpick-2').on('change', function() { addCustomColor(2) });
-    $('#cpick-3').on('change', function() { addCustomColor(3) });
-    $('#cpick-4').on('change', function() { addCustomColor(4) });
-  }
+<div id="map"></div>
+<div>
+  <!-- <div id="blur" class="backdrop-blur" style="position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%;"></div> -->
+</div>
 
-  var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
-  var LINEAR_RANGE = [-69.42,69.42];
-  var customColors = [null, null, null, null, null]
-  $(document).on('mousemove', function(e){
-    $('#move').css({
-      left:  e.pageX+10,
-      top:   e.pageY+10
-    });
+<div id="move" style="z-index:50"></div>
+<div id="T">
+  <table class="tableB" id="tabeleta">
+    <tr>
+      <td>Geography</td>
+      <td>
+        <div id="geo-select" onchange="update()">
+          <select style="width:199px;">
+            <option value="nation">Nation</option>
+            <option value="state">State</option>
+            <option value="county">County</option>
+            <option value="tract">Tract</option>
+            <option value="group">Group</option>
+            <option value="metroSA">Metro Stat Area</option>
+            <option value="urban">Urban Areas</option>
+            <option value="zip">Zip Codes</option>
+            <option value="uschool">Unified School District</option>
+            <option value="csub">County Subdivision</option>
+            <option value="place">Place</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Concept</td>
+      <td>
+        <div id="concept-select" onchange="updateConcept()">
+          <select style="width:199px;">
+            <option value="P1">P1 - TOTAL POPULATION </option>
+            <option value="P2">P2 - URBAN AND RURAL</option>
+            <option value="P3">P3 - RACE</option>
+            <option value="P4">P4 - HISPANIC OR LATINO ORIGIN</option>
+            <option value="P5">P5 - HISPANIC OR LATINO ORIGIN BY RACE</option>
+            <option value="P6">P6 - RACE (TOTAL RACES TALLIED)</option>
+            <option value="P7">P7 - HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
+            <option value="P8">P8 - RACE</option>
+            <option value="P9">P9 - HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
+            <option value="P10">P10 - RACE FOR THE POPULATION 18 YEARS AND OVER</option>
+            <option value="H1">H1 - HOUSING UNITS</option>
+            <option value="H2">H2 - URBAN AND RURAL</option>
+            <option value="H3">H3 - OCCUPANCY STATUS</option>
+            <option value="H4">H4 - TENURE</option>
+            <option value="H5">H5 - VACANCY STATUS</option>
+            <option value="H6">H6 - RACE OF HOUSEHOLDER</option>
+            <option value="H7">H7 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER BY RACE OF HOUSEHOLDER</option>
+            <option value="H8">H8 - TOTAL RACES TALLIED FOR HOUSEHOLDERS</option>
+            <option value="H9">H9 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDERS BY TOTAL RACES TALLIED</option>
+            <option value="H10">H10 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS</option>
+            <option value="H11">H11 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS BY TENURE</option>
+            <option value="H12">H12 - AVERAGE HOUSEHOLD SIZE OF OCCUPIED HOUSING UNITS BY TENURE</option>
+            <option value="H13">H13 - HOUSEHOLD SIZE</option>
+            <option value="H14">H14 - TENURE BY RACE OF HOUSEHOLDER</option>
+            <option value="H15">H15 - TENURE BY HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER</option>
+            <option value="H16">H16 - TENURE BY HOUSEHOLD SIZE</option>
+            <option value="H17">H17 - TENURE BY AGE OF HOUSEHOLDER</option>
+            <option value="H18">H18 - TENURE BY HOUSEHOLD TYPE BY AGE OF HOUSEHOLDER</option>
+            <option value="H19">H19 - TENURE BY PRESENCE OF PEOPLE UNDER 18 YEARS (EXCLUDING HOUSEHOLDERS, SPOUSES, AND UNMARRIED PARTNERS)</option>
+            <option value="H20">H20 - OCCUPIED HOUSING UNITS SUBSTITUTED</option>
+            <option value="H21">H21 - ALLOCATION OF VACANCY STATUS</option>
+            <option value="H22">H22 - ALLOCATION OF TENURE</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Variable</td>
+      <td>
+        <div id="variable-select" onchange="update()">
+          <select id="SS" style="width:199px;">
+            <option value="P001001" onclick="update()" selected>P001001</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Scale</td>
+      <td>
+        <div id="scale-select">
+          <select style="width:199px;" onchange="update()">
+            <option value="Linear" >Linear</option>
+            <option value="Quantile" >Quantile</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Color</td>
+      <td>
+        <div id="color-select" onchange="customColors=[null,null,null,null,null]; update()">
+          <select style="width:199px;">
+            <option value="Viridis">Viridis</option>
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+            <option value="Purple">Purple</option>
+            <option value="Black">Black</option>
+            <option value="Rainbow">Rainbow</option>
+            <option value="Viridis Light">Viridis Light</option>
+            <option value="Greyscale">Greyscale</option>
+            <option value="Heat">Heat</option>
+            <option value="Magma">Magma</option>
+            <option value="Brown-Teal">Brown-Teal</option>
+            <option value="Blue-Red">Blue-Red</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Num Format&nbsp&nbsp</td>
+      <td>
+        <div id="numformat-select" onchange="update()">
+          <select style="width:199px;">
+            <option value="short">Short</option>
+            <option value="comma">Commas</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div>
+</div>
+
+<div id="legend">
+  <div id="sqaures">
+    <div style="padding:3px;">
+      <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
+      <div id="leg-square-0" class="legend-square" style="background:red;"></div>
+    </div>
+    <div style="padding:3px;">
+      <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
+      <div id="leg-square-1" class="legend-square" style="background:orange;"></div>
+    </div>
+    <div style="padding:3px;">
+      <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
+      <div id="leg-square-2" class="legend-square" style="background:yellow;"></div>
+    </div>
+    <div style="padding:3px;">
+      <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
+      <div id="leg-square-3" class="legend-square" style="background:green;"></div>
+    </div>
+    <div style="padding:3px;">
+      <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
+      <div id="leg-square-4" class="legend-square" style="background:blue;"></div>
+    </div>
+  </div>
+  <div id="labels" ondblclick="getCustomRange();" style="padding-top:13px; position:absolute; top:0px; left:60px;">
+    <div class="legend-label" ><span id='leg-label-0'>1</span></div>
+    <div class="legend-label" ><span id='leg-label-1'>2</span></div>
+    <div class="legend-label" ><span id='leg-label-2'>3</span></div>
+    <div class="legend-label" ><span id='leg-label-3'>4</span></div>
+    <div class="legend-label" ><span id='leg-label-4'>5</span></div>
+  </div>
+</div>
+<div id="intro">
+  <div>
+    <span id = "intro-title"></span>
+  </div>
+  <br>
+  <div style="width:480px; padding: 5px; border-radius: 10px;">
+    <span id = "intro-text" style="font-weight:bold;"></span>
+    <button id="next-1" class="next-button" style="opacity: 0" onclick="holder()">➜</button>
+  </div>
+</div>
+<!-- <div id="current-view">
+  <span style="font-size:20px;">Current Map View:<br></span>
+  <span id="cur-view" style="font-size:15px;">May 14 12:23am</span>
+</div> -->
+<script>
+
+yeet()
+
+function updateConcept(){
+  console.log('update concept')
+  concept = $('#concept-select').find(":selected").val();
+  createSelect2("SS",VARIABLE_LIST_BY_CONCEPT[concept])
+  LORAX[concept] = [1,2,3]
+  loadDataFromCSV(concept)
+}
+
+function yeet(){
+  $('#cpick-0').on('change', function() { addCustomColor(0) });
+  $('#cpick-1').on('change', function() { addCustomColor(1) });
+  $('#cpick-2').on('change', function() { addCustomColor(2) });
+  $('#cpick-3').on('change', function() { addCustomColor(3) });
+  $('#cpick-4').on('change', function() { addCustomColor(4) });
+}
+
+var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
+var LINEAR_RANGE = [null,null];
+var customColors = [null, null, null, null, null]
+$(document).on('mousemove', function(e){
+  $('#move').css({
+    left:  e.pageX+10,
+    top:   e.pageY+10
   });
+});
 
-  function addCustomColor(i){
-    customColors[i] = $('#cpick-'.concat(i)).val()
-    //console.log(customColors)
-    update()
+function addCustomColor(i){
+  customColors[i] = $('#cpick-'.concat(i)).val()
+  //console.log(customColors)
+  update()
+}
+
+function getCustomRange(){
+  s = $('#scale-select').find(":selected").val();
+  if (s == 'Linear') customL();
+  else if (s == 'Quantile') customQ();
+}
+
+function createSelect2(id,list) {
+  var x = document.getElementById(id);
+  var length = x.length;
+  for (i = length-1; i >= 0; i--) {
+    x.options[i] = null;
   }
-
-  function getCustomRange(){
-    s = $('#scale-select').find(":selected").val();
-    if (s.includes('Linear')) customL();
-    else if (s.includes('Quantile')) customQ();
+  for (const item of list) {
+    var z = document.createElement("option");
+    z.setAttribute("value", item);
+    var s = " - "
+    var tag = item.concat(s).concat(TAG[item])
+    var t = document.createTextNode(tag);
+    z.appendChild(t);
+    x.appendChild(z);
+    var z = document.createElement("option");
+    z.setAttribute("value", item.concat("P"));
+    var s = " - "
+    var tag = item.concat("P").concat(s).concat(TAG[item.concat("P")])
+    var t = document.createTextNode(tag);
+    z.appendChild(t);
+    x.appendChild(z);
   }
+}
+function updateGeo(){
+  v = $('#geo-select').find(":selected").val();
+  hideAllLayers()
+  map.setLayoutProperty(v.concat('-fills'),'visibility','visible')
+  map.setLayoutProperty(v.concat('-lines'),'visibility','visible')
+}
 
-  function createSelect2(id,list) {
-    var x = document.getElementById(id);
-    var length = x.length;
-    for (i = length-1; i >= 0; i--) {
-      x.options[i] = null;
-    }
-    for (const item of list) {
-      var z = document.createElement("option");
-      z.setAttribute("value", item);
-      var t = document.createTextNode(item);
-      z.appendChild(t);
-      x.appendChild(z);
-      var z = document.createElement("option");
-      z.setAttribute("value", item.concat("P"));
-      var t = document.createTextNode(item.concat("P"));
-      z.appendChild(t);
-      x.appendChild(z);
-    }
+function getVariableLabelList(){
+  TAG = {}
+  d3.csv(`2010Variables.csv`).then(function(data) {
+    data.forEach((d) => {
+      TAG[d.Name] = d.Label
+        .replace("Total!!","")
+        .replace("Total races tallied!!","")
+      TAG[(d.Name).concat("P")] = ("[%] ")
+        .concat(d.Label
+          .replace("Total!!","")
+          .replace("Total races tallied!!","")
+        )
+    })
+  }).then(function(){
+  updateConcept()
+})
+}
+
+function getQuantileValues(variable, geo){
+  concept = $('#concept-select').find(":selected").val();
+  doot = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
+  if (!variable.endsWith('P')){
+    datBoi = doot.map(function(d) { return d[variable] })
   }
-  function updateGeo(){
-    v = $('#geo-select').find(":selected").val();
-    hideAllLayers()
-    map.setLayoutProperty(v.concat('-fills'),'visibility','visible')
-    map.setLayoutProperty(v.concat('-lines'),'visibility','visible')
+  else {
+    var cat = variable.slice(0,-1);
+    var cat_total = variable.slice(0,4).concat("001");
+    datBoi = doot.map(function(d) { return (d[cat] / (1 + d[cat_total])) })
   }
+  datBoi = datBoi.sort(function(a, b){return a - b});
 
-  function getQuantileValues(variable, geo){
-    concept = $('#concept-select').find(":selected").val();
-    doot = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-    if (!variable.endsWith('P')){
-      datBoi = doot.map(function(d) { return d[variable] })
-    }
-    else {
-      var cat = variable.slice(0,-1);
-      var cat_total = variable.slice(0,4).concat("001");
-      datBoi = doot.map(function(d) { return (d[cat] / (1 + d[cat_total])) })
-    }
-    datBoi = datBoi.sort(function(a, b){return a - b});
-
-    var scale = $('#scale-select').find(":selected").val();
-    if (scale == 'Quantile'){
-      QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1]
-    }
-    var quants = [];
-    QUARTILE_RANGE.forEach((q) => {
-      quants.push(d3.quantile(datBoi, q));
-    });
-    return quants
+  var scale = $('#scale-select').find(":selected").val();
+  if (scale == 'Quantile'){
+    QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1]
   }
-
-  function updateVariable(){
-    variable = $('#variable-select').find(":selected").val();
-    setFeatStates(variable)
-    geo = $('#geo-select').find(":selected").val();
-    var quants = getQuantileValues(variable, geo)
-    hover([variable],geo);
-    layer_name = geo.concat('-fills')
-    colorLayer(layer_name, variable, quants)
-  }
-
-  function update(){
-    updateGeo()
-    updateVariable()
-  }
-
-  function featureQuery(){
-    var geo = $('#geo-select').find(":selected").val();
-    var source = SOURCE_DICT[geo]
-    F = map.queryRenderedFeatures()
-    G = []
-    H = []
-    F.forEach((element) => {
-      if(element.source == source && !H.includes(element.id)){
-        G.push(element)
-        H.push(element.id)
-      }
-    });
-  }
-
-  var DATA = [];
-  var DATA1 = [];
-  var P1 = [];
-  var P2 = [];
-  var P3 = [];
-  var P4 = [];
-  var P5 = [];
-  var P6 = [];
-  var P7 = [];
-  var P8 = [];
-  var P9 = [];
-  var P10 = [];
-  LORAX = {
-    "P1" : P1,
-    "P2" : P2,
-    "P3" : P3,
-    "P4" : P4,
-    "P5" : P5,
-    "P6" : P6,
-    "P7" : P7,
-    "P8" : P8,
-    "P9" : P9,
-    "P10" : P10,
-  }
-
-  mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
-  var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/mapbox/light-v10', // style URL
-    center: [-104.800644, 38.846127],
-    zoom: 3.6,
-    pitch: 0,
-    interactive: true,
+  var quants = [];
+  QUARTILE_RANGE.forEach((q) => {
+    quants.push(d3.quantile(datBoi, q));
   });
-  //map.scrollZoom.disable();
+  return quants
+}
 
-  var hoveredStateId = null;
+function updateVariable(){
+  variable = $('#variable-select').find(":selected").val();
+  setFeatStates(variable)
+  geo = $('#geo-select').find(":selected").val();
+  var quants = getQuantileValues(variable, geo)
+  hover([variable],geo);
+  layer_name = geo.concat('-fills')
+  colorLayer(layer_name, variable, quants)
+}
 
-  map.on('load', function () {
-    updateConcept()
-    addSources()
-    addFillAndLineLayers()
-    console.log('Layers loaded')
-    update()
+function update(){
+  updateGeo()
+  updateVariable()
+}
 
-
-
-
+function featureQuery(){
+  var geo = $('#geo-select').find(":selected").val();
+  var source = SOURCE_DICT[geo]
+  F = map.queryRenderedFeatures()
+  G = []
+  H = []
+  F.forEach((element) => {
+    if(element.source == source && !H.includes(element.id)){
+      G.push(element)
+      H.push(element.id)
+    }
   });
+}
+
+LORAX = {}
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: 'mapbox://styles/mapbox/light-v10', // style URL
+  center: [-104.800644, 38.846127],
+  zoom: 3.6,
+  pitch: 0,
+  interactive: true,
+});
+map.addControl(
+  new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true
+    },
+    trackUserLocation: true
+  })
+);
+map.addControl(
+new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+mapboxgl: mapboxgl
+})
+);
+//map.scrollZoom.disable();
+
+var hoveredStateId = null;
+
+map.on('load', function () {
+  getVariableLabelList()
+  addSources()
+  addFillAndLineLayers()
+  console.log('Layers loaded')
+  setTimeout(function(){ update() }, 3000);
+
+
+
+
+
+});
 </script>
 </body>
 </html>
