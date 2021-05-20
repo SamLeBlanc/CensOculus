@@ -1,3 +1,12 @@
+function formatNumber(num){
+  variable = $('#variable-select').find(":selected").val();
+  var num_format = $('#numformat-select').find(":selected").val();
+  if (variable.endsWith("P")) num = formatPercent(num);
+  else if (num_format == 'short') num = abbreviateNumber(num);
+  else if (num_format == 'comma') num = numberWithCommas(num);
+  return num
+}
+
 function abbreviateNumber(number){
   number = Math.round(number)
   var SI_SYMBOL = ["", "K", "M"];

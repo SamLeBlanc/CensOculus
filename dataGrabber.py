@@ -82,25 +82,25 @@ def clean_data(df, geo, sub_hoard,):
     df = pd.concat([df, df1],sort=True)
     return df
 
-group_list = ["H6", "H7", "H8", "H9", "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19", "H20", "H21", "H22", ]
-# for group in group_list:
-#     df69 = pd.read_csv(f'/home/sam/2010Variables.csv')
-#     hoard = df69[df69["Group"] == group]["Name"].values
-#     print(hoard)
-#     for sub_H in range(1+len(hoard)//50):
-#         df = pd.DataFrame()
-#         sub_hoard = hoard[50*sub_H : 50*(sub_H + 1)]
-#         for geo in ["nation","state","metroSA","urban","zip","county",'uschool','place']:
-#             print(group,sub_H,geo,)
-#             df = clean_data(df, geo, sub_hoard)
-#         for code in code_to_state:
-#             code2 = code + code_to_state[code];
-#             for geo in ['tract','group','csub']:
-#                 print(group,sub_H,geo,code)
-#                 df = clean_data(df, geo, sub_hoard)
-#         print(df)
-#         df.to_csv(index=True,path_or_buf="/home/sam/" + f'{group}_{sub_H}.csv');
-#         print(df.sort_values(by=['GEOID10']))
+group_list = [ "P11", "P12", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20", "P21", "P22", "P23", "P24", "P25", "P26", "P27", "P28", "P29", "P30", "P31", "P32", "P33", "P34", "P35", "P36", "P37", "P38", "P39", "P40", "P41", "P42", "P43", "P44", "P45", "P46", "P47", "P48", "P49", "P50", "P51",  ]
+for group in group_list:
+    df69 = pd.read_csv(f'/home/sam/2010Variables.csv')
+    hoard = df69[df69["Group"] == group]["Name"].values
+    print(hoard)
+    for sub_H in range(1+len(hoard)//50):
+        df = pd.DataFrame()
+        sub_hoard = hoard[50*sub_H : 50*(sub_H + 1)]
+        for geo in ["nation","state","metroSA","urban","zip","county",'uschool','place']:
+            print(group,sub_H,geo,)
+            df = clean_data(df, geo, sub_hoard)
+        for code in code_to_state:
+            code2 = code + code_to_state[code];
+            for geo in ['tract','group','csub']:
+                print(group,sub_H,geo,code)
+                df = clean_data(df, geo, sub_hoard)
+        print(df)
+        df.to_csv(index=True,path_or_buf="/home/sam/" + f'{group}_{sub_H}.csv');
+        print(df.sort_values(by=['GEOID10']))
 
 for group in group_list:
     for i in range(1,10):

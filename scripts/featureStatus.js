@@ -1,9 +1,9 @@
 function setFeatStates(variable){
   geo = $('#geo-select').find(":selected").val();
   concept = $('#concept-select').find(":selected").val();
-  doot = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-  console.log(doot)
-  doot.forEach(function(d){
+  data = LORAX[concept]
+  .filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
+  .forEach(function(d){
     n = {};
     if (variable.endsWith("P")){
       v = variable.slice(0,-1);
@@ -12,7 +12,7 @@ function setFeatStates(variable){
       n[variable] = d[variable];
     }
     map.setFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: d.GEOID10 }, n );
-  });
+  })
 }
 
 function featureRandomColor(s, sL){
