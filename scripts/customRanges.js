@@ -1,3 +1,19 @@
+var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
+var LINEAR_RANGE = [null,null];
+var customColors = [null, null, null, null, null]
+
+function addCustomColor(i){
+  customColors[i] = $('#cpick-'.concat(i)).val()
+  //console.log(customColors)
+  update()
+}
+
+function getCustomRange(){
+  s = $('#scale-select').find(":selected").val();
+  if (s == 'Linear') customL();
+  else if (s == 'Quantile') customQ();
+}
+
 // Determines whether an array is strictly increasing
 // Returns true if array is strictly increasing
 // (neccesary for correctly making a color scale in Mapbox)

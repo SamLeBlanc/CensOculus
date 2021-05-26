@@ -31,3 +31,27 @@ function createMoveTableArray(s,geoid,obj){
   }
   return arr
 }
+
+function createVariableDropdownSelect(id,list) {
+  var x = document.getElementById(id);
+  var length = x.length;
+  for (i = length-1; i >= 0; i--) {
+    x.options[i] = null;
+  }
+  for (const item of list) {
+    var z = document.createElement("option");
+    z.setAttribute("value", item);
+    var s = " - "
+    var tag = item.concat(s).concat(TAG[item])
+    var t = document.createTextNode(tag);
+    z.appendChild(t);
+    x.appendChild(z);
+    var z = document.createElement("option");
+    z.setAttribute("value", item.concat("P"));
+    var s = " - "
+    var tag = item.concat("P").concat(s).concat(TAG[item.concat("P")])
+    var t = document.createTextNode(tag);
+    z.appendChild(t);
+    x.appendChild(z);
+  }
+}

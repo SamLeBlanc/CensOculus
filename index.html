@@ -10,11 +10,12 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
   <script type="text/javascript" src="scripts/addSourcesAndLayers.js"></script>
-  <script type="text/javascript" src ="scripts/draggable.js"></script>
   <script type="text/javascript" src="scripts/DICTIONARIES.js"></script>
   <script type="text/javascript" src="scripts/INTRO.js"></script>
   <script type="text/javascript" src="scripts/snapshotHoverStates.js"></script>
@@ -25,34 +26,38 @@
   <script type="text/javascript" src="scripts/tableJunk.js"></script>
   <script type="text/javascript" src="scripts/setup.js"></script>
   <link rel="stylesheet" href="styles/styles.css">
-  <link rel="stylesheet" href="styles/draggable.css">
 </head>
 <body>
 
   <style>
 
-  .backdrop-blur {
-    background-color: rgba(255, 255, 255, .7);
-  }
 
-  /* if backdrop support: very transparent and blurred */
-  @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-    .backdrop-blur {
-      background-color: rgba(255, 255, 255, .3);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-    }
-  }
 </style>
 
 <div id="map"></div>
+<div id="sidebar"></div>
 <div>
   <!-- <div id="blur" class="backdrop-blur" style="position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%;"></div> -->
 </div>
 
 <div id="move" style="z-index:50"></div>
-<div id="T">
-  <table class="tableB" id="tabeleta">
+<div id="geo-controls" style="position:absolute; left:60%; top:0%; margin:5px;">
+  <div id="geolocate" class="geolocate"></div>
+  <div id="geocoder" class="geocoder"></div>
+</div>
+<div id="title">2010 Census Mapper</div>
+<div id="settings" style="font-weight:bold;">
+  <table style="border: 1px solid transparent;" id="tabeleta">
+    <tr>
+      <td>Year</td>
+      <td>
+        <div id="year-select" onchange="update()">
+          <select style="width:199px;">
+            <option value="2010">2010</option>
+          </select>
+        </div>
+      </td>
+    </tr>
     <tr>
       <td>Geography</td>
       <td>
@@ -169,7 +174,7 @@
       </td>
     </tr>
   </table>
-  <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div>
+  <!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
 </div>
 
 <div id="legend">
@@ -214,14 +219,11 @@
   </div>
 </div>
 <!-- <div id="current-view">
-  <span style="font-size:20px;">Current Map View:<br></span>
-  <span id="cur-view" style="font-size:15px;">May 14 12:23am</span>
+<span style="font-size:20px;">Current Map View:<br></span>
+<span id="cur-view" style="font-size:15px;">May 14 12:23am</span>
 </div> -->
 <script>
 
-var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
-var LINEAR_RANGE = [null,null];
-var customColors = [null, null, null, null, null]
 $(document).on('mousemove', function(e){
   $('#move').css({
     left:  e.pageX+10,
@@ -229,77 +231,6 @@ $(document).on('mousemove', function(e){
   });
 });
 
-function addCustomColor(i){
-  customColors[i] = $('#cpick-'.concat(i)).val()
-  //console.log(customColors)
-  update()
-}
-
-function getCustomRange(){
-  s = $('#scale-select').find(":selected").val();
-  if (s == 'Linear') customL();
-  else if (s == 'Quantile') customQ();
-}
-
-function createVariableDropdownSelect(id,list) {
-  console.log(list)
-  var x = document.getElementById(id);
-  var length = x.length;
-  for (i = length-1; i >= 0; i--) {
-    x.options[i] = null;
-  }
-  for (const item of list) {
-    var z = document.createElement("option");
-    z.setAttribute("value", item);
-    var s = " - "
-    var tag = item.concat(s).concat(TAG[item])
-    var t = document.createTextNode(tag);
-    z.appendChild(t);
-    x.appendChild(z);
-    var z = document.createElement("option");
-    z.setAttribute("value", item.concat("P"));
-    var s = " - "
-    var tag = item.concat("P").concat(s).concat(TAG[item.concat("P")])
-    var t = document.createTextNode(tag);
-    z.appendChild(t);
-    x.appendChild(z);
-  }
-}
-
-
-function getQuantileValues(concept, variable, geo, scale){
-  data = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
-  if (!variable.endsWith('P')){
-    values = data.map(function(d) { return d[variable] })
-  }
-  else {
-    var cat = variable.slice(0,-1);
-    var cat_total = variable.slice(0,4).concat("001");
-    values = data.map(function(d) { return (d[cat] / (1 + d[cat_total])) })
-  }
-  values = values.sort(function(a, b){return a - b});
-
-  if (scale == 'Quantile') QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1, 0.05, 0.95]
-  var quants = [];
-  QUARTILE_RANGE.forEach((q) => quants.push(d3.quantile(values, q)));
-  return quants
-}
-
-function featureQuery(){
-  var geo = $('#geo-select').find(":selected").val();
-  var source = SOURCE_DICT[geo]
-  F = map.queryRenderedFeatures()
-  G = []
-  H = []
-  if (F.length < 10000){
-    F.forEach((element) => {
-      if(element.source == source && !H.includes(element.id)){
-        G.push(element)
-        H.push(element.id)
-      }
-    });
-  }
-}
 
 LORAX = {}
 
@@ -313,25 +244,25 @@ var map = new mapboxgl.Map({
   interactive: true, // true required
 });
 
-map.addControl(
-  new mapboxgl.GeolocateControl({
-    positionOptions: {
-      enableHighAccuracy: true
-    },
+var geolocate = new mapboxgl.GeolocateControl({
+    positionOptions: { enableHighAccuracy: true  },
     trackUserLocation: true
-  })
-);
+  });
 
-map.addControl(
-  new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    mapboxgl: mapboxgl
-  })
-);
+var geocoder = new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  mapboxgl: mapboxgl,
+  countries: 'us',
+  placeholder:"Pie Town, New Mexico"
+});
+
+document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+document.getElementById('geolocate').appendChild(geolocate.onAdd(map));
 
 //map.scrollZoom.disable();
 
-var hoveredStateId = null;
+var [hoveredId, heldId] = [null, null];
+var heldDistrict = false;
 
 map.on('load', function () {
   main()

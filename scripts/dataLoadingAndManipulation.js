@@ -1,5 +1,5 @@
 function loadDataFromCSV(concept){
-  d3.csv(`data/${concept}.csv`).then(function(data) {
+  d3.csv(`data/2010/${concept}.csv`).then(function(data) {
     keys = Object.keys(data[0])
     data.forEach(function(d) {
       keys.forEach(function(k) {
@@ -10,22 +10,8 @@ function loadDataFromCSV(concept){
   });
 }
 
-function variableListByConcept(concept){
-  d3.csv(`2010Variables.csv`).then(function(data) {
-    V = data.filter(function(d){ return true })
-        A = []
-    V = V.map(function(d) {
-      return {
-        Name: d.Name,
-        Group: d.Group
-      }
-    }).filter(function(d){ return d["Group"] == concept }).forEach(function(d){ A.push(d.Name)});
-        console.log(A)
-      });
-}
-
-function varListByConcept(concept){
-  d3.csv(`2010Variables.csv`).then(function(data) {
+function getVariableListByConcept(concept){
+  d3.csv(`data/2010/Variables_10.csv`).then(function(data) {
     D = data.filter(function(d){ return d["Group"] == concept })
   }).then(function() {
     VLbC[concept] = [];
@@ -37,7 +23,7 @@ function varListByConcept(concept){
 
 
 function getVariableLabelList(){
-  d3.csv(`2010Variables.csv`).then(function(data) {
+  d3.csv(`data/2010/Variables_10.csv`).then(function(data) {
     data.forEach((d) => {
       TAG[d.Name] = d.Label
       .replace("Total!!","")
