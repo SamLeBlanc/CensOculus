@@ -24,7 +24,7 @@ function updateVariable(){
   concept = $('#concept-select').find(":selected").val();
   scale = $('#scale-select').find(":selected").val();
   setFeatStates(variable)
-  setHoverStates(variable,geo);
+  getHoverHoldStates(variable,geo);
   layer_name = geo.concat('-fills')
   quants = getQuantileValues(concept, variable, geo, scale)
   colorLayer(layer_name, variable, quants)
@@ -32,7 +32,7 @@ function updateVariable(){
 
 function updateConcept(){
   concept = $('#concept-select').find(":selected").val();
-  varListByConcept(concept)
+  getVariableListByConcept(concept)
   setTimeout(function(){
     createVariableDropdownSelect("SS",VLbC[concept])
     if (!(concept in LORAX)) loadDataFromCSV(concept)

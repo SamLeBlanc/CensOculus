@@ -18,17 +18,14 @@ function setFeatStates(variable){
 function featureRandomColor(s, sL){
   DATA.forEach(function(d){
     var randomColor = Math.floor(Math.random()*16777215).toString(16);
-    map.setFeatureState({ source: s, sourceLayer: sL, id: d.GEOID10 },
-      {
-        rand_color: `#${randomColor}`
-      });
+    map.setFeatureState({ source: s, sourceLayer: sL, id: d.GEOID10 }, { rand_color: `#${randomColor}` });
     });
   }
 
-  function hideAllLayers(){
-    L = Object.keys(SOURCE_DICT)
-    for(i = 1; i < L.length; i++){
-      map.setLayoutProperty(L[i].concat('-fills'),'visibility','none')
-      map.setLayoutProperty(L[i].concat('-lines'),'visibility','none')
-    }
+function hideAllLayers(){
+  L = Object.keys(SOURCE_DICT)
+  for(i = 1; i < L.length; i++){
+    map.setLayoutProperty(L[i].concat('-fills'),'visibility','none')
+    map.setLayoutProperty(L[i].concat('-lines'),'visibility','none')
   }
+}

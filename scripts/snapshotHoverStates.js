@@ -1,21 +1,67 @@
-function setHoverStates(variable,geo){
+function getHoverHoldStates(variable,geo){
   map.on('mousemove', LAYER_DICT[geo], function (e) {
-    if (e.features.length > 0) {
-      if (hoveredStateId) {
-        onHoverStart(e,variable,geo)
-        map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredStateId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
-      }
-      hoveredStateId = e.features[0].id;
-      map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredStateId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: true });
-    }
+    onHoverStart(e,variable,geo)
+    hoveredId = setHoverState(e,geo,hoveredId)
+    if (!heldDistrict){
+      //eFeats = e.features;
+      //console.log(eFeats)
+    };
   });
   map.on('mouseleave', LAYER_DICT[geo], function () {
     onHoverFinish()
-    if (hoveredStateId) {
-      map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredStateId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
-    }
-    hoveredStateId = null;
+    removeHoverState(geo,hoveredId)
   });
+  map.on('mousedown', LAYER_DICT[geo], function (e) {
+    down = JSON.stringify(e.point)
+  });
+  map.on('mouseup', LAYER_DICT[geo], function (e) {
+    up = JSON.stringify(e.point)
+    if(down == up){
+      heldId = holdDistrict(e,geo,heldId)
+    }
+  });
+}
+function holdDistrict(e,geo,heldId){
+  if (heldId){
+    heldDistrict = false;
+    removeHoldState(geo,heldId);
+    heldId = null;
+  } else {
+    heldDistrict = true;
+    heldId = setHoldState(e,heldId);
+  }
+  return heldId
+}
+
+function setHoverState(e,geo,hoveredId){
+  if (e.features.length > 0) {
+    if (hoveredId) {
+      map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
+    }
+    hoveredId = e.features[0].id;
+    map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: true });
+  }
+  return hoveredId
+}
+function removeHoverState(geo,hoveredId){
+  if (hoveredId) {
+    map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
+  }
+  hoveredId = null;
+}
+
+function setHoldState(e,geo,heldId){
+  var geo = $('#geo-select').find(":selected").val();
+  if (e.features.length > 0) {
+    heldId = e.features[0].id;
+    map.setFeatureState({ source: SOURCE_DICT[geo], id: heldId, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: true });
+  }
+  return heldId
+}
+function removeHoldState(geo,heldId){
+  if (heldId) {
+    map.setFeatureState({ source: SOURCE_DICT[geo], id: heldId, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
+  }
 }
 
 function onHoverStart(e,variable,geo){
@@ -30,8 +76,14 @@ function onHoverStart(e,variable,geo){
   var arr = createMoveTableArray([variable], title(geoid, name), obj)
   addMoveTable(arr)
 }
-
 function onHoverFinish(){
   map.getCanvas().style.cursor = "";
   $('#move').text("")
+}
+
+function onHoldStart(e,variable,geo){
+
+}
+function onHoldFinish(){
+
 }

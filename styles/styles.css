@@ -1,45 +1,40 @@
 body { margin: 0; padding: 0; font-family: Helvetica; overflow: hidden}
 #map { position: absolute; top: 0; bottom: 0; width: 100%; z-index:5; overflow: hidden}
-#move { position: absolute; padding:5px; background-color: white; border-radius: 3px; font-family: monospace;}
+
+/* Heading */
+
+#title{ position: absolute; z-index:20; font-weight:900; font-size: 45px; margin: 5px; color: rgba(123,140,222,0.7); -webkit-text-stroke: 1.5px black; pointer-events: none;}
+
+.geocoder { position: absolute; z-index: 15; left: 35px; top: 0%; }
+.geolocate { position: absolute; z-index: 15; left: 0%; top: 0%; margin-top:3px; width:30px; }
+
+/* Legend */
+
 #legend { position: absolute; top:500px; left: 0px; z-index:10; width:100px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; }
 .legend-square { position: relative;; z-index: 11; height: 15px; width: 30px; background: black; border: solid 1px black; border-radius: 5px;}
 .legend-label { padding: 2px; }
+
+/* Legend Custom Colors */
+
+input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; border: none; }
+.color-picker-wrapper { position:fixed; z-index:100; margin-left:3px; margin-top:2px; float: left; }
+
+/* Settings and Selections */
+
+#settings { position: absolute; top:50px; left: 0%; z-index:10; margin:10px;}
 #geo-select { z-index:10; }
 #variable-select { z-index:10; }
 #color-select {z-index:10; }
-#T { position: absolute; top:0%; left: 0%; z-index:10; margin:10px;}
 #numformat-select { z-index:10; }
 #scale-select { z-index:10; }
-#intro { position: fixed; z-index:100; padding: 10px; pointer-events: none; }
-#current-view { position: sticky; width:300px; height: 200px; float:right; margin: 20px; z-index: 10;}
+
+/* move */
+
+#move { position: absolute; padding:5px; background-color: white; border-radius: 3px; font-family: monospace;}
 table.tableA { }
 table.tableA td, table.tableA th{ border-bottom: 1px solid blue;}
-.next-button { background-color: transparent; border: solid 3px black; border-radius: 20px; color: black; padding: 5px 10px; text-align: center; display: inline-block; font-size: 16px; animation: blinker 2.5s linear infinite; pointer-events: all; }
-table.QQ, table.QQ td, table.QQ th{ border: 1px solid red; border-bottom: 1pt solid grey; }
-@keyframes blinker { 50% { opacity: 0; } }
-table.tableB { }
-table.tableB td, table.tableB th{ border: 1px solid transparent;}
-input[type="color"] {
-  opacity: 0;
-  display: block;
-  width: 26px;
-  height: 12px;
-  border: none;
-}
-.color-picker-wrapper {
-  position:fixed;
-  z-index:100;
-  margin-left:3px;
-  margin-top:2px;
-  float: left;
-}
 
-t { font-size: 40px; font-weight:bold; }
-st1 { font-size: 26px; font-weight: 900; color: #0000FF; }
-f0 { font-size: 70px; }
-f1 { font-size: 60px; }
-f2 { font-size: 50px; }
-f3 { font-size: 40px; }
-f4 { font-size: 35px; }
-f5 { font-size: 30px; }
-a { pointer-events: all; }
+/* Intro */
+
+#intro { position: fixed; z-index:100; padding: 10px; pointer-events: none; }
+.next-button { background-color: transparent; border: solid 3px black; border-radius: 20px; color: black; padding: 5px 10px; text-align: center; display: inline-block; font-size: 16px; animation: blinker 2.5s linear infinite; pointer-events: all; }
