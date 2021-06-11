@@ -29,19 +29,78 @@
 </head>
 <body>
 
-  <style>
+<style>
 
+#bar{
+  background: white;
+  position: absolute;
+  min-width: 250px;
+  left:270%;
+  top: 0%;
+  margin: 10px;
+  border: 4px solid black;
+  border-radius: 10px;
+  z-index:0;
+  padding:8px;
+  display: inline-block;
+}
+
+#flog{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
 
 </style>
+<style>
+.hide {
+  display: none;
+}
 
+.myDIV:hover + .hide {
+  display: block;
+  color: red;
+}
+
+.tag-label{
+  vertical-align:middle;
+  width:auto;
+  height:20px;
+  padding: 3px;
+}
+
+</style>
 <div id="map"></div>
-<div id="sidebar"></div>
-<div>
-  <!-- <div id="blur" class="backdrop-blur" style="position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%;"></div> -->
+<div id="bar">
+  <div>
+    <span id="b-name" style="font-size: 25px;"></span>
+  </div>
+  <div>
+    <div>
+      <img class="tag-label" src="images/tag-pop.png">
+      <span id="b-pop"></span>
+    </div>
+    <div>
+      <img class="tag-label" src="images/tag-geoid.png">
+      <span id="b-geoid"></span>
+    </div>
+    <div>
+      <img class="tag-label" src="images/tag-area.png">
+      <span id="b-area"></span>
+    </div>
+    <div>
+      <img class="tag-label" src="images/tag-den.png">
+      <span id="b-den"></span>
+    </div>
+  </div>
 </div>
-
+<div id="flog">
+  <img id="flog_img" style="width: auto;height: 200px;" src="" alt="Italian Trulli">
+</div>
 <div id="move" style="z-index:50"></div>
-<div id="geo-controls" style="position:absolute; left:60%; top:0%; margin:5px;">
+<div id="click" style="z-index:50"></div>
+<div id="geo-controls" style="position:absolute; left:40%; top:0%; margin:5px;">
   <div id="geolocate" class="geolocate"></div>
   <div id="geocoder" class="geocoder"></div>
 </div>
@@ -263,6 +322,11 @@ document.getElementById('geolocate').appendChild(geolocate.onAdd(map));
 
 var [hoveredId, heldId] = [null, null];
 var heldDistrict = false;
+
+function URLy(geoid){
+	u = FLAGS.filter(function(d){ return d["GEOID10"] == geoid })
+	if (u.length > 0) return u[0].UrlSuffix
+}
 
 map.on('load', function () {
   main()

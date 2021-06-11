@@ -34,7 +34,7 @@ function addLineLayer(geo){
         'line-color': [
           'case',
           ['boolean', ['feature-state', 'hold'], false], 'rgb(231,44,220)',
-          ['boolean', ['feature-state', 'hover'], false], 'black', 'black',
+          ['boolean', ['feature-state', 'hover'], false], 'yellow', 'black',
         ],
         'line-width': [
           'case',
@@ -43,8 +43,8 @@ function addLineLayer(geo){
         ],
         'line-opacity': [
           'case',
-          ['boolean', ['feature-state', 'hover'], false], 1,
-          ['boolean', ['feature-state', 'hold'], false], 1, 0.05,
+          ['boolean', ['feature-state', 'hold'], false], 1,
+          ['boolean', ['feature-state', 'hover'], false], 1, 0.05,
         ],
       },
   });

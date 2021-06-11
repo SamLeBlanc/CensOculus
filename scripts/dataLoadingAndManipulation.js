@@ -10,6 +10,12 @@ function loadDataFromCSV(concept){
   });
 }
 
+function loadFlagData(){
+  d3.csv(`data/flagData4.csv`).then(function(data) {
+    FLAGS = data.filter(function(d){ return true })
+  });
+}
+
 function getVariableListByConcept(concept){
   d3.csv(`data/2010/Variables_10.csv`).then(function(data) {
     D = data.filter(function(d){ return d["Group"] == concept })
