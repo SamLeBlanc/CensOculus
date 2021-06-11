@@ -7,6 +7,20 @@ function formatNumber(num){   // find and create the desired number format
   return num
 }
 
+function metersSq2MilesSq(metersSq){
+  let milesSq = metersSq / 2590000
+  if (milesSq > 30) return Math.round(milesSq)
+  if (milesSq > 2) return Math.round((milesSq + Number.EPSILON) * 10) / 10
+  else return Math.round((milesSq + Number.EPSILON) * 100) / 100
+}
+
+function formatDensity(pop,area){
+  let den = pop / area;
+  if (den > 30) return numberWithCommas(Math.round(den))
+  if (den > 2) return Math.round((den + Number.EPSILON) * 10) / 10
+  else return Math.round((den + Number.EPSILON) * 100) / 100
+}
+
 function abbreviateNumber(number){   // format number to abbreviated version
   number = Math.round(number)
   var SI_SYMBOL = ["", "K", "M"];   // symbols: K => thousand, M => million

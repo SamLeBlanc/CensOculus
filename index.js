@@ -1,12 +1,16 @@
 function main(){
+  loadDataFromCSV("P1")
+  $('#bar').css("left","70%")
+  loadFlagData()
   setUpAll()
   getVariableLabelList()
   addSources()
   addFillAndLineLayers()
-  setTimeout(function(){ update() }, 2000);
+  //setTimeout(function(){ update() }, 2000);
 }
 
 function update(){
+  console.log('updating')
   updateGeo()
   updateVariable()
 }
@@ -37,5 +41,7 @@ function updateConcept(){
     createVariableDropdownSelect("SS",VLbC[concept])
     if (!(concept in LORAX)) loadDataFromCSV(concept)
   }, 1000);
-  //update()
+  setTimeout(function(){
+    update()
+  }, 2000);
 }

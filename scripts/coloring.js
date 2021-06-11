@@ -24,6 +24,11 @@ function colorLayer(layer_name, variable, quants){
     arr[4] = arr[6]
     arr = arr.slice(0,5)
   }
+
+  var scheme = $('#color-select').find(":selected").val();
+  var colors = COLOR_DICT[scheme]
+  //checkUniformity(arr, colors)
+
   console.log(arr)
   setTimeout(function(){
     for (i=0; i < arr.length; i++){
@@ -72,4 +77,13 @@ function hexToRgb(hex) {
     g: parseInt(result[2], 16),
     b: parseInt(result[3], 16)
   } : null;
+}
+
+function checkUniformity(arr, colors){
+  if (Math.min.apply(Math, arr) > .999 && Math.max.apply(Math, arr) < 1) {
+    colors[0] = colors[2]
+    colors[1] = colors[2]
+    colors[3] = colors[2]
+    colors[4] = colors[2]
+  }
 }

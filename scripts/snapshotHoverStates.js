@@ -24,11 +24,13 @@ function getHoverHoldStates(variable,geo){
 function holdDistrict(e,geo,heldId){
   if (heldId){
     heldDistrict = false;
+    onHoldFinish()
     removeHoldState(geo,heldId);
     heldId = null;
   } else {
     heldDistrict = true;
     heldId = setHoldState(e,heldId);
+    onHoldStart(e,heldId,geo)
   }
   return heldId
 }
@@ -73,17 +75,58 @@ function onHoverStart(e,variable,geo){
     if (n) return n
     else return g
   };
+
   var arr = createMoveTableArray([variable], title(geoid, name), obj)
   addMoveTable(arr)
+  var pic = document.getElementById("flog_img");
+  u = URLy(geoid)
+  if (u) {
+    if (u.substring(0,5) != '/imag'){
+      pic.src = u
+    } else {
+      pic.src = "https://www.crwflags.com/fotw".concat(u)
+    }
+  } else {
+    pic.src = "images/noFlag.gif"
+  }
 }
 function onHoverFinish(){
   map.getCanvas().style.cursor = "";
   $('#move').text("")
+  document.getElementById("flog_img").src = ""
 }
 
-function onHoldStart(e,variable,geo){
-
+function onHoldStart(e,heldId,geo){
+  updateBar(e, heldId)
+  var concept = $('#concept-select').find(":selected").val();
+  var geo = $('#geo-select').find(":selected").val();
+  L = LORAX[concept].filter(function(d){ return (d["GEOID10"] == heldId && d["SIZE"] == geo.toUpperCase() )})
+  console.log(L)
 }
+
 function onHoldFinish(){
+  $("#bar").css("z-index", 0);
+}
 
+function updateBar(e, id){
+  $("#bar").css("z-index",20);
+  var geo = $('#geo-select').find(":selected").val();
+  var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: heldId });
+
+  metersSq = parseInt(e.features[0].properties.ALAND10)
+  area = metersSq2MilesSq(metersSq)
+
+  geoid = e.features[0].properties.GEOID10
+  name = e.features[0].properties.NAME10
+  pop = LORAX["P1"].filter(function(d){ return d["GEOID10"] == e.features[0].properties.GEOID10 && d["SIZE"] == geo.toUpperCase()})
+  den = formatDensity(pop[0].P001001,area)
+
+  if (area > 999) area = numberWithCommas(area)
+  if (geo == 'county') name = FULL_COUNTY_NAME[geoid];
+
+  $('#b-name').text(name)
+  $('#b-geoid').text(geoid)
+  $('#b-area').text(`${area} sq mi`)
+  $('#b-pop').text(`${numberWithCommas(pop[0].P001001)} 👤`)
+  $('#b-den').text(`${den} 👤 / sq mi`)
 }
