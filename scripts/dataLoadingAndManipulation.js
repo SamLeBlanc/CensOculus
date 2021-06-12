@@ -1,27 +1,27 @@
 function loadDataFromCSV(concept){
-  d3.csv(`data/2010/${concept}.csv`).then(function(data) {
-    keys = Object.keys(data[0])
-    data.forEach(function(d) {
-      keys.forEach(function(k) {
-        if (k != 'GEOID10' && k != 'SIZE') d[k] = +d[k]
+  d3.csv(`data/2010/${concept}.csv`).then(data => {
+    let keys = Object.keys(data[0]);
+    data.forEach(d => {
+      keys.forEach(k => {
+        if (k != 'GEOID10' && k != 'SIZE') d[k] = +d[k];
       })
     });
-    LORAX[concept] = data.filter(function(d){ return true })
+    LORAX[concept] = data.filter( () => true );
   });
 }
 
 function loadFlagData(){
-  d3.csv(`data/flagData4.csv`).then(function(data) {
-    FLAGS = data.filter(function(d){ return true })
+  d3.csv(`data/flagData6.csv`).then(data => {
+    FLAGS = data.filter( () => true );
   });
 }
 
 function getVariableListByConcept(concept){
-  d3.csv(`data/2010/Variables_10.csv`).then(function(data) {
-    D = data.filter(function(d){ return d["Group"] == concept })
-  }).then(function() {
+  d3.csv(`data/2010/Variables_10.csv`).then(data => {
+    D = data.filter(d => d["Group"] == concept)
+  }).then(() => {
     VLbC[concept] = [];
-    D.forEach(function(d) {
+    D.forEach(d => {
       VLbC[concept].push(d.Name)
     })
   })
@@ -29,18 +29,18 @@ function getVariableListByConcept(concept){
 
 
 function getVariableLabelList(){
-  d3.csv(`data/2010/Variables_10.csv`).then(function(data) {
-    data.forEach((d) => {
-      TAG[d.Name] = d.Label
-      .replace("Total!!","")
-      .replace("Total races tallied!!","")
-      TAG[(d.Name).concat("P")] = ("[%] ")
-      .concat(d.Label
-        .replace("Total!!","")
-        .replace("Total races tallied!!","")
-      )
-    })
-  }).then(function(){
-    updateConcept()
-  })
+  d3.csv(`data/2010/Variables_10.csv`).then(data => {
+    data.forEach(d => replaceRepeatedTags(d))
+  }).then(() => updateConcept())
+}
+
+function replaceRepeatedTags(d){
+  TAG[d.Name] = d.Label
+  .replace("Total!!","")
+  .replace("Total races tallied!!","");
+  TAG[(d.Name).concat("P")] = ("[%] ")
+  .concat(d.Label
+    .replace("Total!!","")
+    .replace("Total races tallied!!","")
+  );
 }

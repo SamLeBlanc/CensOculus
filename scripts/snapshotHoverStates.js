@@ -1,20 +1,16 @@
 function getHoverHoldStates(variable,geo){
-  map.on('mousemove', LAYER_DICT[geo], function (e) {
+  map.on('mousemove', LAYER_DICT[geo], e => {
     onHoverStart(e,variable,geo)
     hoveredId = setHoverState(e,geo,hoveredId)
-    if (!heldDistrict){
-      //eFeats = e.features;
-      //console.log(eFeats)
-    };
   });
-  map.on('mouseleave', LAYER_DICT[geo], function () {
+  map.on('mouseleave', LAYER_DICT[geo], () => {
     onHoverFinish()
     removeHoverState(geo,hoveredId)
   });
-  map.on('mousedown', LAYER_DICT[geo], function (e) {
+  map.on('mousedown', LAYER_DICT[geo], e => {
     down = JSON.stringify(e.point)
   });
-  map.on('mouseup', LAYER_DICT[geo], function (e) {
+  map.on('mouseup', LAYER_DICT[geo], e => {
     up = JSON.stringify(e.point)
     if(down == up){
       heldId = holdDistrict(e,geo,heldId)
@@ -37,22 +33,18 @@ function holdDistrict(e,geo,heldId){
 
 function setHoverState(e,geo,hoveredId){
   if (e.features.length > 0) {
-    if (hoveredId) {
-      map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
-    }
+    if (hoveredId) map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
     hoveredId = e.features[0].id;
     map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: true });
   }
   return hoveredId
 }
 function removeHoverState(geo,hoveredId){
-  if (hoveredId) {
-    map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
-  }
+  if (hoveredId) map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
   hoveredId = null;
 }
 
-function setHoldState(e,geo,heldId){
+function setHoldState(e, geo, heldId){
   var geo = $('#geo-select').find(":selected").val();
   if (e.features.length > 0) {
     heldId = e.features[0].id;
@@ -60,23 +52,19 @@ function setHoldState(e,geo,heldId){
   }
   return heldId
 }
-function removeHoldState(geo,heldId){
-  if (heldId) {
-    map.setFeatureState({ source: SOURCE_DICT[geo], id: heldId, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
-  }
+function removeHoldState(geo, heldId){
+  if (heldId) map.setFeatureState({ source: SOURCE_DICT[geo], id: heldId, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
 }
 
 function onHoverStart(e,variable,geo){
   map.getCanvas().style.cursor = "crosshair";
-  var geoid = e.features[0].properties.GEOID10
-  var name = e.features[0].properties.NAME10
+  let geoid = e.features[0].properties.GEOID10;
+  let name = e.features[0].properties.NAME10;
+  let area = e.features[0].properties.ALAND10;
   var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
-  var title = function (g, n) {
-    if (n) return n
-    else return g
-  };
 
-  var arr = createMoveTableArray([variable], title(geoid, name), obj)
+
+  var arr = createMoveTableArray([variable], name, obj)
   addMoveTable(arr)
   var pic = document.getElementById("flog_img");
   u = URLy(geoid)
@@ -123,10 +111,29 @@ function updateBar(e, id){
 
   if (area > 999) area = numberWithCommas(area)
   if (geo == 'county') name = FULL_COUNTY_NAME[geoid];
+  if (geo == 'tract') name = `Tract in ${FULL_COUNTY_NAME[geoid.substring(0,5)]}`
+  if (geo == 'group') name = `Block Group in ${FULL_COUNTY_NAME[geoid.substring(0,5)]}`
+
+
+  var geo = $('#geo-select').find(":selected").val();
+  if (['nation','state','county'].includes(geo)){
+    console.log('h1')
+    full = WIKI_NAME[geoid].replace(/ /g,"_");
+  } else if(['place'].includes(geo)) {
+    console.log('h2')
+    let code = geoid.substring(0,2);
+    let state = CODE_TO_STATE[code]
+    let nam = STATE_TO_NAME[state];
+    full = `${e.features[0].properties.NAME10}, ${nam}`.replace(/ /g,"_");
+  }
+
+	U = `https://en.wikipedia.org/wiki/${full}`
+  console.log(U)
 
   $('#b-name').text(name)
   $('#b-geoid').text(geoid)
-  $('#b-area').text(`${area} sq mi`)
-  $('#b-pop').text(`${numberWithCommas(pop[0].P001001)} 👤`)
-  $('#b-den').text(`${den} 👤 / sq mi`)
+  $('#b-area').text(area)
+  $('#b-pop').text(numberWithCommas(pop[0].P001001))
+  $('#b-den').text(den)
+  $("#wiki-link").attr("href", U)
 }

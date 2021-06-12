@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+  <link rel="stylesheet" href="styles/styles.css">
   <script type="text/javascript" src="index.js"></script>
   <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
   <script type="text/javascript" src="scripts/addSourcesAndLayers.js"></script>
@@ -25,52 +26,15 @@
   <script type="text/javascript" src="scripts/coloring.js"></script>
   <script type="text/javascript" src="scripts/tableJunk.js"></script>
   <script type="text/javascript" src="scripts/setup.js"></script>
-  <link rel="stylesheet" href="styles/styles.css">
+  <style type="text/css">
+   a:link {color: black;}      /* unvisited link */
+   a:visited {color: black;}   /* visited link */
+   a:hover {color: black;}     /* mouse over link */
+   a:active {color: black;}    /* selected link */
+</style>
 </head>
 <body>
 
-<style>
-
-#bar{
-  background: white;
-  position: absolute;
-  min-width: 250px;
-  left:270%;
-  top: 0%;
-  margin: 10px;
-  border: 4px solid black;
-  border-radius: 10px;
-  z-index:0;
-  padding:8px;
-  display: inline-block;
-}
-
-#flog{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-}
-
-</style>
-<style>
-.hide {
-  display: none;
-}
-
-.myDIV:hover + .hide {
-  display: block;
-  color: red;
-}
-
-.tag-label{
-  vertical-align:middle;
-  width:auto;
-  height:20px;
-  padding: 3px;
-}
-
-</style>
 <div id="map"></div>
 <div id="bar">
   <div>
@@ -80,6 +44,7 @@
     <div>
       <img class="tag-label" src="images/tag-pop.png">
       <span id="b-pop"></span>
+      <span>👤</span>
     </div>
     <div>
       <img class="tag-label" src="images/tag-geoid.png">
@@ -88,23 +53,30 @@
     <div>
       <img class="tag-label" src="images/tag-area.png">
       <span id="b-area"></span>
+      <span>mi<sup>2</sup></span>
     </div>
     <div>
       <img class="tag-label" src="images/tag-den.png">
       <span id="b-den"></span>
+      <span>👤/mi<sup>2</sup></span>
     </div>
+    <div style="padding-top: 4px; color: black; ">
+     <a id="wiki-link" href="" target="_blank">Wiki</a>
+     &nbsp
+     <a id="flag-link" href="" target="_blank">Flag</a>
+   </div>
   </div>
 </div>
-<div id="flog">
-  <img id="flog_img" style="width: auto;height: 200px;" src="" alt="Italian Trulli">
-</div>
 <div id="move" style="z-index:50"></div>
-<div id="click" style="z-index:50"></div>
+<!-- <div id="click" style="z-index:50"></div> -->
 <div id="geo-controls" style="position:absolute; left:40%; top:0%; margin:5px;">
   <div id="geolocate" class="geolocate"></div>
   <div id="geocoder" class="geocoder"></div>
 </div>
 <div id="title">2010 Census Mapper</div>
+<div id="flag-div" style="z-index:100;">
+  <img id="flog_img" style="width: auto;height: 200px;" src="">
+</div>
 <div id="settings" style="font-weight:bold;">
   <table style="border: 1px solid transparent;" id="tabeleta">
     <tr>

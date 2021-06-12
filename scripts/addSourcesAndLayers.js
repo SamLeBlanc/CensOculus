@@ -1,10 +1,10 @@
 function addSources(){
-  Object.keys(SOURCE_TILESET_ID).forEach(function(geo){
+  Object.keys(SOURCE_TILESET_ID).forEach(geo => {
     map.addSource(geo, {
       'type': 'vector',
       'url': SOURCE_TILESET_ID[geo],
       'promoteId': 'GEOID10',
-      //nativelands layer has no GEOID, so it must use // 'generateId': true
+      //nativelands layer has no pre-se tGEOID, so it must use 'generateId': true instead of 'promoteId'
     })
   });
 }
@@ -39,19 +39,21 @@ function addLineLayer(geo){
         'line-width': [
           'case',
           ['boolean', ['feature-state', 'hold'], false], 5,
-          ['boolean', ['feature-state', 'hover'], false], 3, 0.5,
+          ['boolean', ['feature-state', 'hover'], false], 3,
+          ['boolean', ['feature-state', 'flag'], false], 1, 0.5,
         ],
         'line-opacity': [
           'case',
           ['boolean', ['feature-state', 'hold'], false], 1,
-          ['boolean', ['feature-state', 'hover'], false], 1, 0.05,
+          ['boolean', ['feature-state', 'hover'], false], 1,
+          ['boolean', ['feature-state', 'flag'], false], 1, 0.05,
         ],
       },
   });
 }
 
 function addFillAndLineLayers(){
-  Object.keys(LAYER_DICT).forEach(function(geo){
+  Object.keys(LAYER_DICT).forEach(geo => {
     addFillLayer(geo)
     addLineLayer(geo)
   })
