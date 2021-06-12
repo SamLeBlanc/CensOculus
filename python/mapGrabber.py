@@ -27,19 +27,19 @@ code_to_state_name = {
 }
 
 state_level_geography_dict = {
-    'tract10'   :'tract10',
+    #'tract10'   :'tract10',
     'bg10'      :'group10',
-    'cousub10'  :'csub10',
-    'place10'   :'place10',
-    'unsd10'    :'uschool10',
+    #'cousub10'  :'csub10',
+    #'place10'   :'place10',
+    #'unsd10'    :'uschool10',
 }
 
 nation_level_geography_dict = {
-    'state10'   :'state10',
-    'county10'  :'county10',
-    'cbsa10'    :'metroSA10',
-    'uac10'     :'urban10',
-    'zcta510'   :'zip10',
+    #'state10'   :'state10',
+    #'county10'  :'county10',
+    #'cbsa10'    :'metroSA10',
+    #'uac10'     :'urban10',
+    #'zcta510'   :'zip10',
 }
 
 # Downloads and unzips Census shapefiles from official TIGER directories
@@ -121,16 +121,16 @@ def remove_all_layers():
 download_nation_level_census_files()
 rename_nation_level_census_files()
 open_nation_level_census_files()
-STATE_LAYER = QgsProject.instance().mapLayersByName('state10')[0]
-COUNTY_LAYER = QgsProject.instance().mapLayersByName('county10')[0]
-METROSA_LAYER = QgsProject.instance().mapLayersByName('metroSA10')[0]
-URBAN_LAYER = QgsProject.instance().mapLayersByName('urban10')[0]
-ZIP_LAYER = QgsProject.instance().mapLayersByName('zip10')[0]
-delete_fields(STATE_LAYER)
-delete_fields(COUNTY_LAYER)
-delete_fields(METROSA_LAYER)
-delete_fields(URBAN_LAYER)
-delete_fields(ZIP_LAYER)
+# STATE_LAYER = QgsProject.instance().mapLayersByName('state10')[0]
+# COUNTY_LAYER = QgsProject.instance().mapLayersByName('county10')[0]
+# METROSA_LAYER = QgsProject.instance().mapLayersByName('metroSA10')[0]
+# URBAN_LAYER = QgsProject.instance().mapLayersByName('urban10')[0]
+# ZIP_LAYER = QgsProject.instance().mapLayersByName('zip10')[0]
+# delete_fields(STATE_LAYER)
+# delete_fields(COUNTY_LAYER)
+# delete_fields(METROSA_LAYER)
+# delete_fields(URBAN_LAYER)
+# delete_fields(ZIP_LAYER)
 remove_all_layers()
 
 for code in code_to_state:
@@ -139,14 +139,14 @@ for code in code_to_state:
     download_state_level_census_files(code)
     rename_state_level_census_files(code)
     open_state_level_census_files(code)
-    TRACT_LAYER = QgsProject.instance().mapLayersByName(code2 + '_tract10')[0]
+    #TRACT_LAYER = QgsProject.instance().mapLayersByName(code2 + '_tract10')[0]
     GROUP_LAYER = QgsProject.instance().mapLayersByName(code2 + '_group10')[0]
-    CSUB_LAYER = QgsProject.instance().mapLayersByName(code2 + '_csub10')[0]
-    PLACE_LAYER = QgsProject.instance().mapLayersByName(code2 + '_place10')[0]
-    USCHOOL_LAYER = QgsProject.instance().mapLayersByName(code2 + '_uschool10')[0]
-    delete_fields(TRACT_LAYER)
+    #CSUB_LAYER = QgsProject.instance().mapLayersByName(code2 + '_csub10')[0]
+    #PLACE_LAYER = QgsProject.instance().mapLayersByName(code2 + '_place10')[0]
+    #USCHOOL_LAYER = QgsProject.instance().mapLayersByName(code2 + '_uschool10')[0]
+    #delete_fields(TRACT_LAYER)
     delete_fields(GROUP_LAYER)
-    delete_fields(CSUB_LAYER)
-    delete_fields(PLACE_LAYER)
-    delete_fields(USCHOOL_LAYER)
-    remove_all_layers()
+    #delete_fields(CSUB_LAYER)
+    #delete_fields(PLACE_LAYER)
+    #delete_fields(USCHOOL_LAYER)
+    #remove_all_layers()

@@ -1,6 +1,11 @@
 function setFeatStates(variable){
   geo = $('#geo-select').find(":selected").val();
   concept = $('#concept-select').find(":selected").val();
+  FLAGS
+    .filter(d => d["Size"] == geo)
+    .forEach(f => {
+      map.setFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: f.GEOID10 }, { flag: true } )
+    })
   data = LORAX[concept]
   .filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   .forEach(function(d){
