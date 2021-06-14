@@ -1,4 +1,5 @@
 function getHoverHoldStates(variable,geo){
+  heldIds = removeHoldState(geo, heldIds)
   map.on('mousemove', LAYER_DICT[geo], e => {
     onHoverStart(e,variable,geo)
     hoveredId = setHoverState(e,geo,hoveredId)
@@ -8,27 +9,38 @@ function getHoverHoldStates(variable,geo){
     removeHoverState(geo,hoveredId)
   });
   map.on('mousedown', LAYER_DICT[geo], e => {
-    down = JSON.stringify(e.point)
+    startX = event.pageX;
+    startY = event.pageY;
   });
   map.on('mouseup', LAYER_DICT[geo], e => {
-    up = JSON.stringify(e.point)
-    if(down == up){
-      heldId = holdDistrict(e,geo,heldId)
+    diffX = Math.abs(event.pageX - startX);
+    diffY = Math.abs(event.pageY - startY);
+    if (diffX < 5 && diffY < 5) {
+      //click
+      heldIds = holdDistrict(e,geo,heldIds, heldEvents)
+    } else {
+      //drag
     }
   });
 }
-function holdDistrict(e,geo,heldId){
-  if (heldId){
+
+function holdDistrict(e,geo,heldIds, heldEvents){
+  if (heldIds.length > 0 && !$('#accumulate').is(":checked")){
     heldDistrict = false;
     onHoldFinish()
-    removeHoldState(geo,heldId);
-    heldId = null;
+    heldIds = removeHoldState(geo,heldIds);
+    heldIds = [];
+    heldEvents = [];
   } else {
     heldDistrict = true;
-    heldId = setHoldState(e,heldId);
-    onHoldStart(e,heldId,geo)
+    heldIds = setHoldState(e,heldIds, heldEvents);
+    if (heldIds.length > 0){
+      onHoldStart(e,heldIds,geo, heldEvents)
+    } else {
+      onHoldFinish()
+    }
   }
-  return heldId
+  return heldIds
 }
 
 function setHoverState(e,geo,hoveredId){
@@ -44,96 +56,129 @@ function removeHoverState(geo,hoveredId){
   hoveredId = null;
 }
 
-function setHoldState(e, geo, heldId){
+function removeEvent(id, heldIds, heldEvents){
+  index = heldIds.indexOf(id)
+  console.log('splice',index)
+  heldIds.splice(index, 1);
+  heldEvents.splice(index, 1);
+  map.setFeatureState({ source: SOURCE_DICT[geo], id: id, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
+  return heldEvents
+}
+
+function setHoldState(e, heldIds, heldEvents){
   var geo = $('#geo-select').find(":selected").val();
   if (e.features.length > 0) {
-    heldId = e.features[0].id;
-    map.setFeatureState({ source: SOURCE_DICT[geo], id: heldId, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: true });
+    id = e.features[0].id;
+    if (!heldIds.includes(id)) {
+      heldIds.push(e.features[0].id)
+      heldEvents.push({GEOID10: e.features[0].id, ALAND10: e.features[0].properties.ALAND10, NAME10: e.features[0].properties.NAME10})
+    } else {
+      heldEvents = removeEvent(id, heldIds, heldEvents)
+    }
+    heldIds.forEach(h => {
+      map.setFeatureState({ source: SOURCE_DICT[geo], id: h, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: true });
+    });
   }
-  return heldId
+  console.log(heldIds)
+  return heldIds
 }
-function removeHoldState(geo, heldId){
-  if (heldId) map.setFeatureState({ source: SOURCE_DICT[geo], id: heldId, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
+function removeHoldState(geo, heldIds){
+  heldIds.forEach(h => {
+    map.setFeatureState({ source: SOURCE_DICT[geo], id: h, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
+  });
+  heldIds = [];
+  return heldIds
 }
 
 function onHoverStart(e,variable,geo){
   map.getCanvas().style.cursor = "crosshair";
   let geoid = e.features[0].properties.GEOID10;
-  let name = e.features[0].properties.NAME10;
-  let area = e.features[0].properties.ALAND10;
   var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
-
-
-  var arr = createMoveTableArray([variable], name, obj)
+  var arr = createMoveTableArray([variable], e.features[0].properties.NAME10, obj)
   addMoveTable(arr)
   var pic = document.getElementById("flog_img");
-  u = URLy(geoid)
-  if (u) {
-    if (u.substring(0,5) != '/imag'){
-      pic.src = u
-    } else {
-      pic.src = "https://www.crwflags.com/fotw".concat(u)
-    }
-  } else {
-    pic.src = "images/noFlag.gif"
-  }
+  suffix = getFlagUrlSuffix(geoid)
+  fullUrl = craftFlagUrl(suffix)
+  $('#flog_img').attr("src", fullUrl);
+
 }
+
 function onHoverFinish(){
   map.getCanvas().style.cursor = "";
   $('#move').text("")
   document.getElementById("flog_img").src = ""
 }
 
-function onHoldStart(e,heldId,geo){
-  updateBar(e, heldId)
-  var concept = $('#concept-select').find(":selected").val();
-  var geo = $('#geo-select').find(":selected").val();
-  L = LORAX[concept].filter(function(d){ return (d["GEOID10"] == heldId && d["SIZE"] == geo.toUpperCase() )})
-  console.log(L)
+function onHoldStart(e,heldIds,geo, heldEvents){
+  updateBar(e, heldIds, heldEvents)
 }
 
 function onHoldFinish(){
   $("#bar").css("z-index", 0);
 }
 
-function updateBar(e, id){
+function getHeld(){
+  var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: heldId });
+  console.log(obj)
+}
+
+function updateBar(e, id, heldEvents){
   $("#bar").css("z-index",20);
   var geo = $('#geo-select').find(":selected").val();
-  var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: heldId });
+  var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: heldIds[0] });
+  console.log(heldEvents)
 
-  metersSq = parseInt(e.features[0].properties.ALAND10)
+  metersSq = d3.sum(heldEvents.map(d => d.ALAND10))
   area = metersSq2MilesSq(metersSq)
 
-  geoid = e.features[0].properties.GEOID10
-  name = e.features[0].properties.NAME10
-  pop = LORAX["P1"].filter(function(d){ return d["GEOID10"] == e.features[0].properties.GEOID10 && d["SIZE"] == geo.toUpperCase()})
-  den = formatDensity(pop[0].P001001,area)
+  geoid = heldEvents[0].GEOID10
+  geoids = heldEvents.map(d => d.GEOID10);
+  name = heldEvents[0].NAME10
+  pop = d3.sum(
+    LORAX["P1"]
+    .filter(d => {
+      return heldEvents.map(d => d.GEOID10).includes(d["GEOID10"]) &&
+        d["SIZE"] == geo.toUpperCase()
+      })
+    .map(d => d.P001001)
+  );
+  den = formatDensity(pop,area)
 
   if (area > 999) area = numberWithCommas(area)
   if (geo == 'county') name = FULL_COUNTY_NAME[geoid];
   if (geo == 'tract') name = `Tract in ${FULL_COUNTY_NAME[geoid.substring(0,5)]}`
   if (geo == 'group') name = `Block Group in ${FULL_COUNTY_NAME[geoid.substring(0,5)]}`
+  if (['county','tract','group','uschool','csub','place'].includes(geo)){
+    name = `${name}, ${CODE_TO_STATE[geoid.substring(0,2)]}`
+  }
 
 
   var geo = $('#geo-select').find(":selected").val();
   if (['nation','state','county'].includes(geo)){
-    console.log('h1')
     full = WIKI_NAME[geoid].replace(/ /g,"_");
   } else if(['place'].includes(geo)) {
-    console.log('h2')
     let code = geoid.substring(0,2);
     let state = CODE_TO_STATE[code]
     let nam = STATE_TO_NAME[state];
-    full = `${e.features[0].properties.NAME10}, ${nam}`.replace(/ /g,"_");
+    full = `${heldEvents[0].NAME10}, ${nam}`.replace(/ /g,"_");
   }
 
 	U = `https://en.wikipedia.org/wiki/${full}`
-  console.log(U)
+  if (heldIds.length > 1){
+    $('#b-name').text(heldIds.length)
+  } else {
+    $('#b-name').text(name)
+  }
 
-  $('#b-name').text(name)
-  $('#b-geoid').text(geoid)
+  if (heldIds.length > 1){
+    $('#b-geoid').css('color','grey')
+    $('#b-geoid').text('n/a')
+  } else {
+    $('#b-geoid').css('color','black')
+    $('#b-geoid').text(geoid)
+  }
   $('#b-area').text(area)
-  $('#b-pop').text(numberWithCommas(pop[0].P001001))
+  $('#b-pop').text(numberWithCommas(pop))
   $('#b-den').text(den)
   $("#wiki-link").attr("href", U)
 }

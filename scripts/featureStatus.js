@@ -10,9 +10,10 @@ function setFeatStates(variable){
   .filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   .forEach(function(d){
     n = {};
+    obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: d.GEOID10 });
     if (variable.endsWith("P")){
       v = variable.slice(0,-1);
-      n[variable] = d[v] / (1 + d[v.slice(0,4).concat("001")]);
+      n[variable] = d[v] / d[v.slice(0,4).concat("001")];
     } else {
       n[variable] = d[variable];
     }

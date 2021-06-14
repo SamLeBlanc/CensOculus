@@ -43,4 +43,9 @@ function replaceRepeatedTags(d){
     .replace("Total!!","")
     .replace("Total races tallied!!","")
   );
+  TAG[(d.Name).concat("D")] = ("[D] ")
+  .concat(d.Label
+    .replace("Total!!","")
+    .replace("Total races tallied!!","")
+  );
 }

@@ -26,12 +26,7 @@
   <script type="text/javascript" src="scripts/coloring.js"></script>
   <script type="text/javascript" src="scripts/tableJunk.js"></script>
   <script type="text/javascript" src="scripts/setup.js"></script>
-  <style type="text/css">
-   a:link {color: black;}      /* unvisited link */
-   a:visited {color: black;}   /* visited link */
-   a:hover {color: black;}     /* mouse over link */
-   a:active {color: black;}    /* selected link */
-</style>
+  <script type="text/javascript" src="scripts/flags.js"></script>
 </head>
 <body>
 
@@ -204,6 +199,14 @@
         </div>
       </td>
     </tr>
+    <tr>
+      <td>Accumulate</td>
+      <td>
+        <div>
+          <input type="checkbox" id="accumulate" name="accumulate">
+        </div>
+      </td>
+    </tr>
   </table>
   <!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
 </div>
@@ -292,13 +295,10 @@ document.getElementById('geolocate').appendChild(geolocate.onAdd(map));
 
 //map.scrollZoom.disable();
 
-var [hoveredId, heldId] = [null, null];
+var hoveredId = null;
+var heldIds = [];
+var heldEvents = [];
 var heldDistrict = false;
-
-function URLy(geoid){
-	u = FLAGS.filter(function(d){ return d["GEOID10"] == geoid })
-	if (u.length > 0) return u[0].UrlSuffix
-}
 
 map.on('load', function () {
   main()
