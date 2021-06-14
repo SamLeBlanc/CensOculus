@@ -49,7 +49,7 @@ function getQuantileValues(concept, variable, geo, scale){
   else {
     var cat = variable.slice(0,-1);
     var cat_total = variable.slice(0,4).concat("001");
-    values = data.map(function(d) { return (d[cat] / (1 + d[cat_total])) })
+    values = data.map(function(d) { return (d[cat] / d[cat_total]) })
   }
   values = values.sort(function(a, b){return a - b});
 

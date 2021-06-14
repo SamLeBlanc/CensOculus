@@ -12,11 +12,7 @@ code_to_state = {
   '56':'WY' , '72':'PR'
 }
 
-topSheet = [
-
-]
-
-def get_census10_api_data(geo, api_arr):
+def get_census10_api_data(code,geo, api_arr):
     api_string = ','.join(map(str, api_arr))
     base_url = f'https://api.census.gov/data/2010/dec/sf1?get={api_string}';
     api_key = 'dd677280c5e9a6f9c1f6c4929fa378c2e3f1ebc5';
@@ -71,8 +67,8 @@ def getGEOID10(df,geo):
         df['GEOID10'] = df.state + df["school district (unified)"];
     return df
 
-def clean_data(df, geo, sub_hoard,):
-    api_data = get_census10_api_data(geo, sub_hoard);
+def clean_data(code,df, geo, sub_hoard,):
+    api_data = get_census10_api_data(code,geo, sub_hoard);
     df1 = api_data_to_dataframe(geo, sub_hoard, api_data);
     keep_cols = np.append(sub_hoard,['GEOID10','SIZE'])
     df1.drop(columns=[col for col in df1 if col not in keep_cols], inplace=True)
@@ -90,9 +86,13 @@ def combineCSVs():
                 merged = pd.merge(dfA, dfB, on='GEOID10', how='outer')
                 merged.drop(merged.filter(regex='_y$').columns.tolist(),axis=1, inplace=True)
                 merged = merged.rename(columns={'SIZE_x':'SIZE'})
+                dfALL = dfALL.set_index('GEOID10').join(other.set_index('GEOID10'))
+                print(dfALL)
                 merged.to_csv(index=False,path_or_buf="/home/sam/" + f'{group}_x.csv');
 
 def main():
+    code = ""
+    dfALL = pd.DataFrame()
     group_list = pd.read_csv(f'/home/sam/2010Variables.csv').Group.unique()
     for group in group_list:
         dfVar = pd.read_csv(f'/home/sam/2010Variables.csv')
@@ -102,12 +102,12 @@ def main():
             sub_hoard = hoard[50*i : 50*(i+1)]
             for geo in ["nation","state","metroSA","urban","zip","county",'uschool','place']:
                 print(group,i,geo,)
-                df = clean_data(df, geo, sub_hoard)
+                df = clean_data(code,df, geo, sub_hoard)
             for code in code_to_state:
                 code2 = code + code_to_state[code];
                 for geo in ['tract','group','csub']:
                     print(group,i,geo,code)
-                    df = clean_data(df, geo, sub_hoard)
+                    df = clean_data(code,df, geo, sub_hoard)
             print(df)
             df.to_csv(index=True,path_or_buf="/home/sam/" + f'{group}_{i}.csv');
             print(df.sort_values(by=['GEOID10']))
