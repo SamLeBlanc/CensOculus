@@ -13,6 +13,7 @@ function update(){
   console.log('updating')
   updateGeo()
   updateVariable()
+  updateFlagMode()
 }
 
 function updateGeo(){
@@ -28,7 +29,7 @@ function updateVariable(){
   concept = $('#concept-select').find(":selected").val();
   scale = $('#scale-select').find(":selected").val();
   setFeatStates(variable)
-  getHoverHoldStates(variable,geo);
+  setupHoverHoldStates(variable,geo);
   layer_name = geo.concat('-fills')
   quants = getQuantileValues(concept, variable, geo, scale)
   colorLayer(layer_name, variable, quants)
