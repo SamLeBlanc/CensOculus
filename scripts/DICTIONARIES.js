@@ -31,6 +31,19 @@ const SOURCE_DICT = {
   'place':'place'
 }
 
+const BAR_SUFFIX = {
+  'state':'States',
+  'county':'Counties',
+  'tract':'Tracts',
+  'group':'Groups',
+  'metroSA':'Metro Statisitcal Areas',
+  'urban':'Urban Area',
+  'zip':'Zip Codes',
+  'csub':'County Subdivisions',
+  'uschool':'Unified School Districts',
+  'place':'Places'
+}
+
 const LAYER_DICT = {
   //'native':'nativeland-fills',
   'nation':'nation-fills',
