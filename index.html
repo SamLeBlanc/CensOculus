@@ -89,7 +89,7 @@
     <tr>
       <td>Geography</td>
       <td>
-        <div id="geo-select" onchange="update(); clearAllHolds();">
+        <div id="geo-select" onchange="update();">
           <select style="width:199px;">
             <option value="nation">Nation</option>
             <option value="state">State</option>
@@ -172,7 +172,7 @@
       <td>Color</td>
       <td>
         <div id="color-select" onchange="customColors=[null,null,null,null,null]; update()">
-          <select style="width:199px;">
+          <select style="width:145px;">
             <option value="Viridis">Viridis</option>
             <option value="Red">Red</option>
             <option value="Blue">Blue</option>
@@ -187,6 +187,7 @@
             <option value="Brown-Teal">Brown-Teal</option>
             <option value="Blue-Red">Blue-Red</option>
           </select>
+          <button style="width: 49px;" onclick="reverseColorScale()">Invert</button>
         </div>
       </td>
     </tr>
@@ -206,6 +207,7 @@
       <td>
         <div>
           <input type="checkbox" id="accumulate" name="accumulate" onclick="clearAllHolds()">
+          <button onclick="clearAllHolds()">Clear Holds</button>
         </div>
       </td>
     </tr>
@@ -246,6 +248,36 @@
         </div>
       </td>
     </tr>
+    <tr>
+      <td>Pan</td>
+      <td>
+        <div>
+          <table>
+          <thead>
+            <tr>
+              <td><button class="emoji-button" onclick="panMap([-100,-100])">↖️</button></td>
+              <td><button class="emoji-button" onclick="panMap([0,-100])">⬆️</button></td>
+              <td><button class="emoji-button" onclick="panMap([100,-100])">↗️</button></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button class="emoji-button" onclick="panMap([-100,0])">⬅️</button></td>
+              <td></td>
+              <td><button class="emoji-button" onclick="panMap([100,0])">➡️</button></td>
+            </tr>
+            <tr>
+              <td><button class="emoji-button" onclick="panMap([-100,100])">↙️</button></td>
+              <td><button class="emoji-button" onclick="panMap([0,100])">⬇️</button></td>
+              <td><button class="emoji-button" onclick="panMap([100,100])">↘️</button></td>
+            </tr>
+          </tbody>
+          </table>
+        </div>
+      </td>
+    </tr>
+
+
   </table>
   <!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
 </div>
