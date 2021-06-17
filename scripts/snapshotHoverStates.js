@@ -1,7 +1,6 @@
-function setupHoverHoldStates(variable,geo){
-  heldDistricts = removeHoldState(geo, heldDistricts)
+function setupHoverHoldStates(geo){
   map.on('mousemove', LAYER_DICT[geo], e => {
-    onHoverStart(e,variable,geo)
+    onHoverStart(e, geo)
     removeHoverState(geo,hoveredId)
     hoveredId = setHoverState(e,geo,hoveredId)
   });
@@ -14,12 +13,12 @@ function setupHoverHoldStates(variable,geo){
   });
   map.on('mouseup', LAYER_DICT[geo], e => {
     up = {x: event.pageX, y: event.pageY};
+    console.log('click')
     if (Math.abs(down.x - up.x) < 5 && Math.abs(down.y - up.y) < 5) {
       //click
       heldDistricts = holdDistrict(e,geo, heldDistricts)
       if (Object.keys(heldDistricts).length == 0){
-        onHoldFinish()
-        heldDistricts = removeHoldState(geo, heldDistricts);
+        clearAllHolds()
       }
     } else {
       //drag
@@ -28,6 +27,7 @@ function setupHoverHoldStates(variable,geo){
 }
 
 function holdDistrict(e, geo, heldDistricts){
+  console.log('start -> holdDistrict',heldDistricts)
   if (Object.keys(heldDistricts).length == 0){
     console.log('length==0')
     heldDistricts = setHoldState(e, geo, heldDistricts);
@@ -37,9 +37,9 @@ function holdDistrict(e, geo, heldDistricts){
     heldDistricts = setHoldState(e, geo, heldDistricts);
     onHoldStart(e, geo, heldDistricts)
   } else {
-    onHoldFinish()
-    heldDistricts = removeHoldState(geo, heldDistricts);
+    heldDistricts = clearAllHolds()
   }
+  console.log('finish -> holdDistrict',heldDistricts)
   return heldDistricts
 }
 
@@ -74,14 +74,16 @@ function setHoldState(e, geo, heldDistricts){
   return heldDistricts
 }
 function removeHoldState(geo, heldDistricts){
-  Object.keys(heldDistricts).forEach(h => {
-    map.setFeatureState({ source: SOURCE_DICT[geo], id: h, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
-  });
-  heldDistricts = {};
-  return heldDistricts
+  LORAX["P1"]
+    .filter(d => d["SIZE"] == geo.toUpperCase())
+    .map(d => d.GEOID10)
+    .forEach(d => {
+      map.setFeatureState({ source: SOURCE_DICT[geo], id: d, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
+    });
 }
 
-function onHoverStart(e,variable,geo){
+function onHoverStart(e,geo){
+  variable = $('#variable-select').find(":selected").val();
   map.getCanvas().style.cursor = "crosshair";
   let geoid = e.features[0].properties.GEOID10;
   var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
@@ -133,9 +135,12 @@ function getBarName(){
 }
 
 function clearAllHolds(){
+  geo = $('#geo-select').find(":selected").val();
   onHoldFinish();
-  heldDistricts = removeHoldState(geo, heldDistricts);
-  console.log('clearAllHolds')
+  removeHoldState(geo, heldDistricts);
+  heldDistricts = {};
+  return heldDistricts
+  console.log('clearAllHolds',heldDistricts)
 }
 
 function getBarNameSuffix(){

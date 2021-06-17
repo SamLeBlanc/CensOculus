@@ -32,6 +32,13 @@ function puertoRicoView(){
   map.fitBounds([[-68.2,17.3],[-65.1,19]]);
 }
 
+function panMap(a){
+  let easing = t => t * (2 - t);
+  map.panBy(a, {
+    easing: easing
+  });
+}
+
 function updatePitch(val){
   map.flyTo({
     pitch: val,

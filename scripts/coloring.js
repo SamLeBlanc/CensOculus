@@ -1,4 +1,11 @@
+function reverseColorScale(){
+  var scheme = $('#color-select').find(":selected").val();
+  COLOR_DICT[scheme] = COLOR_DICT[scheme].reverse();
+  update();
+}
+
 function colorLayer(layer_name, variable, quants){
+  console.log(COLOR_DICT)
   var scale = $('#scale-select').find(":selected").val();
 
   if (LINEAR_RANGE.every(element => element !== null)){
@@ -17,8 +24,6 @@ function colorLayer(layer_name, variable, quants){
     var arr = quants;
   }
 
-  colors = updateLegend(arr)
-
   if (scale == 'Quantile'){
     arr[0] = arr[5]
     arr[4] = arr[6]
@@ -26,9 +31,12 @@ function colorLayer(layer_name, variable, quants){
   }
 
   var scheme = $('#color-select').find(":selected").val();
-  var colors = COLOR_DICT[scheme]
-  //checkUniformity(arr, colors)
+  console.log('coloring')
 
+  var colors = COLOR_DICT[scheme]
+
+
+  colors = updateLegend(arr, colors)
   console.log(arr)
   setTimeout(function(){
     for (i=0; i < arr.length; i++){
@@ -51,7 +59,7 @@ function colorLayer(layer_name, variable, quants){
 }
 
 
-function updateLegend(arr){
+function updateLegend(arr, colors){
   var scheme = $('#color-select').find(":selected").val();
   var colors = COLOR_DICT[scheme]
 

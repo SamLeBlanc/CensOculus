@@ -16,11 +16,19 @@ function update(){
   updateFlagMode()
 }
 
+let hoversCreated = [];
+
 function updateGeo(){
   hideAllLayers()
-  v = $('#geo-select').find(":selected").val();
-  map.setLayoutProperty(v.concat('-fills'),'visibility','visible')
-  map.setLayoutProperty(v.concat('-lines'),'visibility','visible')
+  clearAllHolds()
+  geo = $('#geo-select').find(":selected").val();
+  map.setLayoutProperty(geo.concat('-fills'),'visibility','visible')
+  map.setLayoutProperty(geo.concat('-lines'),'visibility','visible')
+  if (!hoversCreated.includes(geo)){
+    setupHoverHoldStates(geo);
+    hoversCreated.push(geo);
+  }
+
 }
 
 function updateVariable(){
@@ -29,7 +37,6 @@ function updateVariable(){
   concept = $('#concept-select').find(":selected").val();
   scale = $('#scale-select').find(":selected").val();
   setFeatStates(variable)
-  setupHoverHoldStates(variable,geo);
   layer_name = geo.concat('-fills')
   quants = getQuantileValues(concept, variable, geo, scale)
   colorLayer(layer_name, variable, quants)
