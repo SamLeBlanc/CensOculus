@@ -30,6 +30,7 @@ function colorLayer(layer_name, variable, quants){
     arr = arr.slice(0,5)
   }
 
+  var geoid = $('#geo-select').find(":selected").val();
   var scheme = $('#color-select').find(":selected").val();
   console.log('coloring')
 
@@ -54,8 +55,8 @@ function colorLayer(layer_name, variable, quants){
     ],
     'rgba(255, 0, 255, 0)'
     ]);
-    map.setPaintProperty(layer_name, 'fill-opacity', 0.7)
-  },100 );
+    set3DColor(arr, colors, 1000000)
+    },100 );
 }
 
 

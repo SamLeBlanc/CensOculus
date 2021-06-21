@@ -1,16 +1,16 @@
-body { margin: 0; padding: 0; font-family: Helvetica; overflow: hidden}
+body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif; color:white; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; z-index:5; overflow: hidden}
 
 /* Heading */
 
-#title{ position: absolute; z-index:20; font-weight:900; font-size: 45px; margin: 5px; color: rgba(123,140,222,1); -webkit-text-stroke: 1.5px black; pointer-events: none;}
+#title{ position: absolute; z-index:20; font-weight:900; font-family: 'Lato', sans-serif; font-size: 50px; margin: 5px; pointer-events: none; -webkit-text-stroke: 1px black;}
 
 .geocoder { position: absolute; z-index: 15; left: 35px; top: 0%; }
 .geolocate { position: absolute; z-index: 15; left: 0%; top: 0%; margin-top:3px; width:30px; }
 
 /* Legend */
 
-#legend { position: absolute; top:500px; left: 0px; z-index:10; width:100px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; }
+#legend { position: absolute; top:500px; left: 0px; z-index:10; width:100px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; color: black;}
 .legend-square { position: relative; z-index: 11; height: 15px; width: 30px; background: black; border: solid 1px black; border-radius: 5px;}
 .legend-label { padding: 2px; }
 
@@ -32,7 +32,7 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 
 /* Settings and Selections */
 
-#settings { position: absolute; top:50px; left: 0%; z-index:10; margin:10px;}
+#settings { position: absolute; top:60px; left: 0%; z-index:10; margin:10px;}
 #geo-select { z-index:10; }
 #variable-select { z-index:10; }
 #color-select {z-index:10; }
@@ -42,7 +42,7 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 /* move */
 
 #move { position: absolute; padding:5px; background-color: white; border-radius: 3px; font-family: monospace;}
-table.tableA { }
+table.tableA { color; white }
 table.tableA td, table.tableA th{ border-bottom: 1px solid blue;}
 
 /* Intro */

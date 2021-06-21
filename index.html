@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <script type="text/javascript" src="index.js"></script>
   <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
@@ -186,6 +188,18 @@
             <option value="Magma">Magma</option>
             <option value="Brown-Teal">Brown-Teal</option>
             <option value="Blue-Red">Blue-Red</option>
+            <option value="Green II">Green II</option>
+            <option value="Purple II">Purple II</option>
+            <option value="Ocean">Ocean</option>
+            <option value="Valentine">Valentine</option>
+            <option value="Forest">Forest</option>
+            <option value="Burnt Toast">Yellow-Orange-Brown</option>
+            <option value="Cividis">Cividis</option>
+            <option value="Plasma">Plasma</option>
+            <option value="Warm">Warm</option>
+            <option value="Cool">Cool</option>
+            <option value="Barney">Barney</option>
+            <option value="Watermelon">Watermelon</option>
           </select>
           <button style="width: 49px;" onclick="reverseColorScale()">Invert</button>
         </div>
@@ -218,6 +232,22 @@
           <input type="checkbox" id="flag-mode" name="flag-mode" onclick="updateFlagMode()">
         </div>
       </td>
+    </tr>
+    <tr>
+      <td>3D</td>
+      <td>
+        <div>
+          <input type="checkbox" id="3d-mode" name="3d-mode" onclick="updateVariable()">
+        </div>
+      </td>
+      <tr>
+        <td>3D Height</td>
+        <td>
+          <div>
+            <input id="height" type="range" min="10" max="3000000" step="20000" value="100000" oninput="updateVariable()">
+          </div>
+        </td>
+      </tr>
     </tr>
     <tr>
       <td>Views</td>
@@ -305,7 +335,7 @@
       <div id="leg-square-4" class="legend-square" style="background:blue;"></div>
     </div>
   </div>
-  <div id="labels" ondblclick="getCustomRange();" style="padding-top:13px; position:absolute; top:0px; left:60px;">
+  <div id="labels" ondblclick="getCustomRange();" style="padding-top:7px; position:absolute; top:0px; left:60px;">
     <div class="legend-label" ><span id='leg-label-0'>1</span></div>
     <div class="legend-label" ><span id='leg-label-1'>2</span></div>
     <div class="legend-label" ><span id='leg-label-2'>3</span></div>
@@ -338,11 +368,13 @@ $(document).on('mousemove', function(e){
 
 
 LORAX = {}
+var randomColor = Math.floor(Math.random()*16777215).toString(16);
+$('#title').css('color',`#${randomColor}`)
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
 var map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/light-v10', // style URL
+  style: 'mapbox://styles/mapbox/dark-v10', // style URL
   center: [-104.800644, 38.846127],
   zoom: 3.6,
   pitch: 0,

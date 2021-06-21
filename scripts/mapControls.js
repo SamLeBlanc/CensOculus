@@ -18,6 +18,14 @@ function updateZoom(val){
     essential: true
   });
 }
+
+function unpitch(){
+  map.flyTo({
+    pitch: 0,
+    essential: true
+  });
+}
+
 function lower48View(){
   map.fitBounds([[-138,24],[-66,50]]);
 }
