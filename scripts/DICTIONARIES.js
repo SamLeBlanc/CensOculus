@@ -74,6 +74,21 @@ const LINELAYER_DICT = {
   'place':'place-lines'
 }
 
+const EXTRUDELAYER_DICT = {
+  //'native':'nativeland-lines',
+  'nation':'nation-3d',
+  'state':'state-3d',
+  'county':'county-3d',
+  'tract':'tract-3d',
+  'group':'group-3d',
+  'metroSA':'metroSA-3d',
+  'urban' : 'urban-3d',
+  'zip' : 'zip-3d',
+  'csub':'csub-3d',
+  'uschool':'uschool-3d',
+  'place':'place-3d'
+}
+
 const SOURCELAYER_DICT = {
   'native':'indigenousNA-b3bdp4',
   'nation':'nation10-6ezzk0',
@@ -118,6 +133,18 @@ const COLOR_DICT = {
   'Magma' : ['#fbffb2','#f7704f','#a72066','#370065','#000000'],
   'Brown-Teal' : ['#8C510A','#DFC27D','#DFE9D4','#80CDC1','#01665E'],
   'Blue-Red' : ['#2166AC','#92C5DE','#E7E0DC','#F4A582','#B2182B'],
+  'Green II' : ["#edf8fb","#b2e2e2","#66c2a4","#2ca25f","#006d2c"],
+  'Purple II' : ["#edf8fb","#b3cde3","#8c96c6","#8856a7","#810f7c"],
+  'Ocean' : ["#f6eff7","#bdc9e1","#67a9cf","#1c9099","#016c59"],
+  'Valentine' : ["#f1eef6","#d7b5d8","#df65b0","#dd1c77","#980043"],
+  'Forest' : ["#ffffcc","#c2e699","#78c679","#31a354","#006837"],
+  'Burnt Toast' : ["#ffffd4","#fed98e","#fe9929","#d95f0e","#993404"],
+  'Cividis' : ["#002051","#3c4d6e","#7f7c75","#bbaf71","#fdea45"],
+  'Plasma' : ["#0d0887","#7e03a8","#cc4778","#f89540","#f0f921"],
+  'Warm' : ["#6e40aa","#d23ea7","#ff5e63","#efa72f","#aff05b"],
+  'Cool' : ["#6e40aa","#417de0","#1ac7c2","#40f373","#aff05b"],
+  'Barney' : ["#7b3294","#c2a5cf","#f7f7f7","#a6dba0","#008837"],
+  'Watermelon' : ["#d01c8b","#f1b6da","#f7f7f7","#b8e186","#4dac26"],
 }
 
 const FULL_COUNTY_NAME = {

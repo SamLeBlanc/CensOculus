@@ -28,5 +28,6 @@ function hideAllLayers(){
   for(i = 1; i < L.length; i++){
     map.setLayoutProperty(L[i].concat('-fills'),'visibility','none')
     map.setLayoutProperty(L[i].concat('-lines'),'visibility','none')
+    map.setLayoutProperty(L[i].concat('-3d'),'visibility','none')
   }
 }

@@ -125,8 +125,11 @@ function getBarPop(){
 
 function getBarName(){
   if (Object.keys(heldDistricts).length > 1){
-    //getBarNameSuffix()
-    return Object.keys(heldDistricts).length.toString()
+    geo = $('#geo-select').find(":selected").val();
+    l = Object.keys(heldDistricts).length
+    s = getBarNameSuffix()
+    if (s) return `${l}\xa0${BAR_SUFFIX[geo]} in ${s}`
+    else return `${l}\xa0${BAR_SUFFIX[geo]}`
   } else {
     geoid = Object.keys(heldDistricts)[0];
     name = Object.values(heldDistricts)[0].NAME10;
@@ -149,11 +152,10 @@ function getBarNameSuffix(){
     check = true;
   }
   const allEqual = arr => arr.every( v => v === arr[0] );
-  geoids = Object.values(heldDistricts).map(d => d.GEOID10);
-  if (geoids[0].length > 2){
-    geoids = geoids.map(d => d.substring(0,5))
-    if (allEqual(geoids)) console.log(FULL_COUNTY_NAME[geoids[0]])
-  }
+  geoids = Object.values(heldDistricts).map(d => d.GEOID10.substring(0,5));
+  if (allEqual(geoids)) return(`${FULL_COUNTY_NAME[geoids[0]]}, ${CODE_TO_STATE[geoids[0].substring(0,2)]}`)
+  if (allEqual(geoids.map(g => g.substring(0,2)))) return(STATE_TO_NAME[CODE_TO_STATE[geoids[0].substring(0,2)]])
+  return null
 }
 
 function fixName(name, geoid){
@@ -175,19 +177,26 @@ function getBarGeoid(){
 }
 
 function getWikiUrl(){
-  if (['nation','state','county'].includes(geo)){
+  let s = "";
+  if (heldDistricts.length > 1) {
+    s = ""
+  } else if(['nation','state','county'].includes(geo)){
     full = WIKI_NAME[geoid].replace(/ /g,"_");
+    s = `https://en.wikipedia.org/wiki/${full}`
   } else if (['place'].includes(geo)) {
     let code = geoid.substring(0,2);
     let state = CODE_TO_STATE[code]
     let nam = STATE_TO_NAME[state];
     full = `${Object.values(heldDistricts)[0].NAME10}, ${nam}`.replace(/ /g,"_");
+    s = `https://en.wikipedia.org/wiki/${full}`
   }
-	return `https://en.wikipedia.org/wiki/${full}`
+  $("#wiki-link").attr("href", s)
+  return s
 }
 
 function setBarText(){
   $('#b-name').text(name)
+  $('#b-name').css("font-weight","900")
   if (Object.keys(heldDistricts).length > 1){
     $('#b-geoid').css('color','grey')
     $('#b-geoid').text('n/a')
@@ -198,7 +207,7 @@ function setBarText(){
   $('#b-area').text(area)
   $('#b-pop').text(numberWithCommas(pop))
   $('#b-den').text(den)
-  //$("#wiki-link").attr("href", wikiUrl)
+
 }
 
 function updateBar(e, geo, heldDistricts){
@@ -209,8 +218,8 @@ function updateBar(e, geo, heldDistricts){
   pop = getBarPop();
   den = formatDensity(pop, area);
   name = getBarName();
-  //if (geoid) wikiUrl = getWikiUrl(geoid);
-  //else wikiUrl = null
+  if (geoid) wikiUrl = getWikiUrl(geoid);
+  else wikiUrl = null
   if (area > 999) area = numberWithCommas(area)
   setBarText()
 
