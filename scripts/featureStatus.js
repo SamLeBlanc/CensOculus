@@ -8,7 +8,7 @@ function setFeatStates(variable){
     obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: d.GEOID10 });
     if (variable.endsWith("P")){
       v = variable.slice(0,-1);
-      n[variable] = d[v] / d[v.slice(0,4).concat("001")];
+      n[variable] = d[v] / d[`${v.slice(0,4)}001`];
     } else {
       n[variable] = d[variable];
     }
@@ -26,8 +26,8 @@ function featureRandomColor(s, sL){
 function hideAllLayers(){
   L = Object.keys(SOURCE_DICT)
   for(i = 1; i < L.length; i++){
-    map.setLayoutProperty(L[i].concat('-fills'),'visibility','none')
-    map.setLayoutProperty(L[i].concat('-lines'),'visibility','none')
-    map.setLayoutProperty(L[i].concat('-3d'),'visibility','none')
+    map.setLayoutProperty(`${L[i]}-fills`,'visibility','none')
+    map.setLayoutProperty(`${L[i]}-lines`,'visibility','none')
+    map.setLayoutProperty(`${L[i]}-3d`,'visibility','none')
   }
 }

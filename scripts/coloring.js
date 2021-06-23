@@ -1,62 +1,76 @@
+// Reverses the order of the current color scheme
 function reverseColorScale(){
-  var scheme = $('#color-select').find(":selected").val();
+  let scheme = $('#color-select').find(":selected").val();
   COLOR_DICT[scheme] = COLOR_DICT[scheme].reverse();
   update();
 }
 
-function colorLayer(layer_name, variable, quants){
-  console.log(COLOR_DICT)
-  var scale = $('#scale-select').find(":selected").val();
-
-  if (LINEAR_RANGE.every(element => element !== null)){
-    var extrema = LINEAR_RANGE;
+function colorLinear(){
+  let fiveStep = {};
+  if (customRanges["linearMin"] != null) {
+    fiveStep[0] = customRanges["linearMin"];
+    fiveStep[4] = customRanges["linearMax"];
   } else {
-    var extrema = [quants[0],quants[4]];
+    fiveStep[0] = QSummary[0];
+    fiveStep[4] = QSummary[1];
   }
+  let range = fiveStep[4] - fiveStep[0];
+  fiveStep[1] = fiveStep[0] + range*0.25;
+  fiveStep[2] = fiveStep[0] + range*0.5;
+  fiveStep[3] = fiveStep[0] + range*0.75;
+  return fiveStep
+}
 
-  var min = extrema[0];
-  var max = extrema[1];
-  var range = max - min;
-
-  if (scale == 'Linear'){
-    var arr = [min, min+range*0.25, min+range*0.5, min+range*0.75, max];
+function colorQuantile(){
+  let fiveStep = {};
+  if (customRanges["quantileQ0"] != null) {
+    fiveStep[0] = customRanges["quantileQ0"];
+    fiveStep[1] = customRanges["quantileQ1"];
+    fiveStep[2] = customRanges["quantileQ2"];
+    fiveStep[3] = customRanges["quantileQ3"];
+    fiveStep[4] = customRanges["quantileQ4"];
   } else {
-    var arr = quants;
+    fiveStep[0] = QSummary[0];
+    fiveStep[1] = QSummary[0.25];
+    fiveStep[2] = QSummary[0.5];
+    fiveStep[3] = QSummary[0.75];
+    fiveStep[4] = QSummary[1];
   }
+  return fiveStep
+}
 
-  if (scale == 'Quantile'){
-    arr[0] = arr[5]
-    arr[4] = arr[6]
-    arr = arr.slice(0,5)
+
+function adjustment(arr){
+  for (i=0; i < arr.length; i++){
+    arr[i] += ((i-2) * .0000001)
   }
+  return arr
+}
 
-  var geoid = $('#geo-select').find(":selected").val();
-  var scheme = $('#color-select').find(":selected").val();
+function getCustomColors(colors){
+  customColors.forEach((element, i) => {
+    if (element != null) colors[i] = customColors[i]
+  });
+  return colors
+}
+
+function colorLayer(){
   console.log('coloring')
+  var scale = $('#scale-select').find(":selected").val();
+  var scheme = $('#color-select').find(":selected").val();
 
   var colors = COLOR_DICT[scheme]
 
+  if (scale == "Linear") fiveStep = colorLinear();
+  else if (scale == "Quantile") fiveStep = colorQuantile();
 
-  colors = updateLegend(arr, colors)
-  console.log(arr)
-  setTimeout(function(){
-    for (i=0; i < arr.length; i++){
-      arr[i] += ((i-2) * .0000001)
-    }
-    map.setPaintProperty(layer_name, 'fill-color', ['case',
-      ['!=', ['feature-state', variable], null],
-      ['interpolate',
-      ['linear'], ['feature-state', variable],
-      arr[0], colors[0],
-      arr[1], colors[1],
-      arr[2], colors[2],
-      arr[3], colors[3],
-      arr[4], colors[4]
-    ],
-    'rgba(255, 0, 255, 0)'
-    ]);
-    set3DColor(arr, colors, 1000000)
-    },100 );
+  arr = Object.values(fiveStep).sort((a, b) => a - b);
+
+  colors = getCustomColors(colors)
+  updateLegend(arr, colors)
+  arr = adjustment(arr)
+  setFillPaint(arr, colors)
+  set3DPaint(arr, colors)
 }
 
 
@@ -64,19 +78,14 @@ function updateLegend(arr, colors){
   var scheme = $('#color-select').find(":selected").val();
   var colors = COLOR_DICT[scheme]
 
-  customColors.forEach((element, i) => {
-    if (element != null) colors[i] = customColors[i]
-  });
-
-  for (i=0; i<5; i++){
+  for (i = 0; i < colors.length; i++){
     if (colors[i].includes('#')){
-      var c1 = hexToRgb(colors[i])
-      colors[i] = `rgba(${c1.r}, ${c1.g}, ${c1.b}, 1)`
+      var col = hexToRgb(colors[i])
+      colors[i] = `rgba(${col.r}, ${col.g}, ${col.b}, 1)`
     }
-    $("#leg-square-".concat(i)).css("background", colors[i])
-    $("#leg-label-".concat(i)).text(formatNumber(Math.max(arr[i],0)))
+    $(`#leg-square-${i}`).css("background", colors[i])
+    $(`#leg-label-${i}`).text(formatNumber(Math.max(arr[i],0)))
   }
-  return colors
 }
 
 function hexToRgb(hex) {
@@ -86,13 +95,4 @@ function hexToRgb(hex) {
     g: parseInt(result[2], 16),
     b: parseInt(result[3], 16)
   } : null;
-}
-
-function checkUniformity(arr, colors){
-  if (Math.min.apply(Math, arr) > .999 && Math.max.apply(Math, arr) < 1) {
-    colors[0] = colors[2]
-    colors[1] = colors[2]
-    colors[3] = colors[2]
-    colors[4] = colors[2]
-  }
 }

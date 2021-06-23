@@ -177,9 +177,9 @@ function getBarGeoid(){
 }
 
 function getWikiUrl(){
-  let s = "";
+  let s = null;
   if (heldDistricts.length > 1) {
-    s = ""
+    s = null
   } else if(['nation','state','county'].includes(geo)){
     full = WIKI_NAME[geoid].replace(/ /g,"_");
     s = `https://en.wikipedia.org/wiki/${full}`
@@ -190,7 +190,10 @@ function getWikiUrl(){
     full = `${Object.values(heldDistricts)[0].NAME10}, ${nam}`.replace(/ /g,"_");
     s = `https://en.wikipedia.org/wiki/${full}`
   }
-  $("#wiki-link").attr("href", s)
+  if (s) {
+    $("#wiki-link").attr("href", s)
+    if ($('#wiki-mode').is(":checked")) window.open(s,'_blank');
+  }
   return s
 }
 
@@ -219,7 +222,6 @@ function updateBar(e, geo, heldDistricts){
   den = formatDensity(pop, area);
   name = getBarName();
   if (geoid) wikiUrl = getWikiUrl(geoid);
-  else wikiUrl = null
   if (area > 999) area = numberWithCommas(area)
   setBarText()
 

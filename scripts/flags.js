@@ -31,7 +31,7 @@ function getFlagUrlSuffix(geoid){
 
 function craftFlagUrl(suffix){
   if (suffix.substring(0,5) == '/imag') {
-    return "https://www.crwflags.com/fotw".concat(suffix)
+    return `https://www.crwflags.com/fotw${suffix}`
   } else if (suffix) {
     return suffix
   } else {

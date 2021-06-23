@@ -41,15 +41,13 @@ function createVariableDropdownSelect(id,list) {
   for (const item of list) {
     var z = document.createElement("option");
     z.setAttribute("value", item);
-    var s = " - "
-    var tag = item.concat(s).concat(TAG[item])
+    var tag = `${item} - ${TAG[item]}`
     var t = document.createTextNode(tag);
     z.appendChild(t);
     x.appendChild(z);
     var z = document.createElement("option");
-    z.setAttribute("value", item.concat("P"));
-    var s = " - "
-    var tag = item.concat("P").concat(s).concat(TAG[item.concat("P")])
+    z.setAttribute("value", `${item}P`);
+    var tag = `${item}P - ${TAG[item.concat("P")]}`
     var t = document.createTextNode(tag);
     z.appendChild(t);
     x.appendChild(z);

@@ -38,12 +38,12 @@ function replaceRepeatedTags(d){
   TAG[d.Name] = d.Label
   .replace("Total!!","")
   .replace("Total races tallied!!","");
-  TAG[(d.Name).concat("P")] = ("[%] ")
+  TAG[`${d.Name}P`] = ("[%] ")
   .concat(d.Label
     .replace("Total!!","")
     .replace("Total races tallied!!","")
   );
-  TAG[(d.Name).concat("D")] = ("[D] ")
+  TAG[`${d.Name}D`] = ("[D] ")
   .concat(d.Label
     .replace("Total!!","")
     .replace("Total races tallied!!","")

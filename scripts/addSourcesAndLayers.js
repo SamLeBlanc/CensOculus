@@ -19,11 +19,8 @@ function addFillLayer(geo){
     'type': 'fill',
     'source': SOURCE_DICT[geo],
     'source-layer': SOURCELAYER_DICT[geo],
-    'layout': {'visibility': 'visible'},
-    'paint': {
-      'fill-color': "rgba(255, 255, 255, 0)",
-      'fill-opacity' : 0,
-    },
+    'layout': {'visibility': 'none'},
+    'paint': { 'fill-opacity' : 0 },
   });
 }
 
@@ -33,6 +30,7 @@ function addExtrusionLayer(geo){
     'type': 'fill-extrusion',
     'source': SOURCE_DICT[geo],
     'source-layer': SOURCELAYER_DICT[geo],
+    'layout': {'visibility': 'none'},
     'paint': {
       'fill-extrusion-opacity': 0,
       'fill-extrusion-height': 0,
@@ -48,25 +46,7 @@ function addLineLayer(geo){
     'source': SOURCE_DICT[geo],
     'source-layer': SOURCELAYER_DICT[geo],
     'layout': {'visibility': 'none'},
-    'paint': {
-        'line-color': [
-          'case',
-          ['boolean', ['feature-state', 'hold'], false], 'rgb(231,44,220)',
-          ['boolean', ['feature-state', 'hover'], false], 'yellow', 'black',
-        ],
-        'line-width': [
-          'case',
-          ['boolean', ['feature-state', 'hold'], false], 5,
-          ['boolean', ['feature-state', 'hover'], false], 3,
-          ['boolean', ['feature-state', 'flag'], false], 1, 0,
-        ],
-        'line-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hold'], false], 1,
-          ['boolean', ['feature-state', 'hover'], false], 1,
-          ['boolean', ['feature-state', 'flag'], false], 1, 0.05,
-        ],
-      },
+    'paint': {'line-opacity' : 0 },
   });
 }
 
