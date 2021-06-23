@@ -1,9 +1,18 @@
 var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
 var LINEAR_RANGE = [null,null];
 var customColors = [null, null, null, null, null]
+let customRanges = {
+    "linearMin" : null,
+    "linearMax" : null,
+    "quantileQ0" : null,
+    "quantileQ1" : null,
+    "quantileQ2" : null,
+    "quantileQ3" : null,
+    "quantileQ4" : null,
+};
 
 function addCustomColor(i){
-  customColors[i] = $('#cpick-'.concat(i)).val()
+  customColors[i] = $(`#cpick-${i}`).val()
   //console.log(customColors)
   update()
 }
@@ -56,6 +65,8 @@ function customL(){
   }
   try{
     LINEAR_RANGE = X;
+    customRanges["linearMin"] = X[0];
+    customRanges["linearMax"] = X[1];
     update()
   } catch { }
 }
@@ -85,6 +96,11 @@ function customQ(){
   }
   try{
     QUARTILE_RANGE = Q;
+    customRanges["quantileQ0"] = X[0];
+    customRanges["quantileQ1"] = X[1];
+    customRanges["quantileQ2"] = X[2];
+    customRanges["quantileQ3"] = X[3];
+    customRanges["quantileQ4"] = X[4];
     update()
   } catch { }
 }

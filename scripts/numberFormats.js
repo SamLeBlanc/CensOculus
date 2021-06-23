@@ -34,13 +34,15 @@ function abbreviateNumber(number){   // format number to abbreviated version
 }
 
 function formatPercent(number){   // format float to string percentage
-  return (100*number).toFixed(1).concat('%')
+  return `${(100*number).toFixed(1)}%`
 }
 
 function numberWithCommas(x) {   // format int to include commas (e.g. 9888777 => 9,888,777)
   return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+
+ let QSummary = {};
 function getQuantileValues(concept, variable, geo, scale){
   data = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   if (!variable.endsWith('P')){
@@ -48,13 +50,14 @@ function getQuantileValues(concept, variable, geo, scale){
   }
   else {
     var cat = variable.slice(0,-1);
-    var cat_total = variable.slice(0,4).concat("001");
+    var cat_total = `${variable.slice(0,4)}001`;
     values = data.map(function(d) { return (d[cat] / d[cat_total]) })
   }
   values = values.sort(function(a, b){return a - b});
 
   if (scale == 'Quantile') QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1, 0.05, 0.95]
   var quants = [];
+  [...Array(101).keys()].forEach(k => QSummary[k/100] = d3.quantile(values, k/100))
   QUARTILE_RANGE.forEach((q) => quants.push(d3.quantile(values, q)));
   return quants
 }

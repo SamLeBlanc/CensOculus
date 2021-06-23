@@ -16,15 +16,19 @@ function update(){
   updateFlagMode()
 }
 
+function updatePaint(){
+
+}
+
 let hoversCreated = [];
 
 function updateGeo(){
   hideAllLayers()
   clearAllHolds()
   geo = $('#geo-select').find(":selected").val();
-  map.setLayoutProperty(geo.concat('-fills'),'visibility','visible')
-  map.setLayoutProperty(geo.concat('-lines'),'visibility','visible')
-  map.setLayoutProperty(geo.concat('-3d'),'visibility','visible')
+  map.setLayoutProperty(`${geo}-fills`,'visibility','visible')
+  map.setLayoutProperty(`${geo}-lines`,'visibility','visible')
+  map.setLayoutProperty(`${geo}-3d`,'visibility','visible')
   if (!hoversCreated.includes(geo)){
     setupHoverHoldStates(geo);
     hoversCreated.push(geo);
@@ -38,44 +42,8 @@ function updateVariable(){
   concept = $('#concept-select').find(":selected").val();
   scale = $('#scale-select').find(":selected").val();
   setFeatStates(variable)
-  layer_name = geo.concat('-fills')
   quants = getQuantileValues(concept, variable, geo, scale)
-  colorLayer(layer_name, variable, quants)
-}
-
-function set3DColor(arr, colors){
-  map.setPaintProperty(geo.concat('-3d'), 'fill-extrusion-color', ['case',
-  ['boolean', ['feature-state', 'hold'], false], 'rgb(255,0,255)',
-    ['boolean', ['feature-state', 'hover'], false], 'rgb(255,255,0)',
-    ['interpolate',
-    ['linear'], ['feature-state', variable],
-    arr[0], colors[0],
-    arr[1], colors[1],
-    arr[2], colors[2],
-    arr[3], colors[3],
-    arr[4], colors[4]
-  ],
-  ]);
-  map.setPaintProperty(geo.concat('-3d'), 'fill-extrusion-height', ['case',
-    ['!=', ['feature-state', variable], null],
-    ['interpolate',
-      ['linear'], ['feature-state', variable],
-      arr[0], 0.5,
-      arr[4], parseFloat($('#height').val())
-    ],
-  0
-  ]);
-  if (value = $('#3d-mode').is(":checked")){
-    map.setPaintProperty(geo.concat('-fills'), 'fill-opacity',0.0);
-    map.setPaintProperty(geo.concat('-3d'), 'fill-extrusion-opacity',0.8);
-    map.setPaintProperty(geo.concat('-lines'), 'line-opacity',0.0);
-    map.flyTo({pitch: 10, essential: true});
-  } else {
-    map.setPaintProperty(geo.concat('-3d'), 'fill-extrusion-opacity',0);
-    map.setPaintProperty(geo.concat('-fills'), 'fill-opacity',0.8);
-    map.setPaintProperty(geo.concat('-lines'), 'line-opacity',1);
-    map.flyTo({pitch: 0, essential: true});
-  }
+  colorLayer()
 }
 
 function updateConcept(){
@@ -88,4 +56,75 @@ function updateConcept(){
   setTimeout(function(){
     update()
   }, 2000);
+}
+
+function setLinePaint(){
+  let geo = $('#geo-select').find(":selected").val();
+  map.setPaintProperty(`${geo}-lines`,'line-color',
+    ['case',
+      ['boolean', ['feature-state', 'hold'], false], 'rgb(231,44,220)',
+      ['boolean', ['feature-state', 'hover'], false], 'yellow', 'black',
+    ]);
+  map.setPaintProperty(`${geo}-lines`,'line-width',
+    ['case',
+      ['boolean', ['feature-state', 'hold'], false], 5,
+      ['boolean', ['feature-state', 'hover'], false], 3,
+      ['boolean', ['feature-state', 'flag'], false], 1, 0,
+    ]);
+  map.setPaintProperty(`${geo}-lines`,'line-opacity',
+    ['case',
+      ['boolean', ['feature-state', 'hold'], false], 1,
+      ['boolean', ['feature-state', 'hover'], false], 1,
+      ['boolean', ['feature-state', 'flag'], false], 1, 0.05,
+    ]);
+}
+
+function setFillPaint(arr, colors){
+  let geo = $('#geo-select').find(":selected").val();
+  map.setPaintProperty(`${geo}-fills`, 'fill-opacity', 0.8);
+  map.setPaintProperty(`${geo}-fills`, 'fill-color',
+    ['interpolate',
+      ['linear'], ['feature-state', variable],
+      arr[0], colors[0],
+      arr[1], colors[1],
+      arr[2], colors[2],
+      arr[3], colors[3],
+      arr[4], colors[4]
+    ]);
+}
+
+
+function set3DPaint(arr, colors){
+  let geo = $('#geo-select').find(":selected").val();
+  map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-color',
+  ['case',
+    ['boolean', ['feature-state', 'hold'], false],'rgb(255,0,255)',
+    ['boolean', ['feature-state', 'hover'], false], 'rgb(255,255,0)',
+    ['interpolate',
+      ['linear'], ['feature-state', variable],
+      arr[0], colors[0],
+      arr[1], colors[1],
+      arr[2], colors[2],
+      arr[3], colors[3],
+      arr[4], colors[4]
+    ],
+  ]);
+  map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-height',
+    ['interpolate',
+      ['linear'], ['feature-state', variable],
+      arr[0], 0.5,
+      arr[4], parseFloat($('#height').val())
+    ]);
+
+  if (value = $('#3d-mode').is(":checked")){
+    map.setPaintProperty(`${geo}-fills`, 'fill-opacity',0.0);
+    map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-opacity',0.8);
+    map.setPaintProperty(`${geo}-lines`, 'line-opacity',0.0);
+    map.flyTo({pitch: 10, essential: true});
+  } else {
+    map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-opacity',0);
+    map.setPaintProperty(`${geo}-fills`, 'fill-opacity',0.8);
+    setLinePaint()
+    map.flyTo({pitch: 0, essential: true});
+  }
 }
