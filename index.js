@@ -20,6 +20,16 @@ function updatePaint(){
 
 }
 
+function updateTitle(){
+  if (window.innerWidth < 450){
+    $('#title').css('font-size',35)
+  } else {
+    $('#title').css('font-size',60)
+  }
+  let randomColor = Math.floor(Math.random()*16777215).toString(16);
+  $('#title').css('color',`#${randomColor}`)
+}
+
 let hoversCreated = [];
 
 function updateGeo(){
@@ -60,15 +70,17 @@ function updateConcept(){
 
 function setLinePaint(){
   let geo = $('#geo-select').find(":selected").val();
+  c1 = customColors[5] ? customColors[5] : "#e72cdc"
+  c2 = customColors[6] ? customColors[6] : "#32cc32"
   map.setPaintProperty(`${geo}-lines`,'line-color',
     ['case',
-      ['boolean', ['feature-state', 'hold'], false], 'rgb(231,44,220)',
-      ['boolean', ['feature-state', 'hover'], false], 'yellow', 'black',
+      ['boolean', ['feature-state', 'hold'], false], c1,
+      ['boolean', ['feature-state', 'hover'], false], c2, 'black',
     ]);
   map.setPaintProperty(`${geo}-lines`,'line-width',
     ['case',
-      ['boolean', ['feature-state', 'hold'], false], 5,
-      ['boolean', ['feature-state', 'hover'], false], 3,
+      ['boolean', ['feature-state', 'hold'], false], 6,
+      ['boolean', ['feature-state', 'hover'], false], 4,
       ['boolean', ['feature-state', 'flag'], false], 1, 0,
     ]);
   map.setPaintProperty(`${geo}-lines`,'line-opacity',
@@ -96,10 +108,12 @@ function setFillPaint(arr, colors){
 
 function set3DPaint(arr, colors){
   let geo = $('#geo-select').find(":selected").val();
+  c1 = customColors[5] ? customColors[5] : "#e72cdc"
+  c2 = customColors[6] ? customColors[6] : "#32cc32"
   map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-color',
   ['case',
-    ['boolean', ['feature-state', 'hold'], false],'rgb(255,0,255)',
-    ['boolean', ['feature-state', 'hover'], false], 'rgb(255,255,0)',
+    ['boolean', ['feature-state', 'hold'], false],c1,
+    ['boolean', ['feature-state', 'hover'], false], c2,
     ['interpolate',
       ['linear'], ['feature-state', variable],
       arr[0], colors[0],

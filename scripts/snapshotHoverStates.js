@@ -74,10 +74,7 @@ function setHoldState(e, geo, heldDistricts){
   return heldDistricts
 }
 function removeHoldState(geo, heldDistricts){
-  LORAX["P1"]
-    .filter(d => d["SIZE"] == geo.toUpperCase())
-    .map(d => d.GEOID10)
-    .forEach(d => {
+  Object.keys(heldDistricts).forEach(d => {
       map.setFeatureState({ source: SOURCE_DICT[geo], id: d, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
     });
 }
