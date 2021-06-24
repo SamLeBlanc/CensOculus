@@ -3,16 +3,23 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif 
 
 /* Heading */
 
-#title{ position: absolute; z-index:20; font-weight:900; font-family: 'Lato', sans-serif; font-size: 50px; margin: 5px; pointer-events: none; -webkit-text-stroke: 1px black;}
+#title{ position: absolute; z-index:20; font-weight:900; font-family: 'Lato', sans-serif; margin-left: 5px; margin-top: -5px; pointer-events: none; -webkit-text-stroke: 1px black;}
+@media (max-height: 450px) {
+  #title{font-size: 100px;}
+}
 
-.geocoder { position: absolute; z-index: 15; left: 35px; top: 0%; }
-.geolocate { position: absolute; z-index: 15; left: 0%; top: 0%; margin-top:3px; width:30px; }
+#geo-controls{ position:fixed; left:500px; top:0%; margin:5px; z-index: 6;  }
+.geocoder { position: absolute; z-index: 6; left: 35px; top: 0%; }
+.geolocate { position: absolute; z-index: 6; left: 0%; top: 0%; margin-top:3px; width:30px; }
 
 /* Legend */
 
-#legend { position: absolute; top:500px; left: 0px; z-index:10; width:100px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; color: black;}
+#legend { position: absolute; top:500px; left: 0px; z-index:6; width:100px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; color: black;}
 .legend-square { position: relative; z-index: 11; height: 15px; width: 30px; background: black; border: solid 1px black; border-radius: 5px;}
+.legend-square-outline { position: relative; z-index: 11; height: 10px; width: 25px; background: transparent; border: solid 5px black; border-radius: 5px;}
+
 .legend-label { padding: 2px; }
+#inline { position: relative; top: 0px; left: 0px; height: 5px; width: 24px; background: white; border: solid 1px black; border-radius: 3px;}
 
 
 .emoji-button {
@@ -32,7 +39,7 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 
 /* Settings and Selections */
 
-#settings { position: absolute; top:60px; left: 0%; z-index:10; margin:10px; color:white;}
+#settings { position: absolute; top:100px; left: 0%; z-index:10; margin:10px; color:white;}
 #geo-select { z-index:10; }
 #variable-select { z-index:10; }
 #color-select {z-index:10; }
@@ -44,6 +51,9 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 #move { position: absolute; padding:5px; background-color: white; border-radius: 3px; font-family: monospace;}
 table.tableA { color; white }
 table.tableA td, table.tableA th{ border-bottom: 1px solid blue;}
+
+table.tableB { border: 1px solid transparent; }
+table.tableB td, table.tableB th{ width: 150px; padding-right:25px white-space: nowrap;}
 
 /* Intro */
 

@@ -39,7 +39,6 @@ function colorQuantile(){
   return fiveStep
 }
 
-
 function adjustment(arr){
   for (i=0; i < arr.length; i++){
     arr[i] += ((i-2) * .0000001)
@@ -52,6 +51,12 @@ function getCustomColors(colors){
     if (element != null) colors[i] = customColors[i]
   });
   return colors
+}
+
+function getOutlineColors(){
+  hoverColor = $(`#cpick-5`).val()
+  heldColor = $(`#cpick-6`).val()
+  console.log(hoverColor, heldColor)
 }
 
 function colorLayer(){
@@ -67,6 +72,7 @@ function colorLayer(){
   arr = Object.values(fiveStep).sort((a, b) => a - b);
 
   colors = getCustomColors(colors)
+  getOutlineColors()
   updateLegend(arr, colors)
   arr = adjustment(arr)
   setFillPaint(arr, colors)
@@ -78,7 +84,9 @@ function updateLegend(arr, colors){
   var scheme = $('#color-select').find(":selected").val();
   var colors = COLOR_DICT[scheme]
 
-  for (i = 0; i < colors.length; i++){
+  $(`#leg-square-5`).css("border", `solid 5px ${customColors[5]}`)
+  $(`#leg-square-6`).css("border", `solid 5px ${customColors[6]}`)
+  for (i = 0; i < 5; i++){
     if (colors[i].includes('#')){
       var col = hexToRgb(colors[i])
       colors[i] = `rgba(${col.r}, ${col.g}, ${col.b}, 1)`

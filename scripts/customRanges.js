@@ -1,6 +1,6 @@
 var QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1];
 var LINEAR_RANGE = [null,null];
-var customColors = [null, null, null, null, null]
+var customColors = [null, null, null, null, null, null, null]
 let customRanges = {
     "linearMin" : null,
     "linearMax" : null,
