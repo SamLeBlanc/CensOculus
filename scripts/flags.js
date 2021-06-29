@@ -8,13 +8,14 @@ function updateFlagMode(){
     })
 }
 
-function showFlag(geoid){
+function retrieveFlagUrl(geoid){
   let geo = $('#geo-select').find(":selected").val();
   if (["nation","state","county","place"].includes(geo)) {
-    let pic = document.getElementById("flog_img");
     suffix = getFlagUrlSuffix(geoid)
     fullUrl = craftFlagUrl(suffix)
-    $('#flog_img').attr("src", fullUrl);
+    return fullUrl
+ } else {
+   return "images/noFlag.gif"
  }
 }
 

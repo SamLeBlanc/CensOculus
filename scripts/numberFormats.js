@@ -7,6 +7,10 @@ function formatNumber(num){   // find and create the desired number format
   return num
 }
 
+function formatPercent2(num){
+  return `${Math.round(num*100)/1000}%`
+}
+
 function metersSq2MilesSq(metersSq){
   let milesSq = metersSq / 2590000
   if (milesSq > 30) return Math.round(milesSq)
