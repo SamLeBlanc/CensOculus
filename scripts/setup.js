@@ -11,10 +11,27 @@ function setUpAll(){   // setup function called on first page load
 
 function openNav() {
   if ($('#mySidebar').width() > 20){
-    $('#mySidebar').width(0);
+    closeNav()
   } else if (window.innerWidth < 450){
     $('#mySidebar').width(window.innerWidth);
   } else {
-    $('#mySidebar').width(360);
+    $('#mySidebar').width(385);
   }
+}
+
+function closeNav(){
+  $('#mySidebar').width(0);
+}
+
+function openNav2() {
+  if (window.innerWidth < 450){
+    $('#mySidebar2').width(window.innerWidth);
+  } else {
+    $('#mySidebar2').width(360);
+    $('#mySidebar2').css('left',window.innerWidth - 380)
+  }
+}
+
+function closeNav2() {
+  $('#mySidebar2').css('left',window.innerWidth + 200)
 }

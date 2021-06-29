@@ -26,9 +26,12 @@ function updateTitle(){
   } else {
     $('#title').css('font-size',60)
   }
-  let randomColor = Math.floor(Math.random()*16777215).toString(16);
-  $('#title').css('color',`#${randomColor}`)
+  const randomColor = () => Math.floor(Math.random()*16777215).toString(16);
+  const randomLineColor = () => Math.floor(Math.floor(1 + Math.random()*3)*5592405).toString(16);
+  $('#title').css('color',`#${randomColor()}`)
+  $('#title').css('-webkit-text-stroke',`1.5px #${randomLineColor()}`)
 }
+
 
 let hoversCreated = [];
 

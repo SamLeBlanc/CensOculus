@@ -1,9 +1,5 @@
 function setupHoverHoldStates(geo){
-  map.on('mousemove', LAYER_DICT[geo], e => {
-    onHoverStart(e, geo)
-    removeHoverState(geo,hoveredId)
-    hoveredId = setHoverState(e,geo,hoveredId)
-  });
+  map.on('mousemove', LAYER_DICT[geo], e => one(e));
   map.on('mouseleave', LAYER_DICT[geo], () => {
     onHoverFinish()
     removeHoverState(geo,hoveredId)
@@ -25,6 +21,13 @@ function setupHoverHoldStates(geo){
     }
   });
 }
+
+function one(e){
+  onHoverStart(e, geo)
+  removeHoverState(geo,hoveredId)
+  hoveredId = setHoverState(e,geo,hoveredId)
+}
+
 
 function holdDistrict(e, geo, heldDistricts){
   console.log('start -> holdDistrict',heldDistricts)
@@ -56,6 +59,7 @@ function removeHoverState(geo,hoveredId){
   hoveredId = null;
 }
 
+
 function setHoldState(e, geo, heldDistricts){
   console.log('set hold state')
   if (e.features.length > 0) {
@@ -80,29 +84,39 @@ function removeHoldState(geo, heldDistricts){
 }
 
 function onHoverStart(e,geo){
+  $('#move').css('padding',"5px")
   variable = $('#variable-select').find(":selected").val();
   map.getCanvas().style.cursor = "crosshair";
   let geoid = e.features[0].properties.GEOID10;
   var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
   var arr = createMoveTableArray([variable], e.features[0].properties.NAME10, obj)
   addMoveTable(arr)
-  if ($('#flag-mode').is(":checked")) showFlag(geoid)
+  if ($('#flag-mode').is(":checked")) {
+    u = retrieveFlagUrl(geoid)
+    $('#flog_img').attr("src", u);
+    $('#flog_img2').attr("src", u);
+  }
 }
 
 function onHoverFinish(){
+  $('#move').css('padding',"0px")
   map.getCanvas().style.cursor = "";
   $('#move').text("")
   document.getElementById("flog_img").src = ""
 }
 
 function onHoldStart(e, geo, heldDistricts){
+  console.log("hold start")
   if (Object.keys(heldDistricts).length > 0){
+    openNav2()
     updateBar(e, geo, heldDistricts)
   }
 }
 
 function onHoldFinish(){
+  console.log("hold finish")
   $("#bar").css("z-index", 0);
+  closeNav2()
 }
 
 function getBarArea(){
@@ -207,7 +221,30 @@ function setBarText(){
   $('#b-area').text(area)
   $('#b-pop').text(numberWithCommas(pop))
   $('#b-den').text(den)
+  $('#flag-link').attr("href", url_)
+  $('#held-data').text("")
 
+  heldData = {};
+  H = LORAX[concept].filter(d => (Object.keys(heldDistricts).includes(d.GEOID10) && d.SIZE == geo.toUpperCase() ) )
+  for (const v in H[0]) {
+    if (typeof H[0][v] == 'number') heldData[v] = 0;
+  }
+  H.forEach(h => {
+      for (const v in h) {
+        if (typeof h[v] == 'number'){
+          heldData[v] += h[v];
+        }
+      }
+    })
+  arr = []
+  for (const v in heldData) {
+    if (typeof heldData[v] == 'number'){
+      n = heldData[v] / heldData[`${v.slice(0,4)}001`];
+    }
+    if (!['GEOID10','SIZE'].includes(v)) arr.push([v, numberWithCommas(heldData[v]), formatPercent(n)])
+  }
+  for (const n in heldData)
+  addheldTable(arr)
 }
 
 function updateBar(e, geo, heldDistricts){
@@ -218,6 +255,7 @@ function updateBar(e, geo, heldDistricts){
   pop = getBarPop();
   den = formatDensity(pop, area);
   name = getBarName();
+  url_ = retrieveFlagUrl(geoid)
   if (geoid) wikiUrl = getWikiUrl(geoid);
   if (area > 999) area = numberWithCommas(area)
   setBarText()

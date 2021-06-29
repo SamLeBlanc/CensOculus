@@ -21,6 +21,29 @@ function addMoveTable(arr) {
   myTableDiv.appendChild(table)
 }
 
+function addheldTable(arr) {
+  if ($("#held-table")){
+    $("#held-table").remove();
+  }
+  var myTableDiv = document.getElementById("held-data")
+  var table = document.createElement('TABLE')
+  var tableBody = document.createElement('TBODY')
+  table.id = 'held-table'
+  table.className = 'tableC'
+  table.appendChild(tableBody);
+
+  for (i = 0; i < arr.length; i++) {
+    var tr = document.createElement('TR');
+    for (j = 0; j < arr[i].length; j++) {
+      var td = document.createElement('TD')
+      td.appendChild(document.createTextNode(arr[i][j]));
+      tr.appendChild(td)
+    }
+    tableBody.appendChild(tr);
+  }
+  myTableDiv.appendChild(table)
+}
+
 function createMoveTableArray(s,geoid,obj){
   var arr = [];
   arr.push([geoid,""])

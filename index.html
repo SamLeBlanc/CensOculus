@@ -14,7 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/sidebar.css">
   <script type="text/javascript" src="index.js"></script>
@@ -35,120 +35,153 @@
 </head>
 <body>
 
-<div id="map"></div>
-<div id="mySidebar" class="sidebar">
-  <div id="settings" style="font-weight:bold;">
-    <table class="tableB" id="tabeleta" >
-      <tr>
-        <td>
-          <span style="color:red; font-size: 1.2em; ">Data</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>Year</td>
-        <td>
-          <div id="year-select" onchange="update()">
-            <select style="width:199px;">
-              <option value="2010">2010</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Geography</td>
-        <td>
-          <div id="geo-select" onchange="update();">
-            <select style="width:199px;">
-              <option value="nation">Nation</option>
-              <option value="state">State</option>
-              <option value="county">County</option>
-              <option value="csub">County Subdivision</option>
-              <option value="place">Place</option>
-              <option value="tract">Tract</option>
-              <option value="group">Group</option>
-              <option value="metroSA">Metro/Micro Stat Area</option>
-              <option value="urban">Urban Area</option>
-              <option value="zip">Zip Code</option>
-              <option value="uschool">Unified School District</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Concept</td>
-        <td>
-          <div id="concept-select" onchange="updateConcept()">
-            <select style="width:199px;">
-              <option value="P1">P1 - TOTAL POPULATION </option>
-              <option value="P2">P2 - URBAN AND RURAL</option>
-              <option value="P3">P3 - RACE</option>
-              <option value="P4">P4 - HISPANIC OR LATINO ORIGIN</option>
-              <option value="P5">P5 - HISPANIC OR LATINO ORIGIN BY RACE</option>
-              <option value="P6">P6 - RACE (TOTAL RACES TALLIED)</option>
-              <option value="P7">P7 - HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
-              <option value="P8">P8 - RACE</option>
-              <option value="P9">P9 - HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
-              <option value="P10">P10 - RACE FOR THE POPULATION 18 YEARS AND OVER</option>
-              <option value="H1">H1 - HOUSING UNITS</option>
-              <option value="H2">H2 - URBAN AND RURAL</option>
-              <option value="H3">H3 - OCCUPANCY STATUS</option>
-              <option value="H4">H4 - TENURE</option>
-              <option value="H5">H5 - VACANCY STATUS</option>
-              <option value="H6">H6 - RACE OF HOUSEHOLDER</option>
-              <option value="H7">H7 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER BY RACE OF HOUSEHOLDER</option>
-              <option value="H8">H8 - TOTAL RACES TALLIED FOR HOUSEHOLDERS</option>
-              <option value="H9">H9 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDERS BY TOTAL RACES TALLIED</option>
-              <option value="H10">H10 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS</option>
-              <option value="H11">H11 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS BY TENURE</option>
-              <option value="H12">H12 - AVERAGE HOUSEHOLD SIZE OF OCCUPIED HOUSING UNITS BY TENURE</option>
-              <option value="H13">H13 - HOUSEHOLD SIZE</option>
-              <option value="H14">H14 - TENURE BY RACE OF HOUSEHOLDER</option>
-              <option value="H15">H15 - TENURE BY HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER</option>
-              <option value="H16">H16 - TENURE BY HOUSEHOLD SIZE</option>
-              <option value="H17">H17 - TENURE BY AGE OF HOUSEHOLDER</option>
-              <option value="H18">H18 - TENURE BY HOUSEHOLD TYPE BY AGE OF HOUSEHOLDER</option>
-              <option value="H19">H19 - TENURE BY PRESENCE OF PEOPLE UNDER 18 YEARS (EXCLUDING HOUSEHOLDERS, SPOUSES, AND UNMARRIED PARTNERS)</option>
-              <option value="H20">H20 - OCCUPIED HOUSING UNITS SUBSTITUTED</option>
-              <option value="H21">H21 - ALLOCATION OF VACANCY STATUS</option>
-              <option value="H22">H22 - ALLOCATION OF TENURE</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Variable</td>
-        <td>
-          <div id="variable-select" onchange="update()">
-            <select id="SS" style="width:199px;">
-              <option value="P001001" onclick="update()" selected>P001001</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:black;">.</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:Orange; font-size: 1.2em; ">3D</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>3D</td>
-        <td>
-          <div>
-            <input type="checkbox" id="3d-mode" name="3d-mode" onclick="updateVariable()">
-          </div>
-        </td>
-      </tr>
+  <div id="map"></div>
+  <div id="mySidebar2" class="sidebar" style="background-color: grey; padding: 10px">
+    <div style="padding-bottom: 5px;">
+      <span id="b-name" style="font-size: 25px;"></span>
+    </div>
+    <div>
+      <div>
+        <img class="tag-label" src="images/tag-pop.png">
+        <span id="b-pop"></span>
+        <span>👤</span>
+      </div>
+      <div>
+        <img class="tag-label" src="images/tag-geoid.png">
+        <span id="b-geoid"></span>
+      </div>
+      <div>
+        <img class="tag-label" src="images/tag-area.png">
+        <span id="b-area"></span>
+        <span>mi<sup>2</sup></span>
+      </div>
+      <div>
+        <img class="tag-label" src="images/tag-den.png">
+        <span id="b-den"></span>
+        <span>👤/mi<sup>2</sup></span>
+      </div>
+      <div style="padding: 5px; font-size:16px;">
+        <a id="wiki-link" href="" target="_blank">Wiki</a>
+        &nbsp&nbsp
+        <a id="flag-link" href="" target="_blank">Flag</a>
+      </div>
+      <div id="held-data">      </div>
+    </div>
+
+  </div>
+  <div id="mySidebar" style="background-color: black;" class="sidebar">
+    <div id="settings" style="font-weight:bold;">
+      <table class="tableB" id="tabeleta" >
+        <tr>
+          <td>
+            <span style="color:red; font-size: 1.2em; ">Data</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>Year</td>
+          <td>
+            <div id="year-select" onchange="update()">
+              <select style="width:199px;">
+                <option value="2010">2010</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Geography</td>
+          <td>
+            <div id="geo-select" onchange="update();">
+              <select style="width:199px;">
+                <option value="nation">Nation</option>
+                <option value="state">State</option>
+                <option value="county">County</option>
+                <option value="csub">County Subdivision</option>
+                <option value="place">Place</option>
+                <option value="tract">Tract</option>
+                <option value="group">Group</option>
+                <option value="metroSA">Metro/Micro Stat Area</option>
+                <option value="urban">Urban Area</option>
+                <option value="zip">Zip Code</option>
+                <option value="uschool">Unified School District</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Concept</td>
+          <td>
+            <div id="concept-select" onchange="updateConcept()">
+              <select style="width:199px;">
+                <option value="P1">P1 - TOTAL POPULATION </option>
+                <option value="P2">P2 - URBAN AND RURAL</option>
+                <option value="P3">P3 - RACE</option>
+                <option value="P4">P4 - HISPANIC OR LATINO ORIGIN</option>
+                <option value="P5">P5 - HISPANIC OR LATINO ORIGIN BY RACE</option>
+                <option value="P6">P6 - RACE (TOTAL RACES TALLIED)</option>
+                <option value="P7">P7 - HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
+                <option value="P8">P8 - RACE</option>
+                <option value="P9">P9 - HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
+                <option value="P10">P10 - RACE FOR THE POPULATION 18 YEARS AND OVER</option>
+                <option value="H1">H1 - HOUSING UNITS</option>
+                <option value="H2">H2 - URBAN AND RURAL</option>
+                <option value="H3">H3 - OCCUPANCY STATUS</option>
+                <option value="H4">H4 - TENURE</option>
+                <option value="H5">H5 - VACANCY STATUS</option>
+                <option value="H6">H6 - RACE OF HOUSEHOLDER</option>
+                <option value="H7">H7 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER BY RACE OF HOUSEHOLDER</option>
+                <option value="H8">H8 - TOTAL RACES TALLIED FOR HOUSEHOLDERS</option>
+                <option value="H9">H9 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDERS BY TOTAL RACES TALLIED</option>
+                <option value="H10">H10 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS</option>
+                <option value="H11">H11 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS BY TENURE</option>
+                <option value="H12">H12 - AVERAGE HOUSEHOLD SIZE OF OCCUPIED HOUSING UNITS BY TENURE</option>
+                <option value="H13">H13 - HOUSEHOLD SIZE</option>
+                <option value="H14">H14 - TENURE BY RACE OF HOUSEHOLDER</option>
+                <option value="H15">H15 - TENURE BY HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER</option>
+                <option value="H16">H16 - TENURE BY HOUSEHOLD SIZE</option>
+                <option value="H17">H17 - TENURE BY AGE OF HOUSEHOLDER</option>
+                <option value="H18">H18 - TENURE BY HOUSEHOLD TYPE BY AGE OF HOUSEHOLDER</option>
+                <option value="H19">H19 - TENURE BY PRESENCE OF PEOPLE UNDER 18 YEARS (EXCLUDING HOUSEHOLDERS, SPOUSES, AND UNMARRIED PARTNERS)</option>
+                <option value="H20">H20 - OCCUPIED HOUSING UNITS SUBSTITUTED</option>
+                <option value="H21">H21 - ALLOCATION OF VACANCY STATUS</option>
+                <option value="H22">H22 - ALLOCATION OF TENURE</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Variable</td>
+          <td>
+            <div id="variable-select" onchange="update()">
+              <select id="SS" style="width:199px;">
+                <option value="P001001" onclick="update()" selected>P001001</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:black;">.</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:Orange; font-size: 1.2em; ">3D</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>3D</td>
+          <td>
+            <div>
+              <input type="checkbox" id="3d-mode" name="3d-mode" onclick="updateVariable()">
+            </div>
+          </td>
+        </tr>
         <tr>
           <td>3D Height</td>
           <td>
@@ -156,269 +189,197 @@
               <input id="height" type="range" min="10" max="3000000" step="20000" value="100000" oninput="updateVariable()">
             </div>
           </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:black;">.</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:Yellow; font-size: 1.2em; ">Colors</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>Color<span style="color:black;">-</span>Scheme<span style="color:black;">.</span></td>
-        <td>
-          <div id="color-select" onchange="customColors=[null,null,null,null,null]; update()">
-            <select style="width:145px;">
-              <option value="Viridis">Viridis</option>
-              <option value="Red">Red</option>
-              <option value="Blue">Blue</option>
-              <option value="Green">Green</option>
-              <option value="Purple">Purple</option>
-              <option value="Black">Black</option>
-              <option value="Rainbow">Rainbow</option>
-              <option value="Viridis Light">Viridis Light</option>
-              <option value="Greyscale">Greyscale</option>
-              <option value="Heat">Heat</option>
-              <option value="Magma">Magma</option>
-              <option value="Brown-Teal">Brown-Teal</option>
-              <option value="Blue-Red">Blue-Red</option>
-              <option value="Green II">Green II</option>
-              <option value="Purple II">Purple II</option>
-              <option value="Ocean">Ocean</option>
-              <option value="Valentine">Valentine</option>
-              <option value="Forest">Forest</option>
-              <option value="Burnt Toast">Yellow-Orange-Brown</option>
-              <option value="Cividis">Cividis</option>
-              <option value="Plasma">Plasma</option>
-              <option value="Warm">Warm</option>
-              <option value="Cool">Cool</option>
-              <option value="Barney">Barney</option>
-              <option value="Watermelon">Watermelon</option>
-            </select>
-            <button style="width: 49px;" onclick="reverseColorScale()">Invert</button>
-          </div>
-        </td>
-      </tr>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:black;">.</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:Yellow; font-size: 1.2em; ">Colors</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>Color<span style="color:black;">-</span>Scheme<span style="color:black;">.</span></td>
+          <td>
+            <div id="color-select" onchange="customColors=[null,null,null,null,null]; update()">
+              <select style="width:145px;">
+                <option value="Viridis">Viridis</option>
+                <option value="Red">Red</option>
+                <option value="Blue">Blue</option>
+                <option value="Green">Green</option>
+                <option value="Purple">Purple</option>
+                <option value="Black">Black</option>
+                <option value="Rainbow">Rainbow</option>
+                <option value="Viridis Light">Viridis Light</option>
+                <option value="Greyscale">Greyscale</option>
+                <option value="Heat">Heat</option>
+                <option value="Magma">Magma</option>
+                <option value="Brown-Teal">Brown-Teal</option>
+                <option value="Blue-Red">Blue-Red</option>
+                <option value="Green II">Green II</option>
+                <option value="Purple II">Purple II</option>
+                <option value="Ocean">Ocean</option>
+                <option value="Valentine">Valentine</option>
+                <option value="Forest">Forest</option>
+                <option value="Burnt Toast">Yellow-Orange-Brown</option>
+                <option value="Cividis">Cividis</option>
+                <option value="Plasma">Plasma</option>
+                <option value="Warm">Warm</option>
+                <option value="Cool">Cool</option>
+                <option value="Barney">Barney</option>
+                <option value="Watermelon">Watermelon</option>
+              </select>
+              <button style="width: 49px;" onclick="reverseColorScale()">Invert</button>
+            </div>
+          </td>
+        </tr>
 
-      <tr>
-        <td>Scale</td>
-        <td>
-          <div id="scale-select">
-            <select style="width:199px;" onchange="update()">
-              <option value="Linear" >Linear</option>
-              <option value="Quantile" >Quantile</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:black;">.</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:Green; font-size: 1.2em; ">Numbers</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>Num Format</td>
-        <td>
-          <div id="numformat-select" onchange="update()">
-            <select style="width:199px;">
-              <option value="short">Short</option>
-              <option value="comma">Commas</option>
-            </select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:black;">.</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:Blue; font-size: 1.2em; ">Selection</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>Accumulate</td>
-        <td>
-          <div>
-            <input type="checkbox" id="accumulate" name="accumulate" onclick="clearAllHolds()">
-            <button onclick="clearAllHolds()">Clear Holds</button>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:black;">.</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:Purple; font-size: 1.2em; ">Modes</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>Flag Mode</td>
-        <td>
-          <div>
-            <input type="checkbox" id="flag-mode" name="flag-mode" onclick="updateFlagMode()">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Wiki Mode</td>
-        <td>
-          <div>
-            <input type="checkbox" id="wiki-mode" name="wiki-mode">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:black;">.</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <span style="color:#e72cdc; font-size: 1.2em; ">Map<span style="color:black;">..</span>Viewing</span>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>Views</td>
-        <td>
-          <div>
-            <button onclick="lower48View()">Lower 48</button>
-            <button onclick="alaskaView()">AK</button>
-            <button onclick="hawaiiView()">HI</button>
-            <button onclick="puertoRicoView()">PR</button>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Zoom</td>
-        <td>
-          <div>
-            <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="updateZoom(this.value)">
-            <span id="zoom-label">3.6</span>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>Pitch</td>
-        <td>
-          <div>
-            <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="updatePitch(this.value)">
-            <span id="pitch-label">0</span>
-          </div>
-        </td>
-      </tr>
-      <!-- <tr>
-        <td>Pan</td>
-        <td>
-          <div>
-            <table>
-            <thead>
-              <tr>
-                <td><button class="emoji-button" onclick="panMap([-100,-100])">↖️</button></td>
-                <td><button class="emoji-button" onclick="panMap([0,-100])">⬆️</button></td>
-                <td><button class="emoji-button" onclick="panMap([100,-100])">↗️</button></td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><button class="emoji-button" onclick="panMap([-100,0])">⬅️</button></td>
-                <td></td>
-                <td><button class="emoji-button" onclick="panMap([100,0])">➡️</button></td>
-              </tr>
-              <tr>
-                <td><button class="emoji-button" onclick="panMap([-100,100])">↙️</button></td>
-                <td><button class="emoji-button" onclick="panMap([0,100])">⬇️</button></td>
-                <td><button class="emoji-button" onclick="panMap([100,100])">↘️</button></td>
-              </tr>
-            </tbody>
-            </table>
-          </div>
-        </td>
-      </tr> -->
-      <tr>
-        <td>
-        </td>
-        <td>
-          <span style="color:black">.</span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-        </td>
-        <td>
-          <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="openNav()">Close Settings</button>
-        </td>
-      </tr>
-
-
-
-
-    </table>
-    <!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
-  </div>
+        <tr>
+          <td>Scale</td>
+          <td>
+            <div id="scale-select">
+              <select style="width:199px;" onchange="update()">
+                <option value="Linear" >Linear</option>
+                <option value="Quantile" >Quantile</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:black;">.</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:Green; font-size: 1.2em; ">Numbers</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>Num Format</td>
+          <td>
+            <div id="numformat-select" onchange="update()">
+              <select style="width:199px;">
+                <option value="short">Short</option>
+                <option value="comma">Commas</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:black;">.</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:Blue; font-size: 1.2em; ">Selection</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>Accumulate</td>
+          <td>
+            <div>
+              <input type="checkbox" id="accumulate" name="accumulate" onclick="clearAllHolds()">
+              <button onclick="clearAllHolds()">Clear Holds</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:black;">.</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:Purple; font-size: 1.2em; ">Modes</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>Flag Mode</td>
+          <td>
+            <div>
+              <input type="checkbox" id="flag-mode" name="flag-mode" onclick="updateFlagMode()">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Wiki Mode</td>
+          <td>
+            <div>
+              <input type="checkbox" id="wiki-mode" name="wiki-mode">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:black;">.</span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="color:#e72cdc; font-size: 1.2em; ">Map<span style="color:black;">..</span>Viewing<span style="color:black;">..</span></span>
+          </td>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>Views</td>
+          <td>
+            <div>
+              <button onclick="lower48View()">Lower 48</button>
+              <button onclick="alaskaView()">AK</button>
+              <button onclick="hawaiiView()">HI</button>
+              <button onclick="puertoRicoView()">PR</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Zoom</td>
+          <td>
+            <div>
+              <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="updateZoom(this.value)">
+              <span id="zoom-label">3.6</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Pitch</td>
+          <td>
+            <div>
+              <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="updatePitch(this.value)">
+              <span id="pitch-label">0</span>
+            </div>
+          </td>
+        </tr>
+</table>
+<!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
 </div>
-<div id="bar">
-  <div>
-    <span id="b-name" style="font-size: 25px;"></span>
-  </div>
-  <div>
-    <div>
-      <img class="tag-label" src="images/tag-pop.png">
-      <span id="b-pop"></span>
-      <span>👤</span>
-    </div>
-    <div>
-      <img class="tag-label" src="images/tag-geoid.png">
-      <span id="b-geoid"></span>
-    </div>
-    <div>
-      <img class="tag-label" src="images/tag-area.png">
-      <span id="b-area"></span>
-      <span>mi<sup>2</sup></span>
-    </div>
-    <div>
-      <img class="tag-label" src="images/tag-den.png">
-      <span id="b-den"></span>
-      <span>👤/mi<sup>2</sup></span>
-    </div>
-    <div style="padding-top: 4px; color: black; ">
-     <a id="wiki-link" href="" target="_blank">Wiki</a>
-     &nbsp
-     <a id="flag-link" href="" target="_blank">Flag</a>
-   </div>
-  </div>
+<div style="padding: 20px; ">
+</div>
+<div style="width: 50%; margin: 0 auto; white-space: nowrap;">
+  <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav()">Close Settings</button>
+</div>
 </div>
 <div id="move" style="z-index:50"></div>
 <!-- <div id="click" style="z-index:50"></div> -->
@@ -427,10 +388,10 @@
   <div id="geocoder" class="geocoder"></div>
 </div>
 <div id="title">2010 Census Mapper</div>
-<div style="position:relative; z-index:9; top: 65px;">
+<div style="position:fixed; z-index:9; top: 65px;">
   <button class="openbtn" onclick="openNav()">⚙️ Settings</button>
 </div>
-<div id="flag-div" style="z-index:100;">
+<div id="flag-div" style="z-index:6;">
   <img id="flog_img" style="width: auto;height: 300px;" src="">
 </div>
 
@@ -482,14 +443,14 @@
   </div>
 </div>
 <!-- <div id="intro">
-  <div>
-    <span id = "intro-title"></span>
-  </div>
-  <br>
-  <div style="width:480px; padding: 5px; border-radius: 10px;">
-    <span id = "intro-text" style="font-weight:bold;"></span>
-    <button id="next-1" class="next-button" style="opacity: 0" onclick="holder()">➜</button>
-  </div>
+<div>
+<span id = "intro-title"></span>
+</div>
+<br>
+<div style="width:480px; padding: 5px; border-radius: 10px;">
+<span id = "intro-text" style="font-weight:bold;"></span>
+<button id="next-1" class="next-button" style="opacity: 0" onclick="holder()">➜</button>
+</div>
 </div> -->
 <!-- <div id="current-view">
 <span style="font-size:20px;">Current Map View:<br></span>
@@ -504,6 +465,14 @@ $(document).on('mousemove', function(e){
   });
 });
 
+$('#geo-controls').css('top',window.innerHeight-45)
+$('#geo-controls').css('left',550)
+$('#mySidebar2').css('left',window.innerWidth)
+//$('#mySidebar2').css('height',window.innerHeight-20)
+$('#mySidebar').css('top', "65px")
+//$('#mySidebar').css('height', window.innerHeight-65)
+let h = parseInt($('#legend').css("height").slice(0,-2))
+$('#legend').css('top', `${window.innerHeight - h - 35}px`)
 
 LORAX = {}
 updateTitle()
@@ -519,9 +488,9 @@ var map = new mapboxgl.Map({
 });
 
 var geolocate = new mapboxgl.GeolocateControl({
-    positionOptions: { enableHighAccuracy: true  },
-    trackUserLocation: true
-  });
+  positionOptions: { enableHighAccuracy: true  },
+  trackUserLocation: true
+});
 
 var geocoder = new MapboxGeocoder({
   accessToken: mapboxgl.accessToken,
