@@ -2,7 +2,7 @@
 *(still in beta until the release of 2020 Census data in ~August)*
 
 ## What is CensusMapper?
-CensusMapper is an browser-based, interactive mapping application used to visualize the results of the [United States Census](https://en.wikipedia.org/wiki/United_States_census). Developed with [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs), CensusMapper empowers users to create complex data visualizations perfectly tailored to fit their needs. 
+CensusMapper is a browser-based, interactive mapping application used to visualize the results of the [United States Census](https://en.wikipedia.org/wiki/United_States_census). Developed with [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs), CensusMapper empowers users to create complex data visualizations perfectly tailored to fit their needs. 
 <p align="center">
   <img src="https://github.com/SamLeBlanc/Census-Mapper/blob/main/images/readMeImage2.png" width="800">
   <br>
