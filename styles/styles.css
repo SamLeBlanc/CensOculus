@@ -1,46 +1,81 @@
-body { margin: 0; padding: 0; font-family: Helvetica; overflow: hidden}
+body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; z-index:5; overflow: hidden}
-#move { position: absolute; padding:5px; background-color: white; border-radius: 3px; font-family: monospace;}
-#legend { position: absolute; top:500px; left: 0px; z-index:10; width:100px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; }
-.legend-square { position: relative;; z-index: 11; height: 15px; width: 30px; background: black; border: solid 1px black; border-radius: 5px;}
+
+/* Heading */
+
+#title{ position: absolute; z-index:20; font-weight:700; font-family: 'Lato', sans-serif; margin-left: 5px; margin-top: -5px; pointer-events: none; -webkit-text-stroke: 2px grey;}
+@media (max-height: 450px) {
+  #title{font-size: 100px;}
+}
+
+#geo-controls{ position:fixed; margin:5px; z-index: 6;  }
+.geocoder { position: absolute; z-index: 6; left: 35px; top: 0%; }
+.geolocate { position: absolute; z-index: 6; left: 0%; top: 0%; margin-top:3px; width:30px; }
+
+/* Legend */
+
+#legend { position: absolute; left: 65%; z-index:6; width:100px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; color: black;}
+.legend-square { position: relative; z-index: 11; height: 15px; width: 30px; background: black; border: solid 1px black; border-radius: 5px;}
+.legend-square-outline { position: relative; z-index: 11; height: 10px; width: 25px; background: transparent; border: solid 5px black; border-radius: 5px;}
+
 .legend-label { padding: 2px; }
+#inline { position: relative; top: 0px; left: 0px; height: 5px; width: 24px; background: white; border: solid 1px black; border-radius: 3px;}
+
+
+.emoji-button {
+    font-size: 1.4em;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+/* Legend Custom Colors */
+
+input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; border: none; }
+.color-picker-wrapper { position:fixed; z-index:100; margin-left:3px; margin-top:2px; float: left; }
+
+/* Settings and Selections */
+
+#settings { position: relative; top:50px; left: 0%; z-index:10; margin:10px; color:white; white-space: nowrap;}
 #geo-select { z-index:10; }
 #variable-select { z-index:10; }
 #color-select {z-index:10; }
-#T { position: absolute; top:0%; left: 0%; z-index:10; margin:10px;}
 #numformat-select { z-index:10; }
 #scale-select { z-index:10; }
-#intro { position: fixed; z-index:100; padding: 10px; pointer-events: none; }
-#current-view { position: sticky; width:300px; height: 200px; float:right; margin: 20px; z-index: 10;}
-table.tableA { }
+
+/* move */
+
+#move { position: absolute; background-color: white; border-radius: 3px; font-family: monospace;}
+table.tableA { color; white }
 table.tableA td, table.tableA th{ border-bottom: 1px solid blue;}
+
+table.tableB { border: 1px solid transparent; }
+table.tableB td, table.tableB th{ width: 150px; padding-right:25px; white-space: nowrap;}
+
+table.tableC {  }
+table.tableC td, table.tableC th{ border: 1px solid black; width: 250px; padding-right:25px; }
+
+/* Intro */
+
+#intro { position: fixed; z-index:100; padding: 10px; pointer-events: none; }
 .next-button { background-color: transparent; border: solid 3px black; border-radius: 20px; color: black; padding: 5px 10px; text-align: center; display: inline-block; font-size: 16px; animation: blinker 2.5s linear infinite; pointer-events: all; }
-table.QQ, table.QQ td, table.QQ th{ border: 1px solid red; border-bottom: 1pt solid grey; }
-@keyframes blinker { 50% { opacity: 0; } }
-table.tableB { }
-table.tableB td, table.tableB th{ border: 1px solid transparent;}
 
-input[type="color"] {
-  opacity: 0;
-  display: block;
-  width: 26px;
-  height: 12px;
-  border: none;
-}
-.color-picker-wrapper {
-  position:fixed;
-  z-index:100;
-  margin-left:3px;
-  margin-top:2px;
-  float: left;
+#flag-div{
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
 }
 
-t { font-size: 40px; font-weight:bold; }
-st1 { font-size: 26px; font-weight: 900; color: #0000FF; }
-f0 { font-size: 70px; }
-f1 { font-size: 60px; }
-f2 { font-size: 50px; }
-f3 { font-size: 40px; }
-f4 { font-size: 35px; }
-f5 { font-size: 30px; }
-a { pointer-events: all; }
+.tag-label{
+  vertical-align:middle;
+  width:auto;
+  height:20px;
+  padding: 3px;
+}
+
+#bar{
+  position: absolute; background: white; z-index:0; top: 0%; left:270%; min-width: 350px; padding:8px 14px 8px 14px; margin: 10px; border: 4px solid black; border-radius: 10px; display: inline-block;
+}

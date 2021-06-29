@@ -1,27 +1,51 @@
-function loadDataFromCSV(){
-  console.log('Loading data, please wait...')
-  d3.csv("/data/full3.csv").then(function(data) {
-    keys = Object.keys(data[0])
-    data.forEach(function(d) {
-      keys.forEach(function(k) { if (k != 'GEOID10' && k != 'SIZE') d[k] = +d[k] })
+function loadDataFromCSV(concept){
+  d3.csv(`data/2010/${concept}.csv`).then(data => {
+    let keys = Object.keys(data[0]);
+    data.forEach(d => {
+      keys.forEach(k => {
+        if (k != 'GEOID10' && k != 'SIZE') d[k] = +d[k];
+      })
     });
-    DATA = data.filter(function(d){ return true })
-    console.log('Data loaded')
+    LORAX[concept] = data.filter( () => true );
   });
 }
 
-function countyFilter(d){
-  return d.GEOID10.length == 5
+function loadFlagData(){
+  d3.csv(`data/flagData6.csv`).then(data => {
+    FLAGS = data.filter( () => true );
+  });
 }
 
-function tractFilter(d){
-  return d.GEOID10.length == 11
+function getVariableListByConcept(concept){
+  d3.csv(`data/2010/Variables_10.csv`).then(data => {
+    D = data.filter(d => d["Group"] == concept)
+  }).then(() => {
+    VLbC[concept] = [];
+    D.forEach(d => {
+      VLbC[concept].push(d.Name)
+    })
+  })
 }
 
-function groupFilter(d){
-  return d.GEOID10.length == 12
+
+function getVariableLabelList(){
+  d3.csv(`data/2010/Variables_10.csv`).then(data => {
+    data.forEach(d => replaceRepeatedTags(d))
+  }).then(() => updateConcept())
 }
 
-function stateFilter(d,code){
-  return d.GEOID10.slice(0,2) == code
+function replaceRepeatedTags(d){
+  TAG[d.Name] = d.Label
+  .replace("Total!!","")
+  .replace("Total races tallied!!","");
+  TAG[`${d.Name}P`] = ("[%] ")
+  .concat(d.Label
+    .replace("Total!!","")
+    .replace("Total races tallied!!","")
+  );
+  TAG[`${d.Name}D`] = ("[D] ")
+  .concat(d.Label
+    .replace("Total!!","")
+    .replace("Total races tallied!!","")
+  );
 }
