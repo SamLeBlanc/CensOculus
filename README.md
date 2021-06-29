@@ -1,13 +1,18 @@
 # [CensusMapper](https://samleblanc.github.io/Census-Mapper/)
 *(still in beta until the release of 2020 Census data in ~August)*
 
-![alt text](https://github.com/SamLeBlanc/Census-Mapper/blob/main/images/readMeImage1.png)
-*County subdivisions colored by the percentage of Black residents*
-
 ## What is CensusMapper?
 CensusMapper is an browser-based, interactive mapping application used to visualize the results of the [United States Census](https://en.wikipedia.org/wiki/United_States_census). Developed with [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs), CensusMapper empowers users to create complex data visualizations perfectly tailored to fit their needs. 
+<p align="center">
+  <img src="https://github.com/SamLeBlanc/Census-Mapper/blob/main/images/readMeImage2.png" width="800">
+  <br>
+  <span>Zip codes colored by the percentage of Black residents according to the 2010 census (blue = more)</span>
+</p>
 
-This project is highly versatile, suitable for use in political campiaigns, marketing, industry, community planning, and much more. CensusMapper provides access to many thousands of variables collected by the Census Bureau. This includes data relating to age, race, sex, ethnicity, housing, rurality, and more; viewable across many levels of geography, down to block group granularity.
+
+## Why CensusMapper?
+
+Three words: versatility, usability, and speed. CensusMapper is highly adaptive, suitable for use in political campiaigns, marketing, industry, community planning, and much more. CensusMapper provides access to many thousands of variables collected by the Census Bureau, including data relating to age, race, sex, ethnicity, housing, rurality, and more. Each categoty is viewable across many levels of geography, down to block group granularity. without compromising efficiency. 
 
 ## Getting Started
 
