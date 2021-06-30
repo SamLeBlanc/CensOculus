@@ -9,17 +9,16 @@ function setupHoverHoldStates(geo){
   });
   map.on('mouseup', LAYER_DICT[geo], e => {
     up = {x: event.pageX, y: event.pageY};
-    console.log('click')
-    if (Math.abs(down.x - up.x) < 5 && Math.abs(down.y - up.y) < 5) {
-      //click
+    if (isClick(up,down)) {
       heldDistricts = holdDistrict(e,geo, heldDistricts)
-      if (Object.keys(heldDistricts).length == 0){
-        clearAllHolds()
-      }
     } else {
       //drag
     }
   });
+}
+
+const isClick = (up,down) => {
+  return (Math.abs(down.x - up.x) < 5 && Math.abs(down.y - up.y) < 5) ? true : false
 }
 
 function one(e){
@@ -43,6 +42,9 @@ function holdDistrict(e, geo, heldDistricts){
     heldDistricts = clearAllHolds()
   }
   console.log('finish -> holdDistrict',heldDistricts)
+  if (Object.keys(heldDistricts).length == 0){
+    clearAllHolds()
+  }
   return heldDistricts
 }
 
@@ -241,7 +243,8 @@ function setBarText(){
     if (typeof heldData[v] == 'number'){
       n = heldData[v] / heldData[`${v.slice(0,4)}001`];
     }
-    if (!['GEOID10','SIZE'].includes(v)) arr.push([v, numberWithCommas(heldData[v]), formatPercent(n)])
+    a = NICKNAMES[v] ? NICKNAMES[v] : null
+    if (a && !['GEOID10','SIZE'].includes(v)) arr.push([a, numberWithCommas(heldData[v]), formatPercent(n)])
   }
   for (const n in heldData)
   addheldTable(arr)

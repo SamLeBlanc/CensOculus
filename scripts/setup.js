@@ -27,8 +27,8 @@ function openNav2() {
   if (window.innerWidth < 450){
     $('#mySidebar2').width(window.innerWidth);
   } else {
-    $('#mySidebar2').width(360);
-    $('#mySidebar2').css('left',window.innerWidth - 380)
+    $('#mySidebar2').width(380);
+    $('#mySidebar2').css('left',window.innerWidth - 400)
   }
 }
 

@@ -55,8 +55,10 @@ table.tableA td, table.tableA th{ border-bottom: 1px solid blue;}
 table.tableB { border: 1px solid transparent; }
 table.tableB td, table.tableB th{ width: 150px; padding-right:25px; white-space: nowrap;}
 
-table.tableC {  }
-table.tableC td, table.tableC th{ border: 1px solid black; width: 250px; padding-right:25px; }
+table.tableC { border-spacing: 5px 4px; }
+table.tableC th { border: 1px solid black; }
+table.tableC td { border: 1px solid black; padding: 0px 5px 0px 5px;  }
+
 
 /* Intro */
 
@@ -77,5 +79,5 @@ table.tableC td, table.tableC th{ border: 1px solid black; width: 250px; padding
 }
 
 #bar{
-  position: absolute; background: white; z-index:0; top: 0%; left:270%; min-width: 350px; padding:8px 14px 8px 14px; margin: 10px; border: 4px solid black; border-radius: 10px; display: inline-block;
+  position: absolute; background: white; z-index:0; top: 0%; left:270%; min-width: 300px; padding:8px 14px 8px 14px; margin: 10px; border: 4px solid black; border-radius: 10px; display: inline-block;
 }
