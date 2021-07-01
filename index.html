@@ -36,6 +36,26 @@
 <body>
 
   <div id="map"></div>
+  <div id="mySidebar3" class="sidebar" style="background-color: lightgrey; top: 65px; padding: 10px; padding-top:60px; width:365px;" >
+    <span style="font-size:20px; font-weight:bold;">American History</span><br>
+    <div style="padding:2px;"></div>
+    Humans have lived on the North American continent for more than 120,000 years;
+    creating a cultural history that is as vibrant as it is diverse.<br>
+    <div style="padding:3px;"></div>
+    Ancestral historians estimate that tens of thousands of unique groups lived in this region over the last 100,000 years.
+    Indigenous Americans lived predominantly in hunter-gatherer groups with loosely defined territory that was ever changing.
+    <div style="padding:3px;"></div>
+    The current map shows the territory of many of the tribes thatlived here during the last millennium.
+    This data was borrowed from <a href='https://native-land.ca/'>Native-Land.ca</a>,
+    please visit and support their site to learn about the territory, languages and treaties of native peoples. <br>
+    <div style="padding:3px;"></div>
+    <span style="font-size:20px; font-weight:bold;">The Census</span><br>
+    <div style="padding:2px;"></div>
+    The United States and its decennial census have existed for a little less than 250 years,
+    equal to about 0.2% of the time that humans have lived on this continent.
+    To properly understand the context of the US Census, it must be remembered that the United States
+    was built on stolen land without the consent of native peoples.
+  </div>
   <div id="mySidebar2" class="sidebar" style="background-color: lightgrey; padding: 10px;">
     <div style="padding-bottom: 5px;">
       <span id="b-name" style="font-size: 25px;"></span>
@@ -252,6 +272,15 @@
           </td>
         </tr>
         <tr>
+          <td>Tile Opacity</td>
+          <td>
+            <div>
+              <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="updateFillOpacity()">
+              <span id="to-label">0.5</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <td>
             <span style="color:black;">.</span>
           </td>
@@ -388,8 +417,18 @@
   <div id="geocoder" class="geocoder"></div>
 </div>
 <div id="title">CensusMapper</div>
+
 <div style="position:fixed; z-index:9; top: 65px;">
-  <button class="openbtn" onclick="openNav()">⚙️ Settings</button>
+  <button class="openbtn" onclick="openNav()">
+    <div class="tooltip">⚙️
+      <span class="tooltiptext">Settings</span>
+    </div>
+  </button>
+  <button class="openbtn" onclick="openNav3()">
+    <div class="tooltip">⛰️
+      <span class="tooltiptext">Land Acknowledgement</span>
+    </div>
+  </button>
 </div>
 <div id="flag-div" style="z-index:6;">
   <img id="flog_img" style="width: auto;height: 300px;" src="">

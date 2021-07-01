@@ -50,7 +50,8 @@ function createMoveTableArray(s,geoid,obj){
   for (i = 0; i < s.length; i++){
     var num = obj[s[i]];
     num = formatNumber(num)
-    arr.push([s[i],num]);
+    n = NICKNAMES[s[i]] ? NICKNAMES[s[i]] : s[i]
+    arr.push([n,num]);
   }
   return arr
 }

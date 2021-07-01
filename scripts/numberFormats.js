@@ -46,7 +46,7 @@ function numberWithCommas(x) {   // format int to include commas (e.g. 9888777 =
 }
 
 
- let QSummary = {};
+let QSummary = {};
 function getQuantileValues(concept, variable, geo, scale){
   data = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   if (!variable.endsWith('P')){
@@ -61,7 +61,11 @@ function getQuantileValues(concept, variable, geo, scale){
 
   if (scale == 'Quantile') QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1, 0.05, 0.95]
   var quants = [];
-  [...Array(101).keys()].forEach(k => QSummary[k/100] = d3.quantile(values, k/100))
+  [...Array(101).keys()].forEach(k => QSummary[k/100] =
+    d3.quantile(
+    values.sort((a, b) => a - b)
+          .filter( v => !Number.isNaN(v)),
+    k/100))
   QUARTILE_RANGE.forEach((q) => quants.push(d3.quantile(values, q)));
   return quants
 }

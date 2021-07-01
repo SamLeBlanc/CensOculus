@@ -94,9 +94,15 @@ function setLinePaint(){
     ]);
 }
 
+function updateFillOpacity(){
+  geo = $('#geo-select').find(":selected").val();
+  map.setPaintProperty(`${geo}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val()));
+  $('#to-label').text($('#tileopacity-v').val());
+}
+
 function setFillPaint(arr, colors){
-  let geo = $('#geo-select').find(":selected").val();
-  map.setPaintProperty(`${geo}-fills`, 'fill-opacity', 0.8);
+  geo = $('#geo-select').find(":selected").val();
+  updateFillOpacity()
   map.setPaintProperty(`${geo}-fills`, 'fill-color',
     ['interpolate',
       ['linear'], ['feature-state', variable],
@@ -140,7 +146,7 @@ function set3DPaint(arr, colors){
     map.flyTo({pitch: 10, essential: true});
   } else {
     map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-opacity',0);
-    map.setPaintProperty(`${geo}-fills`, 'fill-opacity',0.8);
+    updateFillOpacity()
     setLinePaint()
     map.flyTo({pitch: 0, essential: true});
   }

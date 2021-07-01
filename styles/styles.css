@@ -50,8 +50,8 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 
 #move { position: absolute; background-color: white; border-radius: 3px; font-family: monospace;}
 table.tableA { color; white }
-table.tableA td, table.tableA th{ border-bottom: 1px solid blue;}
-
+table.tableA th{ border-bottom: 1px solid blue;}
+table.tableA td {border-bottom: 1px solid blue; padding: 0px 5px 0px 0px;}
 table.tableB { border: 1px solid transparent; }
 table.tableB td, table.tableB th{ width: 150px; padding-right:25px; white-space: nowrap;}
 
