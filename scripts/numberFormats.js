@@ -1,6 +1,6 @@
 function formatNumber(num){   // find and create the desired number format
-  variable = $('#variable-select').find(":selected").val();
-  var num_format = $('#numformat-select').find(":selected").val();
+  let variable = SETTINGS['Variable'];
+  var num_format = SETTINGS['NumFormat'];
   if (variable.endsWith("P")) num = formatPercent(num);
   else if (num_format == 'short') num = abbreviateNumber(num);
   else if (num_format == 'comma') num = numberWithCommas(num);
@@ -48,6 +48,10 @@ function numberWithCommas(x) {   // format int to include commas (e.g. 9888777 =
 
 let QSummary = {};
 function getQuantileValues(concept, variable, geo, scale){
+  concept = SETTINGS['Concept'];
+  variable = SETTINGS['Variable'];
+  geo = SETTINGS['Geo'];
+  scale = SETTINGS['Scale'];
   data = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   if (!variable.endsWith('P')){
     values = data.map(function(d) { return d[variable] })

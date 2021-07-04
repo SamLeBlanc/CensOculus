@@ -31,7 +31,7 @@
   <script type="text/javascript" src="scripts/setup.js"></script>
   <script type="text/javascript" src="scripts/flags.js"></script>
   <script type="text/javascript" src="scripts/mapControls.js"></script>
-
+  <script type="text/javascript" src="scripts/settings.js"></script>
 </head>
 <body>
 
@@ -55,6 +55,25 @@
     equal to about 0.2% of the time that humans have lived on this continent.
     To properly understand the context of the US Census, it must be remembered that the United States
     was built on stolen land without the consent of native peoples.
+  </div>
+  <div id="mySidebar4" class="sidebar" style="background-color: lightgrey; left: -500px; top: 65px; padding: 10px; padding-top:60px; width:365px; white-space: wrap;" >
+    <span>
+      Maps can be saved by copying the token below.<br>
+      Make sure to save it in a document for later use! <br>
+    </span>
+    <div style="padding:3px;"></div>
+    <span>
+      To access a previous map, paste your token in the box and click 'Go' <br>
+    </span>
+    <div style="padding:5px;"></div>
+    <div>
+      <button id="copy-button" type="submit" onclick="copyButton()">Copy</button>
+      <button id="go-button" type="submit" onclick="goButton()">Go</button>
+    </div>
+    <div style="padding:5px;"></div>
+    <div>
+      <textarea id="settings-json" name="settings-json" rows="6" cols="47"></textarea>
+    </div>
   </div>
   <div id="mySidebar2" class="sidebar" style="background-color: lightgrey; padding: 10px;">
     <div style="padding-bottom: 5px;">
@@ -102,8 +121,8 @@
         <tr>
           <td>Year</td>
           <td>
-            <div id="year-select" onchange="update()">
-              <select style="width:199px;">
+            <div id="year-select" onchange="collectSettings(); update();">
+              <select id="year-select-" style="width:199px;">
                 <option value="2010">2010</option>
               </select>
             </div>
@@ -112,8 +131,8 @@
         <tr>
           <td>Geography</td>
           <td>
-            <div id="geo-select" onchange="update();">
-              <select style="width:199px;">
+            <div id="geo-select" onchange="collectSettings(); update();">
+              <select id="geo-select-" style="width:199px;">
                 <option value="nation">Nation</option>
                 <option value="state">State</option>
                 <option value="county">County</option>
@@ -132,8 +151,8 @@
         <tr>
           <td>Concept</td>
           <td>
-            <div id="concept-select" onchange="updateConcept()">
-              <select style="width:199px;">
+            <div id="concept-select" onchange="collectSettings(); updateConcept();">
+              <select id="concept-select-" style="width:199px;">
                 <option value="P1">P1 - TOTAL POPULATION </option>
                 <option value="P2">P2 - URBAN AND RURAL</option>
                 <option value="P3">P3 - RACE</option>
@@ -173,8 +192,8 @@
         <tr>
           <td>Variable</td>
           <td>
-            <div id="variable-select" onchange="update()">
-              <select id="SS" style="width:199px;">
+            <div id="variable-select" onchange="collectSettings(); update();">
+              <select id="variable-select-" style="width:199px;">
                 <option value="P001001" onclick="update()" selected>P001001</option>
               </select>
             </div>
@@ -198,7 +217,7 @@
           <td>3D</td>
           <td>
             <div>
-              <input type="checkbox" id="3d-mode" name="3d-mode" onclick="updateVariable()">
+              <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updateVariable()">
             </div>
           </td>
         </tr>
@@ -206,7 +225,7 @@
           <td>3D Height</td>
           <td>
             <div>
-              <input id="height" type="range" min="10" max="3000000" step="20000" value="100000" oninput="updateVariable()">
+              <input id="height" type="range" min="10" max="3000000" step="20000" value="100000" oninput="collectSettings(); updateVariable()">
             </div>
           </td>
         </tr>
@@ -227,8 +246,8 @@
         <tr>
           <td>Color<span style="color:black;">-</span>Scheme<span style="color:black;">.</span></td>
           <td>
-            <div id="color-select" onchange="customColors=[null,null,null,null,null]; update()">
-              <select style="width:145px;">
+            <div id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
+              <select id="color-select-" style="width:145px;">
                 <option value="Viridis">Viridis</option>
                 <option value="Red">Red</option>
                 <option value="Blue">Blue</option>
@@ -264,7 +283,7 @@
           <td>Scale</td>
           <td>
             <div id="scale-select">
-              <select style="width:199px;" onchange="update()">
+              <select id="scale-select-" style="width:199px;" onchange="collectSettings(); update()">
                 <option value="Linear" >Linear</option>
                 <option value="Quantile" >Quantile</option>
               </select>
@@ -275,7 +294,7 @@
           <td>Tile Opacity</td>
           <td>
             <div>
-              <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="updateFillOpacity()">
+              <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); updateFillOpacity()">
               <span id="to-label">0.5</span>
             </div>
           </td>
@@ -297,7 +316,7 @@
         <tr>
           <td>Num Format</td>
           <td>
-            <div id="numformat-select" onchange="update()">
+            <div id="numformat-select" onchange="collectSettings(); update()">
               <select style="width:199px;">
                 <option value="short">Short</option>
                 <option value="comma">Commas</option>
@@ -323,7 +342,7 @@
           <td>Accumulate</td>
           <td>
             <div>
-              <input type="checkbox" id="accumulate" name="accumulate" onclick="clearAllHolds()">
+              <input type="checkbox" id="accumulate" name="accumulate" onclick="collectSettings(); clearAllHolds()">
               <button onclick="clearAllHolds()">Clear Holds</button>
             </div>
           </td>
@@ -346,7 +365,7 @@
           <td>Flag Mode</td>
           <td>
             <div>
-              <input type="checkbox" id="flag-mode" name="flag-mode" onclick="updateFlagMode()">
+              <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlagMode()">
             </div>
           </td>
         </tr>
@@ -354,7 +373,7 @@
           <td>Wiki Mode</td>
           <td>
             <div>
-              <input type="checkbox" id="wiki-mode" name="wiki-mode">
+              <input type="checkbox" id="wiki-mode" name="wiki-mode" onclick="collectSettings()">
             </div>
           </td>
         </tr>
@@ -387,7 +406,7 @@
           <td>Zoom</td>
           <td>
             <div>
-              <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="updateZoom(this.value)">
+              <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="collectSettings(); updateZoom(this.value)">
               <span id="zoom-label">3.6</span>
             </div>
           </td>
@@ -396,94 +415,99 @@
           <td>Pitch</td>
           <td>
             <div>
-              <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="updatePitch(this.value)">
+              <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="collectSettings(); updatePitch(this.value)">
               <span id="pitch-label">0</span>
             </div>
           </td>
         </tr>
-</table>
-<!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
-</div>
-<div style="padding: 20px; ">
-</div>
-<div style="width: 50%; margin: 0 auto; white-space: nowrap;">
-  <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav()">Close Settings</button>
-</div>
-</div>
-<div id="move" style="z-index:50"></div>
-<!-- <div id="click" style="z-index:50"></div> -->
-<div id="geo-controls">
-  <div id="geolocate" class="geolocate"></div>
-  <div id="geocoder" class="geocoder"></div>
-</div>
-<div id="title">CensusMapper</div>
-
-<div style="position:fixed; z-index:9; top: 65px;">
-  <button class="openbtn" onclick="openNav()">
-    <div class="tooltip">⚙️
-      <span class="tooltiptext">Settings</span>
+      </table>
+      <!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
     </div>
-  </button>
-  <button class="openbtn" onclick="openNav3()">
-    <div class="tooltip">⛰️
-      <span class="tooltiptext">Land Acknowledgement</span>
+    <div style="padding: 20px; ">
     </div>
-  </button>
-</div>
-<div id="flag-div" style="z-index:6;">
-  <img id="flog_img" style="width: auto;height: 300px;" src="">
-</div>
-
-<div id="legend">
-  <div id="sqaures">
-    <div style="padding:3px;">
-      <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
-      <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
-      <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
-      <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
-      <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
-      <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <br>
-    <div style="padding:3px;">
-      <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
-      <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
-      <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
-      <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
+    <div style="width: 50%; margin: 0 auto; white-space: nowrap;">
+      <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav()">Close Settings</button>
     </div>
   </div>
-  <div id="labels" ondblclick="getCustomRange();" style="padding-top:7px; position:absolute; top:0px; left:60px;">
-    <div class="legend-label" ><span id='leg-label-0'>Min</span></div>
-    <div class="legend-label" ><span id='leg-label-1'>Q1</span></div>
-    <div class="legend-label" ><span id='leg-label-2'>Med</span></div>
-    <div class="legend-label" ><span id='leg-label-3'>Q3</span></div>
-    <div class="legend-label" ><span id='leg-label-4'>Max</span></div>
-    <br>
-    <div class="legend-label" ><span id='leg-label-6'>Hover</span></div>
-    <div class="legend-label" ><span id='leg-label-5'>Held</span></div>
+  <div id="move" style="z-index:50"></div>
+  <!-- <div id="click" style="z-index:50"></div> -->
+  <div id="geo-controls">
+    <div id="geolocate" class="geolocate"></div>
+    <div id="geocoder" class="geocoder"></div>
   </div>
+  <div id="title">CensusMapper</div>
+
+  <div style="position:fixed; z-index:9; top: 65px;">
+    <button class="openbtn" onclick="openNav()">
+      <div class="tooltip">⚙️
+        <span class="tooltiptext">Settings</span>
+      </div>
+    </button>
+    <button class="openbtn" onclick="openNav3()">
+      <div class="tooltip">⛰️
+        <span class="tooltiptext">Land Acknowledgement</span>
+      </div>
+    </button>
+    <button class="openbtn" onclick="openNav4()">
+      <div class="tooltip">💾
+        <span class="tooltiptext">Save Map</span>
+      </div>
+    </button>
+  </div>
+  <div id="flag-div" style="z-index:6;">
+    <img id="flog_img" style="width: auto;height: 300px;" src="">
+  </div>
+
+  <div id="legend">
+    <div id="sqaures">
+      <div style="padding:3px;">
+        <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
+        <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
+        <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
+        <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
+        <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
+        <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
+      </div>
+      <br>
+      <div style="padding:3px;">
+        <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
+        <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
+      </div>
+      <div style="padding:3px;">
+        <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
+        <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
+        <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
+      </div>
+    </div>
+    <div id="labels" ondblclick="getCustomRange();" style="padding-top:7px; position:absolute; top:0px; left:60px;">
+      <div class="legend-label" ><span id='leg-label-0'>Min</span></div>
+      <div class="legend-label" ><span id='leg-label-1'>Q1</span></div>
+      <div class="legend-label" ><span id='leg-label-2'>Med</span></div>
+      <div class="legend-label" ><span id='leg-label-3'>Q3</span></div>
+      <div class="legend-label" ><span id='leg-label-4'>Max</span></div>
+      <br>
+      <div class="legend-label" ><span id='leg-label-6'>Hover</span></div>
+      <div class="legend-label" ><span id='leg-label-5'>Held</span></div>
+    </div>
+    <div>
+
+    </div>
+  </div>
+  <!-- <div id="intro">
   <div>
-
-  </div>
-</div>
-<!-- <div id="intro">
-<div>
-<span id = "intro-title"></span>
+  <span id = "intro-title"></span>
 </div>
 <br>
 <div style="width:480px; padding: 5px; border-radius: 10px;">

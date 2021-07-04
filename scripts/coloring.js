@@ -1,6 +1,6 @@
 // Reverses the order of the current color scheme
 function reverseColorScale(){
-  let scheme = $('#color-select').find(":selected").val();
+  let scheme = SETTINGS['Scheme'];
   COLOR_DICT[scheme] = COLOR_DICT[scheme].reverse();
   update();
 }
@@ -61,8 +61,8 @@ function getOutlineColors(){
 
 function colorLayer(){
   console.log('coloring')
-  var scale = $('#scale-select').find(":selected").val();
-  var scheme = $('#color-select').find(":selected").val();
+  var scale = SETTINGS['Scale']
+  var scheme = SETTINGS['Scheme']
 
   var colors = COLOR_DICT[scheme]
 
@@ -81,7 +81,7 @@ function colorLayer(){
 
 
 function updateLegend(arr, colors){
-  var scheme = $('#color-select').find(":selected").val();
+  var scheme = SETTINGS['Scheme']
   var colors = COLOR_DICT[scheme]
 
   $(`#leg-square-5`).css("border", `solid 5px ${customColors[5]}`)

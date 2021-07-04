@@ -1,6 +1,6 @@
 function updateFlagMode(){
-  geo = $('#geo-select').find(":selected").val();
-  value = $('#flag-mode').is(":checked");
+  let geo = SETTINGS['Geo'];
+  let value = SETTINGS['FlagMode'];
   FLAGS
     .filter(d => d["Size"] == geo)
     .forEach(f => {
@@ -9,7 +9,7 @@ function updateFlagMode(){
 }
 
 function retrieveFlagUrl(geoid){
-  let geo = $('#geo-select').find(":selected").val();
+  let geo = SETTINGS['Geo'];
   if (["nation","state","county","place"].includes(geo)) {
     suffix = getFlagUrlSuffix(geoid)
     fullUrl = craftFlagUrl(suffix)

@@ -11,6 +11,7 @@ function setUpAll(){   // setup function called on first page load
 
 function openNav() {
   closeNav3()
+  closeNav4()
   if ($('#mySidebar').width() > 20){
     closeNav()
   } else if (window.innerWidth < 450){
@@ -39,6 +40,7 @@ function closeNav2() {
 
 function openNav3() {
   closeNav()
+  closeNav4()
   if ($('#mySidebar3').css('left') == "0px"){
     closeNav3()
   } else if (window.innerWidth < 450){
@@ -51,4 +53,21 @@ function openNav3() {
 
 function closeNav3(){
   $('#mySidebar3').css('left',-500)
+}
+
+function openNav4() {
+  closeNav()
+  closeNav3()
+  if ($('#mySidebar4').css('left') == "0px"){
+    closeNav4()
+  } else if (window.innerWidth < 450){
+    $('#mySidebar4').width(window.innerWidth);
+    $('#mySidebar4').css('left',0)
+  } else {
+    $('#mySidebar4').css('left',0)
+  }
+}
+
+function closeNav4(){
+  $('#mySidebar4').css('left',-500)
 }

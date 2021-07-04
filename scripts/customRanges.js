@@ -11,17 +11,12 @@ let customRanges = {
     "quantileQ4" : null,
 };
 
-function addCustomColor(i){
+const addCustomColor = i => {
   customColors[i] = $(`#cpick-${i}`).val()
-  //console.log(customColors)
   update()
 }
 
-function getCustomRange(){
-  s = $('#scale-select').find(":selected").val();
-  if (s == 'Linear') customL();
-  else if (s == 'Quantile') customQ();
-}
+const getCustomRange = () => SETTINGS['Scale'] == 'Linear' ? customL() : customQ();
 
 // Determines whether an array is strictly increasing
 // Returns true if array is strictly increasing

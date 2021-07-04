@@ -1,4 +1,5 @@
 function main(){
+  collectSettings()
   loadDataFromCSV("P1")
   $('#bar').css("left","70%")
   loadFlagData()
@@ -38,10 +39,10 @@ let hoversCreated = [];
 function updateGeo(){
   hideAllLayers()
   clearAllHolds()
-  geo = $('#geo-select').find(":selected").val();
-  map.setLayoutProperty(`${geo}-fills`,'visibility','visible')
-  map.setLayoutProperty(`${geo}-lines`,'visibility','visible')
-  map.setLayoutProperty(`${geo}-3d`,'visibility','visible')
+  let geo = SETTINGS['Geo'];
+  map.setLayoutProperty(`${SETTINGS['Geo']}-fills`,'visibility','visible')
+  map.setLayoutProperty(`${SETTINGS['Geo']}-lines`,'visibility','visible')
+  map.setLayoutProperty(`${SETTINGS['Geo']}-3d`,'visibility','visible')
   if (!hoversCreated.includes(geo)){
     setupHoverHoldStates(geo);
     hoversCreated.push(geo);
@@ -50,20 +51,21 @@ function updateGeo(){
 }
 
 function updateVariable(){
-  variable = $('#variable-select').find(":selected").val();
-  geo = $('#geo-select').find(":selected").val();
-  concept = $('#concept-select').find(":selected").val();
-  scale = $('#scale-select').find(":selected").val();
+  collectSettings()
+  let variable = SETTINGS['Variable'];
+  let geo = SETTINGS['Geo'];
+  let concept = SETTINGS['Concept'];
+  let scale = SETTINGS['Scale'];
   setFeatStates(variable)
   quants = getQuantileValues(concept, variable, geo, scale)
   colorLayer()
 }
 
 function updateConcept(){
-  concept = $('#concept-select').find(":selected").val();
+  let concept = SETTINGS['Concept'];
   getVariableListByConcept(concept)
   setTimeout(function(){
-    createVariableDropdownSelect("SS",VLbC[concept])
+    createVariableDropdownSelect("variable-select-",VLbC[concept])
     if (!(concept in LORAX)) loadDataFromCSV(concept)
   }, 1000);
   setTimeout(function(){
@@ -72,7 +74,7 @@ function updateConcept(){
 }
 
 function setLinePaint(){
-  let geo = $('#geo-select').find(":selected").val();
+  let geo = SETTINGS['Geo'];
   c1 = customColors[5] ? customColors[5] : "#e72cdc"
   c2 = customColors[6] ? customColors[6] : "#32cc32"
   map.setPaintProperty(`${geo}-lines`,'line-color',
@@ -95,13 +97,14 @@ function setLinePaint(){
 }
 
 function updateFillOpacity(){
-  geo = $('#geo-select').find(":selected").val();
+  let geo = SETTINGS['Geo'];
   map.setPaintProperty(`${geo}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val()));
   $('#to-label').text($('#tileopacity-v').val());
 }
 
 function setFillPaint(arr, colors){
-  geo = $('#geo-select').find(":selected").val();
+  let geo = SETTINGS['Geo'];
+  let variable = SETTINGS['Variable'];
   updateFillOpacity()
   map.setPaintProperty(`${geo}-fills`, 'fill-color',
     ['interpolate',
@@ -116,7 +119,8 @@ function setFillPaint(arr, colors){
 
 
 function set3DPaint(arr, colors){
-  let geo = $('#geo-select').find(":selected").val();
+  let geo = SETTINGS['Geo'];
+  let variable = SETTINGS['Variable'];
   c1 = customColors[5] ? customColors[5] : "#e72cdc"
   c2 = customColors[6] ? customColors[6] : "#32cc32"
   map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-color',

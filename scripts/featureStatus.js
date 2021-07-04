@@ -1,6 +1,6 @@
 function setFeatStates(variable){
-  geo = $('#geo-select').find(":selected").val();
-  concept = $('#concept-select').find(":selected").val();
+  let geo = SETTINGS['Geo'];
+  let concept = SETTINGS['Concept'];
   data = LORAX[concept]
   .filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
   .forEach(function(d){

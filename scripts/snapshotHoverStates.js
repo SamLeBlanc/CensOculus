@@ -1,5 +1,5 @@
 function setupHoverHoldStates(geo){
-  map.on('mousemove', LAYER_DICT[geo], e => one(e));
+  map.on('mousemove', LAYER_DICT[geo], (e, geo) => one(e,geo));
   map.on('mouseleave', LAYER_DICT[geo], () => {
     onHoverFinish()
     removeHoverState(geo,hoveredId)
@@ -21,7 +21,7 @@ const isClick = (up,down) => {
   return (Math.abs(down.x - up.x) < 5 && Math.abs(down.y - up.y) < 5) ? true : false
 }
 
-function one(e){
+function one(e,geo){
   onHoverStart(e, geo)
   removeHoverState(geo,hoveredId)
   hoveredId = setHoverState(e,geo,hoveredId)
@@ -49,6 +49,7 @@ function holdDistrict(e, geo, heldDistricts){
 }
 
 function setHoverState(e,geo,hoveredId){
+  geo = SETTINGS['Geo'];
   if (e.features.length > 0) {
     hoveredId = e.features[0].id;
     map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: true });
@@ -57,12 +58,14 @@ function setHoverState(e,geo,hoveredId){
 }
 
 function removeHoverState(geo,hoveredId){
+  geo = SETTINGS['Geo'];
   if (hoveredId) map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
   hoveredId = null;
 }
 
 
 function setHoldState(e, geo, heldDistricts){
+  geo = SETTINGS['Geo'];
   console.log('set hold state')
   if (e.features.length > 0) {
     id = e.features[0].id;
@@ -80,16 +83,18 @@ function setHoldState(e, geo, heldDistricts){
   return heldDistricts
 }
 function removeHoldState(geo, heldDistricts){
+  geo = SETTINGS['Geo'];
   Object.keys(heldDistricts).forEach(d => {
       map.setFeatureState({ source: SOURCE_DICT[geo], id: d, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: false });
     });
 }
 
-function onHoverStart(e,geo){
+function onHoverStart(e, geo){
   $('#move').css('padding',"5px")
-  variable = $('#variable-select').find(":selected").val();
+  let variable = SETTINGS['Variable'];
+  geo = SETTINGS['Geo'];
   map.getCanvas().style.cursor = "crosshair";
-  let geoid = e.features[0].properties.GEOID10;
+  let geoid = e.features[0].id;
   var obj = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
   var arr = createMoveTableArray([variable], e.features[0].properties.NAME10, obj)
   addMoveTable(arr)
@@ -126,7 +131,7 @@ function getBarArea(){
   return metersSq2MilesSq(metersSq)
 }
 
-function getBarPop(){
+function getBarPop(geo){
   pop = d3.sum(
     LORAX["P1"].filter(d => {
       return Object.values(heldDistricts).map(d => d.GEOID10).includes(d["GEOID10"]) && d["SIZE"] == geo.toUpperCase()
@@ -136,9 +141,8 @@ function getBarPop(){
   return pop
 }
 
-function getBarName(){
+function getBarName(geo){
   if (Object.keys(heldDistricts).length > 1){
-    geo = $('#geo-select').find(":selected").val();
     l = Object.keys(heldDistricts).length
     s = getBarNameSuffix()
     if (s) return `${l}\xa0${BAR_SUFFIX[geo]} in ${s}`
@@ -151,7 +155,7 @@ function getBarName(){
 }
 
 function clearAllHolds(){
-  geo = $('#geo-select').find(":selected").val();
+  let geo = SETTINGS['Geo'];
   onHoldFinish();
   removeHoldState(geo, heldDistricts);
   heldDistricts = {};
@@ -172,6 +176,7 @@ function getBarNameSuffix(){
 }
 
 function fixName(name, geoid){
+  geo = SETTINGS['Geo']
   if (geo == 'county') name = FULL_COUNTY_NAME[geoid];
   else if (geo == 'tract') name = `Tract in ${FULL_COUNTY_NAME[geoid.substring(0,5)]}`;
   else if (geo == 'group') name = `Block Group in ${FULL_COUNTY_NAME[geoid.substring(0,5)]}`;
@@ -226,6 +231,8 @@ function setBarText(){
   $('#flag-link').attr("href", url_)
   $('#held-data').text("")
 
+  geo = SETTINGS['Geo'];
+  concept = SETTINGS['Concept'];
   heldData = {};
   H = LORAX[concept].filter(d => (Object.keys(heldDistricts).includes(d.GEOID10) && d.SIZE == geo.toUpperCase() ) )
   for (const v in H[0]) {
@@ -251,13 +258,14 @@ function setBarText(){
 }
 
 function updateBar(e, geo, heldDistricts){
+  geo = SETTINGS['Geo'];
   console.log('updating bar')
   $("#bar").css("z-index",20);
   geoid = getBarGeoid();
   area = getBarArea();
-  pop = getBarPop();
+  pop = getBarPop(geo);
   den = formatDensity(pop, area);
-  name = getBarName();
+  name = getBarName(geo);
   url_ = retrieveFlagUrl(geoid)
   if (geoid) wikiUrl = getWikiUrl(geoid);
   if (area > 999) area = numberWithCommas(area)
