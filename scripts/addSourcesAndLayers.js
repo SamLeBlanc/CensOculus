@@ -1,8 +1,15 @@
 // Methods for loading Mapbox vector sources and layers
 // There are 3 types of vector layers: line, fill, and extrusion
 
+const addFillAndLineLayers = () => {
+  Object.keys(LAYER_DICT).forEach(geo => {
+    addFillLayer(geo)
+    addLineLayer(geo)
+    addExtrusionLayer(geo)
+  });
+}
 
-function addSources(){
+const addSources = () => {
   Object.keys(SOURCE_TILESET_ID).forEach(geo => {
     map.addSource(geo, {
       'type': 'vector',
@@ -13,7 +20,7 @@ function addSources(){
   });
 }
 
-function addFillLayer(geo){
+const addFillLayer = geo => {
   map.addLayer({
     'id': LAYER_DICT[geo],
     'type': 'fill',
@@ -24,7 +31,7 @@ function addFillLayer(geo){
   });
 }
 
-function addExtrusionLayer(geo){
+const addExtrusionLayer = geo => {
   map.addLayer({
     'id': EXTRUDELAYER_DICT[geo],
     'type': 'fill-extrusion',
@@ -39,7 +46,7 @@ function addExtrusionLayer(geo){
     });
 }
 
-function addLineLayer(geo){
+const addLineLayer = geo => {
   map.addLayer({
     'id': LINELAYER_DICT[geo],
     'type': 'line',
@@ -48,12 +55,4 @@ function addLineLayer(geo){
     'layout': {'visibility': 'none'},
     'paint': {'line-opacity' : 0 },
   });
-}
-
-function addFillAndLineLayers(){
-  Object.keys(LAYER_DICT).forEach(geo => {
-    addFillLayer(geo)
-    addLineLayer(geo)
-    addExtrusionLayer(geo)
-  })
 }

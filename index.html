@@ -32,11 +32,12 @@
   <script type="text/javascript" src="scripts/flags.js"></script>
   <script type="text/javascript" src="scripts/mapControls.js"></script>
   <script type="text/javascript" src="scripts/settings.js"></script>
+  <script type="text/javascript" src="scripts/title.js"></script>
 </head>
 <body>
 
   <div id="map"></div>
-  <div id="mySidebar3" class="sidebar" style="background-color: lightgrey; top: 65px; padding: 10px; padding-top:60px; width:365px;" >
+  <div id="mySidebar3" class="sidebar" style="background-color: lightgrey; left: -500px; top: 65px; padding: 10px; padding-top:40px; width:365px;" >
     <span style="font-size:20px; font-weight:bold;">American History</span><br>
     <div style="padding:2px;"></div>
     Humans have lived on the North American continent for more than 120,000 years;
@@ -56,7 +57,7 @@
     To properly understand the context of the US Census, it must be remembered that the United States
     was built on stolen land without the consent of native peoples.
   </div>
-  <div id="mySidebar4" class="sidebar" style="background-color: lightgrey; left: -500px; top: 65px; padding: 10px; padding-top:60px; width:365px; white-space: wrap;" >
+  <div id="mySidebar4" class="sidebar" style="background-color: lightgrey; left: -500px; top: 65px; padding: 10px; padding-top:40px; width:365px; white-space: wrap;" >
     <span>
       Maps can be saved by copying the token below.<br>
       Make sure to save it in a document for later use! <br>
@@ -75,7 +76,7 @@
       <textarea id="settings-json" name="settings-json" rows="6" cols="47"></textarea>
     </div>
   </div>
-  <div id="mySidebar2" class="sidebar" style="background-color: lightgrey; padding: 10px;">
+  <div id="mySidebar2" class="sidebar" style="background-color: lightgrey; left: 4000px; margin-top:10px; padding: 10px; width:365px;">
     <div style="padding-bottom: 5px;">
       <span id="b-name" style="font-size: 25px;"></span>
     </div>
@@ -108,7 +109,7 @@
     </div>
 
   </div>
-  <div id="mySidebar" style="background-color: black;" class="sidebar">
+  <div id="mySidebar1" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; padding-top:40px; width:365px;">
     <div id="settings" style="font-weight:bold;">
       <table class="tableB" id="tabeleta" >
         <tr>
@@ -217,7 +218,7 @@
           <td>3D</td>
           <td>
             <div>
-              <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updateVariable()">
+              <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updatePaint()">
             </div>
           </td>
         </tr>
@@ -421,7 +422,6 @@
           </td>
         </tr>
       </table>
-      <!-- <div><button type="button" onclick="console.log('update'); update()" style="background-color: lightgreen; z-index:11; ">Update</button></div> -->
     </div>
     <div style="padding: 20px; ">
     </div>
@@ -429,6 +429,10 @@
       <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav()">Close Settings</button>
     </div>
   </div>
+
+  <!-- <div id="mySidebar" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; width:365px;" >
+
+  </div> -->
   <div id="move" style="z-index:50"></div>
   <!-- <div id="click" style="z-index:50"></div> -->
   <div id="geo-controls">
@@ -438,19 +442,19 @@
   <div id="title">CensusMapper</div>
 
   <div style="position:fixed; z-index:9; top: 65px;">
-    <button class="openbtn" onclick="openNav()">
+    <button id="iconbtn-1" class="iconbtn" onclick="openNav()">
       <div class="tooltip">⚙️
-        <span class="tooltiptext">Settings</span>
+        <span id="tooltip-1" class="tooltiptext">Settings</span>
       </div>
     </button>
-    <button class="openbtn" onclick="openNav3()">
+    <button id="iconbtn-2" class="iconbtn" onclick="openNav3()">
       <div class="tooltip">⛰️
-        <span class="tooltiptext">Land Acknowledgement</span>
+        <span id="tooltip-2" class="tooltiptext">Land Acknowledgement</span>
       </div>
     </button>
-    <button class="openbtn" onclick="openNav4()">
+    <button id="iconbtn-3" class="iconbtn" onclick="openNav4()">
       <div class="tooltip">💾
-        <span class="tooltiptext">Save Map</span>
+        <span id="tooltip-3" class="tooltiptext">Save Map</span>
       </div>
     </button>
   </div>
@@ -530,9 +534,9 @@ $(document).on('mousemove', function(e){
 
 $('#geo-controls').css('top',window.innerHeight-45)
 $('#geo-controls').css('left',550)
-$('#mySidebar2').css('left',window.innerWidth)
+// $('#mySidebar2').css('left',window.innerWidth)
 //$('#mySidebar2').css('height',window.innerHeight-20)
-$('#mySidebar').css('top', "65px")
+// $('#mySidebar').css('top', "65px")
 //$('#mySidebar').css('height', window.innerHeight-65)
 let h = parseInt($('#legend').css("height").slice(0,-2))
 $('#legend').css('top', `${window.innerHeight - h - 35}px`)
@@ -549,6 +553,8 @@ var map = new mapboxgl.Map({
   pitch: 0,
   interactive: true, // true required
 });
+
+map.doubleClickZoom.disable();
 
 var geolocate = new mapboxgl.GeolocateControl({
   positionOptions: { enableHighAccuracy: true  },

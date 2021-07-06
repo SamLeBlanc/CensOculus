@@ -39,7 +39,7 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 
 /* Settings and Selections */
 
-#settings { position: relative; top:50px; left: 0%; z-index:10; margin:10px; color:white; white-space: nowrap;}
+#settings { position: relative; left: 0%; z-index:10; margin:10px; color:white; white-space: nowrap;}
 #geo-select { z-index:10; }
 #variable-select { z-index:10; }
 #color-select {z-index:10; }
@@ -52,8 +52,9 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 table.tableA { color; white }
 table.tableA th{ border-bottom: 1px solid blue;}
 table.tableA td {border-bottom: 1px solid blue; padding: 0px 5px 0px 0px;}
+
 table.tableB { border: 1px solid transparent; }
-table.tableB td, table.tableB th{ width: 150px; padding-right:25px; white-space: nowrap;}
+table.tableB td, table.tableB th{ width: 120px; padding-right:5px; white-space: nowrap;}
 
 table.tableC { border-spacing: 5px 4px; }
 table.tableC th { border: 1px solid black; }

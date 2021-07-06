@@ -10,37 +10,46 @@ function setUpAll(){   // setup function called on first page load
 }
 
 function openNav() {
+  $('#iconbtn-1').css("background-color","yellow")
+  $('#tooltip-1').text("").css("padding","0px")
   closeNav3()
   closeNav4()
-  if ($('#mySidebar').width() > 20){
+  if ($('#mySidebar1').css('left') == "0px"){
     closeNav()
   } else if (window.innerWidth < 450){
-    $('#mySidebar').width(window.innerWidth);
+    $('#mySidebar1').width(window.innerWidth);
+    $('#mySidebar1').css('left',0)
   } else {
-    $('#mySidebar').width(385);
+    $('#mySidebar1').css('left',0)
   }
 }
 
 function closeNav(){
-  $('#mySidebar').width(0);
+  $('#iconbtn-1').css("background-color","transparent")
+  $('#tooltip-1').text("Settings").css("padding","5px")
+  $('#mySidebar1').css('left',-500)
 }
 
 function openNav2() {
-  if (window.innerWidth < 450){
+  if ($('#mySidebar1').css('left') == "4000px"){
+    closeNav2()
+  } else if (window.innerWidth < 450){
     $('#mySidebar2').width(window.innerWidth);
+    $('#mySidebar2').css('left',0)
   } else {
-    $('#mySidebar2').width(380);
-    $('#mySidebar2').css('left',window.innerWidth - 400)
+    $('#mySidebar2').css('left', window.innerWidth - $('#mySidebar2').width()-30)
   }
 }
 
 function closeNav2() {
-  $('#mySidebar2').css('left',window.innerWidth + 200)
+  $('#mySidebar2').css('left',4000)
 }
 
 function openNav3() {
   closeNav()
   closeNav4()
+  $('#tooltip-2').text("").css("padding","0px")
+  $('#iconbtn-2').css("background-color","yellow")
   if ($('#mySidebar3').css('left') == "0px"){
     closeNav3()
   } else if (window.innerWidth < 450){
@@ -52,10 +61,14 @@ function openNav3() {
 }
 
 function closeNav3(){
+  $('#iconbtn-2').css("background-color","transparent")
   $('#mySidebar3').css('left',-500)
+  $('#tooltip-2').text("Land Acknowledgement").css("padding","5px")
 }
 
 function openNav4() {
+  $('#tooltip-3').text("").css("padding","0px")
+  $('#iconbtn-3').css("background-color","yellow")
   closeNav()
   closeNav3()
   if ($('#mySidebar4').css('left') == "0px"){
@@ -70,4 +83,6 @@ function openNav4() {
 
 function closeNav4(){
   $('#mySidebar4').css('left',-500)
+  $('#iconbtn-3').css("background-color","transparent")
+  $('#tooltip-3').text("Save Map").css("padding","5px")
 }

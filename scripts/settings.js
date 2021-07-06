@@ -14,6 +14,12 @@ const goButton = () => {
   update();
 }
 
+const getCenter = () => {
+  if (map) return map.getCenter()
+  else return {lat:-104.800644, lng: 38.846127}
+
+}
+
 const collectSettings = () => {
   SETTINGS = {
       "Year":         $('#year-select').find(':selected').val(),
@@ -28,11 +34,24 @@ const collectSettings = () => {
       "Accumulate":   $('#accumulate').is(":checked"),
       "FlagMode":     $('#flag-mode').is(":checked"),
       "WikiMode":     $('#wiki-mode').is(":checked"),
+      "Center":       getCenter(),
       "Zoom":         parseFloat($('#zoom-v').val()),
       "Pitch":        parseFloat($('#pitch-v').val()),
   };
   console.log(`Settings updated`);
   $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
+}
+
+const distributeMapControls = () => {
+  let cen = SETTINGS["Center"];
+  setTimeout(function(){
+    map.flyTo({
+      zoom: parseFloat(SETTINGS["Zoom"]),
+      pitch: parseFloat(SETTINGS["Pitch"]),
+      center: [cen['lng'],cen['lat']],
+      essential: true
+    });
+  }, 1000);
 }
 
 const distributeSettings = () => {
@@ -50,13 +69,14 @@ const distributeSettings = () => {
   $('#wiki-mode').prop("checked", SETTINGS['WikiMode']);
   $('#zoom-v').val(parseFloat(SETTINGS["Zoom"]));
   $('#pitch-v').val(parseFloat(SETTINGS["Pitch"]));
-  console.log(`Settings distributed`);
+  distributeMapControls()
   $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
+  console.log(`Settings distributed`);
 }
 
 const copyToClipboard = () => {
-  var copyText = document.getElementById("settings-json"); /* Get the text field */
-  copyText.select(); /* Select the text field */
-  copyText.setSelectionRange(0, 99999); /* For mobile devices */
-  document.execCommand("copy"); /* Copy the text inside the text field */
+  let copyText = document.getElementById("settings-json"); // Get text field
+  copyText.select(); // Select text field
+  copyText.setSelectionRange(0, 99999); // For mobile devices?
+  document.execCommand("copy"); // Copy text to clipboard
 }

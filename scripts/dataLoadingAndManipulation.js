@@ -1,4 +1,4 @@
-function loadDataFromCSV(concept){
+const loadDataFromCSV = concept => {
   d3.csv(`data/2010/${concept}.csv`).then(data => {
     let keys = Object.keys(data[0]);
     data.forEach(d => {
@@ -10,13 +10,13 @@ function loadDataFromCSV(concept){
   });
 }
 
-function loadFlagData(){
+const loadFlagData = () => {
   d3.csv(`data/flagData6.csv`).then(data => {
     FLAGS = data.filter( () => true );
   });
 }
 
-function getVariableListByConcept(concept){
+const getVariableListByConcept = concept => {
   d3.csv(`data/2010/Variables_10.csv`).then(data => {
     D = data.filter(d => d["Group"] == concept)
   }).then(() => {
@@ -27,25 +27,22 @@ function getVariableListByConcept(concept){
   })
 }
 
-
-function getVariableLabelList(){
+const getVariableLabelList = () => {
   d3.csv(`data/2010/Variables_10.csv`).then(data => {
     data.forEach(d => replaceRepeatedTags(d))
   }).then(() => updateConcept())
 }
 
-function replaceRepeatedTags(d){
+const replaceRepeatedTags = d => {
   TAG[d.Name] = d.Label
   .replace("Total!!","")
   .replace("Total races tallied!!","");
   TAG[`${d.Name}P`] = ("[%] ")
   .concat(d.Label
     .replace("Total!!","")
-    .replace("Total races tallied!!","")
-  );
+    .replace("Total races tallied!!",""));
   TAG[`${d.Name}D`] = ("[D] ")
   .concat(d.Label
     .replace("Total!!","")
-    .replace("Total races tallied!!","")
-  );
+    .replace("Total races tallied!!",""));
 }

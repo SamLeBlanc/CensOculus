@@ -11,10 +11,7 @@ let customRanges = {
     "quantileQ4" : null,
 };
 
-const addCustomColor = i => {
-  customColors[i] = $(`#cpick-${i}`).val()
-  update()
-}
+
 
 const getCustomRange = () => SETTINGS['Scale'] == 'Linear' ? customL() : customQ();
 

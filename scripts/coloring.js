@@ -1,3 +1,97 @@
+const hideAllLayers = () => {
+  Object.keys(SOURCE_DICT).forEach( k => {
+    map.setLayoutProperty(`${k}-fills`,'visibility','none')
+    map.setLayoutProperty(`${k}-lines`,'visibility','none')
+    map.setLayoutProperty(`${k}-3d`,'visibility','none')
+  });
+}
+const showCurrentLayer = (geo) => {
+  map.setLayoutProperty(`${geo}-fills`,'visibility','visible')
+  map.setLayoutProperty(`${geo}-lines`,'visibility','visible')
+  map.setLayoutProperty(`${geo}-3d`,'visibility','visible')
+}
+
+
+const setLinePaint = () => {
+  let c1 = customColors[5] ? customColors[5] : "#e72cdc"
+  let c2 = customColors[6] ? customColors[6] : "#32cc32"
+  map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-color',
+    ['case',
+    ['boolean', ['feature-state', 'hold'], false], c1,
+    ['boolean', ['feature-state', 'hover'], false], c2, 'black',
+  ]);
+  map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-width',
+    ['case',
+    ['boolean', ['feature-state', 'hold'], false], 6,
+    ['boolean', ['feature-state', 'hover'], false], 4,
+    ['boolean', ['feature-state', 'flag'], false], 1, 0,
+  ]);
+  map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-opacity',
+    ['case',
+    ['boolean', ['feature-state', 'hold'], false], 1,
+    ['boolean', ['feature-state', 'hover'], false], 1,
+    ['boolean', ['feature-state', 'flag'], false], 1, 0.05,
+  ]);
+}
+const setFillPaint = (arr, colors) => {
+  updateFillOpacity()
+  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-color',
+    ['interpolate',
+    ['linear'], ['feature-state', SETTINGS['Variable']],
+    arr[0], colors[0],
+    arr[1], colors[1],
+    arr[2], colors[2],
+    arr[3], colors[3],
+    arr[4], colors[4]
+  ]);
+}
+const set3DPaint = (arr, colors) => {
+  let geo = SETTINGS['Geo'];
+  let variable = SETTINGS['Variable'];
+  let c1 = customColors[5] ? customColors[5] : "#e72cdc"
+  let c2 = customColors[6] ? customColors[6] : "#32cc32"
+  map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-color',
+    ['case',
+    ['boolean', ['feature-state', 'hold'], false],c1,
+    ['boolean', ['feature-state', 'hover'], false], c2,
+    ['interpolate',
+    ['linear'], ['feature-state', variable],
+      arr[0], colors[0],
+      arr[1], colors[1],
+      arr[2], colors[2],
+      arr[3], colors[3],
+      arr[4], colors[4]
+    ],
+  ]);
+  map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-height',
+    ['interpolate',
+    ['linear'], ['feature-state', variable],
+    arr[0], 0.5,
+    arr[4], parseFloat($('#height').val())
+  ]);
+  update3DVisibility()
+}
+const updateFillOpacity = () => {
+  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val()));
+  $('#to-label').text($('#tileopacity-v').val());
+}
+const update3DVisibility = () => {
+  let geo = SETTINGS['Geo'];
+  if ($('#3d-mode').is(":checked")){
+    map.setPaintProperty(`${geo}-fills`, 'fill-opacity',0.0);
+    map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-opacity',0.8);
+    map.setPaintProperty(`${geo}-lines`, 'line-opacity',0.0);
+    map.flyTo({pitch: 10, essential: true});
+  } else {
+    map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-opacity',0);
+    updateFillOpacity()
+    setLinePaint()
+    map.flyTo({pitch: 0, essential: true});
+  }
+}
+
+
+
 // Reverses the order of the current color scheme
 function reverseColorScale(){
   let scheme = SETTINGS['Scheme'];
@@ -39,11 +133,16 @@ function colorQuantile(){
   return fiveStep
 }
 
-function adjustment(arr){
+const fiveStepAdjustment = arr => {
   for (i=0; i < arr.length; i++){
     arr[i] += ((i-2) * .0000001)
   }
   return arr
+}
+
+const addCustomColor = i => {
+  customColors[i] = $(`#cpick-${i}`).val()
+  update()
 }
 
 function getCustomColors(colors){
@@ -53,31 +152,6 @@ function getCustomColors(colors){
   return colors
 }
 
-function getOutlineColors(){
-  hoverColor = $(`#cpick-5`).val()
-  heldColor = $(`#cpick-6`).val()
-  console.log(hoverColor, heldColor)
-}
-
-function colorLayer(){
-  console.log('coloring')
-  var scale = SETTINGS['Scale']
-  var scheme = SETTINGS['Scheme']
-
-  var colors = COLOR_DICT[scheme]
-
-  if (scale == "Linear") fiveStep = colorLinear();
-  else if (scale == "Quantile") fiveStep = colorQuantile();
-
-  arr = Object.values(fiveStep).sort((a, b) => a - b);
-
-  colors = getCustomColors(colors)
-  getOutlineColors()
-  updateLegend(arr, colors)
-  arr = adjustment(arr)
-  setFillPaint(arr, colors)
-  set3DPaint(arr, colors)
-}
 
 
 function updateLegend(arr, colors){

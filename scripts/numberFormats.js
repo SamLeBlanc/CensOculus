@@ -47,7 +47,7 @@ function numberWithCommas(x) {   // format int to include commas (e.g. 9888777 =
 
 
 let QSummary = {};
-function getQuantileValues(concept, variable, geo, scale){
+function getQuantileValues(){
   concept = SETTINGS['Concept'];
   variable = SETTINGS['Variable'];
   geo = SETTINGS['Geo'];
