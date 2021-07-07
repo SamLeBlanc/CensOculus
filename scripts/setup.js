@@ -9,13 +9,42 @@ function setUpAll(){   // setup function called on first page load
   $('#cpick-6').on('change', () => addCustomColor(6) );
 }
 
-function openNav() {
-  $('#iconbtn-1').css("background-color","yellow")
-  $('#tooltip-1').text("").css("padding","0px")
+const closeAllNavs = () => {
+  closeNav()
   closeNav3()
   closeNav4()
+  closeNav5()
+  closeNav6()
+}
+
+const openNav5 = () => {
+  closeAllNavs()
+  $('#iconbtn-4').css("background-color","yellow")
+  $('#tooltip-4').text("").css("padding","0px")
+}
+
+const closeNav5 = () => {
+  $('#iconbtn-4').css("background-color","transparent")
+  $('#tooltip-4').text("Settings").css("padding","5px")
+}
+
+const openNav6 = () => {
+  closeAllNavs()
+  $('#iconbtn-5').css("background-color","yellow")
+  $('#tooltip-5').text("").css("padding","0px")
+}
+
+const closeNav6 = () => {
+  $('#iconbtn-5').css("background-color","transparent")
+  $('#tooltip-5').text("Settings").css("padding","5px")
+}
+
+function openNav() {
+  // closeAllNavs()
+  $('#iconbtn-1').css("background-color","yellow")
+  $('#tooltip-1').text("").css("padding","0px")
   if ($('#mySidebar1').css('left') == "0px"){
-    closeNav()
+    closeAllNavs()
   } else if (window.innerWidth < 450){
     $('#mySidebar1').width(window.innerWidth);
     $('#mySidebar1').css('left',0)
@@ -46,12 +75,11 @@ function closeNav2() {
 }
 
 function openNav3() {
-  closeNav()
-  closeNav4()
+  closeAllNavs()
   $('#tooltip-2').text("").css("padding","0px")
   $('#iconbtn-2').css("background-color","yellow")
   if ($('#mySidebar3').css('left') == "0px"){
-    closeNav3()
+    closeAllNavs()
   } else if (window.innerWidth < 450){
     $('#mySidebar3').width(window.innerWidth);
     $('#mySidebar3').css('left',0)
@@ -67,12 +95,11 @@ function closeNav3(){
 }
 
 function openNav4() {
+  closeAllNavs()
   $('#tooltip-3').text("").css("padding","0px")
   $('#iconbtn-3').css("background-color","yellow")
-  closeNav()
-  closeNav3()
   if ($('#mySidebar4').css('left') == "0px"){
-    closeNav4()
+    closeAllNavs()
   } else if (window.innerWidth < 450){
     $('#mySidebar4').width(window.innerWidth);
     $('#mySidebar4').css('left',0)

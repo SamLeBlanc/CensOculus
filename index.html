@@ -37,7 +37,7 @@
 <body>
 
   <div id="map"></div>
-  <div id="mySidebar3" class="sidebar" style="background-color: lightgrey; left: -500px; top: 65px; padding: 10px; padding-top:40px; width:365px;" >
+  <div id="mySidebar3" class="sidebar" style="background-color: lightgrey; left: -500px; top: 78px; padding: 10px; padding-top:50px; width:365px;" >
     <span style="font-size:20px; font-weight:bold;">American History</span><br>
     <div style="padding:2px;"></div>
     Humans have lived on the North American continent for more than 120,000 years;
@@ -57,7 +57,7 @@
     To properly understand the context of the US Census, it must be remembered that the United States
     was built on stolen land without the consent of native peoples.
   </div>
-  <div id="mySidebar4" class="sidebar" style="background-color: lightgrey; left: -500px; top: 65px; padding: 10px; padding-top:40px; width:365px; white-space: wrap;" >
+  <div id="mySidebar4" class="sidebar" style="background-color: lightgrey; left: -500px; top: 78px; padding: 10px; padding-top:50px; width:365px; white-space: wrap;" >
     <span>
       Maps can be saved by copying the token below.<br>
       Make sure to save it in a document for later use! <br>
@@ -73,7 +73,7 @@
     </div>
     <div style="padding:5px;"></div>
     <div>
-      <textarea id="settings-json" name="settings-json" rows="6" cols="47"></textarea>
+      <textarea id="settings-json" name="settings-json" rows="10" cols="47" style="position: relative; width: 355px; "></textarea>
     </div>
   </div>
   <div id="mySidebar2" class="sidebar" style="background-color: lightgrey; left: 4000px; margin-top:10px; padding: 10px; width:365px;">
@@ -109,7 +109,7 @@
     </div>
 
   </div>
-  <div id="mySidebar1" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; padding-top:40px; width:365px;">
+  <div id="mySidebar1" class="sidebar" style="background-color: black; left: -500px; top: 78px; padding: 10px; padding-top:50px; width:365px;">
     <div id="settings" style="font-weight:bold;">
       <table class="tableB" id="tabeleta" >
         <tr>
@@ -441,7 +441,7 @@
   </div>
   <div id="title">CensusMapper</div>
 
-  <div style="position:fixed; z-index:9; top: 65px;">
+  <div style="position:fixed; z-index:9; top: 80px;">
     <button id="iconbtn-1" class="iconbtn" onclick="openNav()">
       <div class="tooltip">⚙️
         <span id="tooltip-1" class="tooltiptext">Settings</span>
@@ -455,6 +455,17 @@
     <button id="iconbtn-3" class="iconbtn" onclick="openNav4()">
       <div class="tooltip">💾
         <span id="tooltip-3" class="tooltiptext">Save Map</span>
+      </div>
+    </button>
+    <button id="iconbtn-4" class="iconbtn" onclick="openNav5()">
+      <div class="tooltip">🏷️
+        <span id="tooltip-4" class="tooltiptext">Tags</span>
+      </div>
+    </button>
+    <button id="iconbtn-5" class="iconbtn" onclick="openNav6()">
+      <div class="tooltip">
+        <img src="images/filter.png" width="25" height="25" style="position: relative; top:4px">
+        <span id="tooltip-5" class="tooltiptext">Filter</span>
       </div>
     </button>
   </div>
@@ -543,6 +554,7 @@ $('#legend').css('top', `${window.innerHeight - h - 35}px`)
 
 LORAX = {}
 updateTitle()
+$('#title').css('font-size',75)
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
 var map = new mapboxgl.Map({
