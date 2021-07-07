@@ -12,7 +12,7 @@ CensusMapper is a browser-based, interactive mapping application used to visuali
 
 ## Why CensusMapper?
 
-Three words: versatility, usability, and speed. CensusMapper is highly adaptive, suitable for use in political campiaigns, marketing, industry, community planning, and much more. CensusMapper provides access to many thousands of variables collected by the Census Bureau, including data relating to age, race, sex, ethnicity, housing, rurality, and more. Each categoty is viewable across many levels of geography, down to block group granularity, without compromising computational efficiency.
+Three words: versatility, usability, and speed. CensusMapper is highly adaptive, suitable for use in political campiaigns, marketing, industry, community planning, and much more. CensusMapper provides access to thousands of variables tallied by the Census Bureau, including data relating to age, race, sex, ethnicity, housing, rurality, and more. Each categoty is viewable across many levels of geography, down to block group granularity, without compromising overall efficiency.
 
 ## Getting Started
 
@@ -25,4 +25,4 @@ Currently, the project only displays data collected from the 2010 Census. With t
 
 ## Contributers
 
-The project is only maintained by me ([Sam LeBlanc](https://github.com/SamLeBlanc)) in my free time, but contributers are always welcome. Any questions can be sent to me via [email](mailto:sdl87@georgetown.edu). Thank you for stopping by→!
+The project is only maintained by me ([Sam LeBlanc](https://github.com/SamLeBlanc)) in my free time, but contributers are always welcome. Any questions can be sent to me via [email](mailto:sdl87@georgetown.edu). Thank you for stopping by!
