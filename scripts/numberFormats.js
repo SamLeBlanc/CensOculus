@@ -7,16 +7,16 @@ const customRound = (num,d) => Math.round((num + Number.EPSILON) * 10**(d-1)) / 
 
 const metersSq2MilesSq = metersSq => {
   let milesSq = metersSq / 2590000;
-  if (milesSq > 30) return customRound(milesSq, 1)
-  if (milesSq > 2) return customRound(milesSq, 2)
-  else return customRound(milesSq, 3)
+  if (milesSq < 2) return customRound(milesSq, 3)
+  else if (milesSq < 30) return customRound(milesSq, 2)
+  else return customRound(milesSq, 1)
 }
 
 const formatDensity = (pop,area) => {
   let den = pop / area;
   if (den > 30) return numberWithCommas(customRound(den, 1))
   if (den > 2) return customRound(den, 2)
-  else return customRound(den, 3)
+  return customRound(den, 3)
 }
 
 const abbreviateNumber = num => {

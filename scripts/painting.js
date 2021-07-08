@@ -12,15 +12,15 @@ const hideAllLayers = () => {
 const setLayerVisibility = () => {
   let geo = SETTINGS['Geo'];
   if ($('#3d-mode').is(":checked")){
-    map.setLayoutProperty(`${geo}-lines`,'visibility','none');
     map.setLayoutProperty(`${geo}-fills`,'visibility','none');
     map.setLayoutProperty(`${geo}-3d`,'visibility','visible');
+      map.setLayoutProperty(`${geo}-lines`,'visibility','none');
     map.flyTo({pitch: 10, essential: true});
   } else {
-    map.setLayoutProperty(`${geo}-lines`,'visibility','visible');
     map.setLayoutProperty(`${geo}-fills`,'visibility','visible');
     map.setLayoutProperty(`${geo}-3d`,'visibility','none');
     map.flyTo({pitch: 0, essential: true});
+    map.setLayoutProperty(`${geo}-lines`,'visibility','visible');
   }
 }
 
@@ -36,6 +36,7 @@ const setFillPaint = (arr, colors) => {
 const setExtrusionPaint = (arr, colors) => {
   setExtrusionColor(arr,colors)
   setExtrusionHeight(arr)
+  setExtrusionOpacity()
 }
 
 const setLineColor = () => {
@@ -104,4 +105,7 @@ const setExtrusionHeight = arr => {
     arr[0], 0.5,
     arr[4], parseFloat($('#height').val())
   ]);
+}
+const setExtrusionOpacity = () => {
+  map.setPaintProperty(`${SETTINGS['Geo']}-3d`, 'fill-extrusion-opacity', parseFloat($('#tileopacity-v').val()));
 }

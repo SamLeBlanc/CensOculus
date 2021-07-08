@@ -189,16 +189,16 @@ const clearAllHolds = () => {
 const allEqual = arr => arr.every( v => v === arr[0] );
 const sameState = id_list => allEqual(id_list) ? true : false;
 const sameCounty = id_list => allEqual(id_list.map(g => g.substring(0,2))) ? true : false;
-const countySuffix = () => `${FULL_COUNTY_NAME[id_list[0]]}, ${CODE_TO_STATE[id_list[0].substring(0,2)]}`;
-const stateSuffix = () => STATE_TO_NAME[CODE_TO_STATE[id_list[0].substring(0,2)]];
+const countySuffix = id_list => `${FULL_COUNTY_NAME[id_list[0]]}, ${CODE_TO_STATE[id_list[0].substring(0,2)]}`;
+const stateSuffix = id_list => STATE_TO_NAME[CODE_TO_STATE[id_list[0].substring(0,2)]];
 
 const getBarNameSuffix = () => {
   let geo = SETTINGS['Geo'];
   let check = (['state','county','tract','group','place','uschool','csub'].includes(geo)) ? true : false;
   if (!check) return false
   let id_list = Object.values(heldDistricts).map(d => d.GEOID10.substring(0,5));
-  if (sameCounty(id_list)) return countySuffix()
-  if (sameState(id_list)) return stateSuffix()
+  if (sameCounty(id_list)) return countySuffix(id_list)
+  if (sameState(id_list)) return stateSuffix(id_list)
   else return null
 }
 
@@ -303,4 +303,5 @@ const updateBar = e => {
   if (geoid) wiki_url_ = getWikiUrl(geoid);
   getHeldData()
   setBarText(name, geoid, area, pop, den, flag_url_, wiki_url_)
+  console.log(`pop${pop} area${area} den${den}`)
 }

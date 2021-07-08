@@ -1,5 +1,5 @@
 const updateTitle = () => {
-  let titleSize = window.innerWidth < 450 ? "45px" : "75px";
+  let titleSize = window.innerWidth < 450 ? "50px" : "65px";
   $('#title').css('font-size',titleSize)
   $('#title').css('color',`#${randomTitleColor()}`)
   $('#title').css('-webkit-text-stroke',`1.5px ivory`);

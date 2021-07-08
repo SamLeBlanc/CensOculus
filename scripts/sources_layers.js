@@ -4,9 +4,9 @@
 
 const addFillLineExtrusionLayers = () => {
   Object.keys(LAYER_DICT).forEach(geo => {
-    addLineLayer(geo)
     addFillLayer(geo)
     addExtrusionLayer(geo)
+    addLineLayer(geo)
   });
 }
 

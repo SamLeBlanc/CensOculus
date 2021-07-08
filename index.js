@@ -24,8 +24,9 @@ const updatePaint = () => {
   let fiveStep_values = Object.values(fiveStep).sort((a, b) => a - b);
   fiveStep_values = fiveStepAdjustment(fiveStep_values);
   updateLegend(fiveStep_values, colors);
+  setLinePaint();
   setFillPaint(fiveStep_values, colors);
-  setExtrusionPaint(fiveStep_values, colors);
+  //setExtrusionPaint(fiveStep_values, colors);
   setLayerVisibility();
 }
 

@@ -63,6 +63,7 @@
 .tooltip {
   position: relative;
   display: inline-block;
+  padding:2px;
   /* border-bottom: 1px dotted black; */
 }
 

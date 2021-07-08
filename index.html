@@ -40,8 +40,9 @@
 <body>
 
   <div id="map"></div>
-  <div id="mySidebar3" class="sidebar" style="background-color: lightgrey; left: -500px; top: 78px; padding: 10px; padding-top:50px; width:365px;" >
-    <span style="font-size:20px; font-weight:bold;">American History</span><br>
+  <div id="mySidebar3" class="sidebar" style="background-color: #F7E3CA; left: -500px; top: 115px; padding: 10px; width:365px;" >
+    <div><span class="navTitle">Land Acknowledgement</span></div>
+    <div style="padding:2px;"></div>
     <div style="padding:2px;"></div>
     Humans have lived on the North American continent for more than 120,000 years;
     creating a cultural history that is as vibrant as it is diverse.<br>
@@ -60,7 +61,9 @@
     To properly understand the context of the US Census, it must be remembered that the United States
     was built on stolen land without the consent of native peoples.
   </div>
-  <div id="mySidebar4" class="sidebar" style="background-color: lightgrey; left: -500px; top: 78px; padding: 10px; padding-top:50px; width:365px; white-space: wrap;" >
+  <div id="mySidebar4" class="sidebar" style="background-color: #F5CCD7; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
+    <div><span class="navTitle">Save Map</span></div>
+    <div style="padding:2px;"></div>
     <span>
       Maps can be saved by copying the token below.<br>
       Make sure to save it in a document for later use! <br>
@@ -79,7 +82,7 @@
       <textarea id="settings-json" name="settings-json" rows="10" cols="47" style="position: relative; width: 355px; "></textarea>
     </div>
   </div>
-  <div id="mySidebar2" class="sidebar" style="background-color: lightgrey; left: 4000px; margin-top:10px; padding: 10px; width:365px;">
+  <div id="mySidebar2" class="sidebar" style="background-color: #CCCCCC; left: 4000px; margin-top:10px; padding: 10px; width:365px;">
     <div style="padding-bottom: 5px;">
       <span id="b-name" style="font-size: 25px;"></span>
     </div>
@@ -107,17 +110,21 @@
         <a id="wiki-link" href="" target="_blank">Wiki</a>
         &nbsp&nbsp
         <a id="flag-link" href="" target="_blank">Flag</a>
+        &nbsp&nbsp
+        <button onclick="clearAllHolds()">Clear Holds</button>
       </div>
       <div id="held-data">      </div>
     </div>
 
   </div>
-  <div id="mySidebar1" class="sidebar" style="background-color: black; left: -500px; top: 78px; padding: 10px; padding-top:50px; width:365px;">
-    <div id="settings" style="font-weight:bold;">
+  <div id="mySidebar1" class="sidebar" style="background-color: #CCE1F5; left: -500px; top: 115px; padding: 10px; width:365px;overflow-y: scroll;" >
+    <div id="settings" style="color:#666666; font-weight:bold;">
+      <div><span class="navTitle">Settings</span></div>
+      <div style="padding:2px;"></div>
       <table class="tableB" id="tabeleta" >
         <tr>
           <td>
-            <span style="color:red; font-size: 1.2em; ">Data</span>
+            <span style="font-weight:900; color:#333333;">Data</span>
           </td>
           <td>
           </td>
@@ -205,14 +212,14 @@
         </tr>
         <tr>
           <td>
-            <span style="color:black;">.</span>
+            <span style="color:#CCE1F5;">.</span>
           </td>
           <td>
           </td>
         </tr>
         <tr>
           <td>
-            <span style="color:Orange; font-size: 1.2em; ">3D</span>
+            <span style="font-weight:900; color:#333333;">3D</span>
           </td>
           <td>
           </td>
@@ -235,20 +242,20 @@
         </tr>
         <tr>
           <td>
-            <span style="color:black;">.</span>
+            <span style="color:#CCE1F5;">.</span>
           </td>
           <td>
           </td>
         </tr>
         <tr>
           <td>
-            <span style="color:Yellow; font-size: 1.2em; ">Colors</span>
+            <span style="font-weight:900; color:#333333;">Colors</span>
           </td>
           <td>
           </td>
         </tr>
         <tr>
-          <td>Color<span style="color:black;">-</span>Scheme<span style="color:black;">.</span></td>
+          <td>Color<span style="color:#CCE1F5;">-</span>Scheme<span style="color:#CCE1F5;">.</span></td>
           <td>
             <div id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
               <select id="color-select-" style="width:145px;">
@@ -305,14 +312,14 @@
         </tr>
         <tr>
           <td>
-            <span style="color:black;">.</span>
+            <span style="color:#CCE1F5;">.</span>
           </td>
           <td>
           </td>
         </tr>
         <tr>
           <td>
-            <span style="color:Green; font-size: 1.2em; ">Numbers</span>
+            <span style="font-weight:900; color:#333333;">Numbers</span>
           </td>
           <td>
           </td>
@@ -330,14 +337,14 @@
         </tr>
         <tr>
           <td>
-            <span style="color:black;">.</span>
+            <span style="color:#CCE1F5;">.</span>
           </td>
           <td>
           </td>
         </tr>
         <tr>
           <td>
-            <span style="color:Blue; font-size: 1.2em; ">Selection</span>
+            <span style="font-weight:900; color:#333333;">Selection</span>
           </td>
           <td>
           </td>
@@ -353,14 +360,14 @@
         </tr>
         <tr>
           <td>
-            <span style="color:black;">.</span>
+            <span style="color:#CCE1F5;">.</span>
           </td>
           <td>
           </td>
         </tr>
         <tr>
           <td>
-            <span style="color:Purple; font-size: 1.2em; ">Modes</span>
+            <span style="font-weight:900; color:#333333;">Modes</span>
           </td>
           <td>
           </td>
@@ -383,14 +390,14 @@
         </tr>
         <tr>
           <td>
-            <span style="color:black;">.</span>
+            <span style="color:#CCE1F5;">.</span>
           </td>
           <td>
           </td>
         </tr>
         <tr>
           <td>
-            <span style="color:#e72cdc; font-size: 1.2em; ">Map<span style="color:black;">..</span>Viewing<span style="color:black;">..</span></span>
+            <span style="font-weight:900; color:#333333;">Map<span style="color:#CCE1F5;">..</span>Viewing<span style="color:#CCE1F5;">..</span></span>
           </td>
           <td>
           </td>
@@ -432,6 +439,24 @@
       <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav()">Close Settings</button>
     </div>
   </div>
+  <div id="mySidebar5" class="sidebar" style="background-color: #CBF6CE; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
+    <div><span class="navTitle">Tagged Places</span></div>
+    <div style="padding:2px;"></div>
+    A<br>
+    A<br>
+    A<br>
+    A<br>
+    A<br>
+  </div>
+  <div id="mySidebar6" class="sidebar" style="background-color: #FFE2E0; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
+    <div><span class="navTitle">Filter</span></div>
+    <div style="padding:2px;"></div>
+    A<br>
+    A<br>
+    A<br>
+    A<br>
+    A<br>
+  </div>
 
   <!-- <div id="mySidebar" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; width:365px;" >
 
@@ -444,31 +469,31 @@
   </div>
   <div id="title">CensusMapper</div>
 
-  <div style="position:fixed; z-index:9; top: 80px;">
-    <button id="iconbtn-1" class="iconbtn" onclick="openNav()">
+  <div id="nav-buttons" style="position:fixed; z-index:9; top: 65px;">
+    <button id="iconbtn-1" class="iconbtn" onclick="openNav1()">
       <div class="tooltip">⚙️
-        <span id="tooltip-1" class="tooltiptext">Settings</span>
+        <!-- <span id="tooltip-1" class="tooltiptext">Settings</span> -->
       </div>
     </button>
     <button id="iconbtn-2" class="iconbtn" onclick="openNav3()">
       <div class="tooltip">⛰️
-        <span id="tooltip-2" class="tooltiptext">Land Acknowledgement</span>
+        <!-- <span id="tooltip-2" class="tooltiptext">Land Acknowledgement</span> -->
       </div>
     </button>
     <button id="iconbtn-3" class="iconbtn" onclick="openNav4()">
       <div class="tooltip">💾
-        <span id="tooltip-3" class="tooltiptext">Save Map</span>
+        <!-- <span id="tooltip-3" class="tooltiptext">Save Map</span> -->
       </div>
     </button>
     <button id="iconbtn-4" class="iconbtn" onclick="openNav5()">
       <div class="tooltip">🏷️
-        <span id="tooltip-4" class="tooltiptext">Tags</span>
+        <!-- <span id="tooltip-4" class="tooltiptext">Tags</span> -->
       </div>
     </button>
     <button id="iconbtn-5" class="iconbtn" onclick="openNav6()">
       <div class="tooltip">
         <img src="images/filter.png" width="25" height="25" style="position: relative; top:4px">
-        <span id="tooltip-5" class="tooltiptext">Filter</span>
+        <!-- <span id="tooltip-5" class="tooltiptext">Filter</span> -->
       </div>
     </button>
   </div>
@@ -529,7 +554,7 @@
 </div>
 <br>
 <div style="width:480px; padding: 5px; border-radius: 10px;">
-<span id = "intro-text" style="font-weight:bold;"></span>
+<span id = "intro-text" style="font-weight:900; color:black;"></span>
 <button id="next-1" class="next-button" style="opacity: 0" onclick="holder()">➜</button>
 </div>
 </div> -->
@@ -557,7 +582,6 @@ $('#legend').css('top', `${window.innerHeight - h - 35}px`)
 
 LORAX = {}
 updateTitle()
-$('#title').css('font-size',75)
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
 var map = new mapboxgl.Map({
