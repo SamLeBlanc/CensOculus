@@ -5,7 +5,7 @@ const main = () => {
   setUpAll()
   getVariableLabelList()
   addSources()
-  addFillAndLineLayers()
+  addFillLineExtrusionLayers()
 }
 const update = () => {
   console.log('updating')
@@ -25,7 +25,8 @@ const updatePaint = () => {
   fiveStep_values = fiveStepAdjustment(fiveStep_values);
   updateLegend(fiveStep_values, colors);
   setFillPaint(fiveStep_values, colors);
-  set3DPaint(fiveStep_values, colors);
+  setExtrusionPaint(fiveStep_values, colors);
+  setLayerVisibility();
 }
 
 let hoversCreated = [];
@@ -33,7 +34,7 @@ const updateGeo = () => {
   hideAllLayers()
   clearAllHolds()
   let geo = SETTINGS['Geo'];
-  showCurrentLayer(geo)
+  showCurrentLayer()
   if (!hoversCreated.includes(geo)){
     setupHoverHoldStates(geo);
     hoversCreated.push(geo);

@@ -193,7 +193,8 @@ const countySuffix = () => `${FULL_COUNTY_NAME[id_list[0]]}, ${CODE_TO_STATE[id_
 const stateSuffix = () => STATE_TO_NAME[CODE_TO_STATE[id_list[0].substring(0,2)]];
 
 const getBarNameSuffix = () => {
-  let check = (['state','county','tract','group','place','uschool','csub'].includes(geoid)) ? true : false;
+  let geo = SETTINGS['Geo'];
+  let check = (['state','county','tract','group','place','uschool','csub'].includes(geo)) ? true : false;
   if (!check) return false
   let id_list = Object.values(heldDistricts).map(d => d.GEOID10.substring(0,5));
   if (sameCounty(id_list)) return countySuffix()

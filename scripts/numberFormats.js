@@ -1,50 +1,42 @@
-function formatNumber(num){   // find and create the desired number format
-  let variable = SETTINGS['Variable'];
-  var num_format = SETTINGS['NumFormat'];
-  if (variable.endsWith("P")) num = formatPercent(num);
-  else if (num_format == 'short') num = abbreviateNumber(num);
-  else if (num_format == 'comma') num = numberWithCommas(num);
-  return num
+const formatNumber = num => {   // find and create the desired number format
+  if (SETTINGS['Variable'].endsWith("P")) return formatPercent(num);
+  return (SETTINGS['NumFormat'] == 'short') ? abbreviateNumber(num) : numberWithCommas(num);
 }
 
-function formatPercent2(num){
-  return `${Math.round(num*100)/1000}%`
+const customRound = (num,d) => Math.round((num + Number.EPSILON) * 10**(d-1)) / 10**(d-1);
+
+const metersSq2MilesSq = metersSq => {
+  let milesSq = metersSq / 2590000;
+  if (milesSq > 30) return customRound(milesSq, 1)
+  if (milesSq > 2) return customRound(milesSq, 2)
+  else return customRound(milesSq, 3)
 }
 
-function metersSq2MilesSq(metersSq){
-  let milesSq = metersSq / 2590000
-  if (milesSq > 30) return Math.round(milesSq)
-  if (milesSq > 2) return Math.round((milesSq + Number.EPSILON) * 10) / 10
-  else return Math.round((milesSq + Number.EPSILON) * 100) / 100
-}
-
-function formatDensity(pop,area){
+const formatDensity = (pop,area) => {
   let den = pop / area;
-  if (den > 30) return numberWithCommas(Math.round(den))
-  if (den > 2) return Math.round((den + Number.EPSILON) * 10) / 10
-  else return Math.round((den + Number.EPSILON) * 100) / 100
+  if (den > 30) return numberWithCommas(customRound(den, 1))
+  if (den > 2) return customRound(den, 2)
+  else return customRound(den, 3)
 }
 
-function abbreviateNumber(number){   // format number to abbreviated version
-  number = Math.round(number)
-  var SI_SYMBOL = ["", "K", "M"];   // symbols: K => thousand, M => million
-  var tier = Math.min(Math.log10(Math.abs(number)) / 3 | 0, 2);   // what tier? (determines SI symbol)
-  if(tier == 0) return number;   // if zero, we don't need a suffix
-  var suffix = SI_SYMBOL[tier];   // get suffix and determine scale
-  var scale = Math.pow(10, tier * 3);
-  var scaled = number / scale;   // scale the number
-  var decimal = (scaled <= 10) ? 1 : 0;
+const abbreviateNumber = num => {
+  // format number to abbreviated version
+  num = customRound(num, 1);
+  let SI_SYMBOL = ["", "K", "M"];   // symbols: K => thousand, M => million
+  let tier = Math.min(Math.log10(Math.abs(num)) / 3 | 0, 2);   // what tier? (determines SI symbol)
+  if (tier == 0) return num;   // if zero, we don't need a suffix
+  let suffix = SI_SYMBOL[tier];   // get suffix and determine scale
+  let scale = Math.pow(10, tier * 3);
+  let scaled = num / scale;   // scale the number
+  let decimal = (scaled <= 10) ? 1 : 0;
   return scaled.toFixed(decimal) + suffix;   // format number and add suffix
 }
 
-function formatPercent(number){   // format float to string percentage
-  return `${(100*number).toFixed(1)}%`
-}
+// format float to string percentage
+const formatPercent = number => `${(100*number).toFixed(1)}%`;
 
-function numberWithCommas(x) {   // format int to include commas (e.g. 9888777 => 9,888,777)
-  return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
+// format int to include commas (e.g. 9888777 => 9,888,777)
+const numberWithCommas = num => Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 let QSummary = {};
 function getQuantileValues(){
@@ -52,16 +44,16 @@ function getQuantileValues(){
   variable = SETTINGS['Variable'];
   geo = SETTINGS['Geo'];
   scale = SETTINGS['Scale'];
-  data = LORAX[concept].filter(function(d){ return d["SIZE"] == geo.toUpperCase() })
+  data = LORAX[concept].filter(d => d["SIZE"] == geo.toUpperCase() );
   if (!variable.endsWith('P')){
-    values = data.map(function(d) { return d[variable] })
+    values = data.map(d => d[variable] );
   }
   else {
     var cat = variable.slice(0,-1);
     var cat_total = `${variable.slice(0,4)}001`;
-    values = data.map(function(d) { return (d[cat] / d[cat_total]) })
+    values = data.map(d => (d[cat] / d[cat_total]) )
   }
-  values = values.sort(function(a, b){return a - b});
+  values = values.sort((a, b) => a - b);
 
   if (scale == 'Quantile') QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1, 0.05, 0.95]
   var quants = [];

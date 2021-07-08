@@ -1,105 +1,7 @@
-const hideAllLayers = () => {
-  Object.keys(SOURCE_DICT).forEach( k => {
-    map.setLayoutProperty(`${k}-fills`,'visibility','none')
-    map.setLayoutProperty(`${k}-lines`,'visibility','none')
-    map.setLayoutProperty(`${k}-3d`,'visibility','none')
-  });
-}
-const showCurrentLayer = (geo) => {
-  map.setLayoutProperty(`${geo}-fills`,'visibility','visible')
-  map.setLayoutProperty(`${geo}-lines`,'visibility','visible')
-  map.setLayoutProperty(`${geo}-3d`,'visibility','visible')
-}
-
-
-const setLinePaint = () => {
-  let c1 = customColors[5] ? customColors[5] : "#e72cdc"
-  let c2 = customColors[6] ? customColors[6] : "#32cc32"
-  map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-color',
-    ['case',
-    ['boolean', ['feature-state', 'hold'], false], c1,
-    ['boolean', ['feature-state', 'hover'], false], c2, 'black',
-  ]);
-  map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-width',
-    ['case',
-    ['boolean', ['feature-state', 'hold'], false], 6,
-    ['boolean', ['feature-state', 'hover'], false], 4,
-    ['boolean', ['feature-state', 'flag'], false], 1, 0,
-  ]);
-  map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-opacity',
-    ['case',
-    ['boolean', ['feature-state', 'hold'], false], 1,
-    ['boolean', ['feature-state', 'hover'], false], 1,
-    ['boolean', ['feature-state', 'flag'], false], 1, 0.05,
-  ]);
-}
-const setFillPaint = (arr, colors) => {
-  updateFillOpacity()
-  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-color',
-    ['interpolate',
-    ['linear'], ['feature-state', SETTINGS['Variable']],
-    arr[0], colors[0],
-    arr[1], colors[1],
-    arr[2], colors[2],
-    arr[3], colors[3],
-    arr[4], colors[4]
-  ]);
-}
-const set3DPaint = (arr, colors) => {
-  let geo = SETTINGS['Geo'];
-  let variable = SETTINGS['Variable'];
-  let c1 = customColors[5] ? customColors[5] : "#e72cdc"
-  let c2 = customColors[6] ? customColors[6] : "#32cc32"
-  map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-color',
-    ['case',
-    ['boolean', ['feature-state', 'hold'], false],c1,
-    ['boolean', ['feature-state', 'hover'], false], c2,
-    ['interpolate',
-    ['linear'], ['feature-state', variable],
-      arr[0], colors[0],
-      arr[1], colors[1],
-      arr[2], colors[2],
-      arr[3], colors[3],
-      arr[4], colors[4]
-    ],
-  ]);
-  map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-height',
-    ['interpolate',
-    ['linear'], ['feature-state', variable],
-    arr[0], 0.5,
-    arr[4], parseFloat($('#height').val())
-  ]);
-  update3DVisibility()
-}
-const updateFillOpacity = () => {
-  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val()));
-  $('#to-label').text($('#tileopacity-v').val());
-}
-const update3DVisibility = () => {
-  let geo = SETTINGS['Geo'];
-  if ($('#3d-mode').is(":checked")){
-    map.setPaintProperty(`${geo}-fills`, 'fill-opacity',0.0);
-    map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-opacity',0.8);
-    map.setPaintProperty(`${geo}-lines`, 'line-opacity',0.0);
-    map.flyTo({pitch: 10, essential: true});
-  } else {
-    map.setPaintProperty(`${geo}-3d`, 'fill-extrusion-opacity',0);
-    updateFillOpacity()
-    setLinePaint()
-    map.flyTo({pitch: 0, essential: true});
-  }
-}
-
-
-
 // Reverses the order of the current color scheme
-function reverseColorScale(){
-  let scheme = SETTINGS['Scheme'];
-  COLOR_DICT[scheme] = COLOR_DICT[scheme].reverse();
-  update();
-}
+const reverseColorScheme = () => COLOR_DICT[SETTINGS['Scheme']] = COLOR_DICT[SETTINGS['Scheme']].reverse();
 
-function colorLinear(){
+const colorLinear = () => {
   let fiveStep = {};
   if (customRanges["linearMin"] != null) {
     fiveStep[0] = customRanges["linearMin"];
@@ -115,7 +17,7 @@ function colorLinear(){
   return fiveStep
 }
 
-function colorQuantile(){
+const colorQuantile = () => {
   let fiveStep = {};
   if (customRanges["quantileQ0"] != null) {
     fiveStep[0] = customRanges["quantileQ0"];
@@ -145,7 +47,7 @@ const addCustomColor = i => {
   update()
 }
 
-function getCustomColors(colors){
+const getCustomColors = colors => {
   customColors.forEach((element, i) => {
     if (element != null) colors[i] = customColors[i]
   });
@@ -154,7 +56,7 @@ function getCustomColors(colors){
 
 
 
-function updateLegend(arr, colors){
+const updateLegend = (arr, colors) => {
   var scheme = SETTINGS['Scheme']
   var colors = COLOR_DICT[scheme]
 
@@ -170,7 +72,7 @@ function updateLegend(arr, colors){
   }
 }
 
-function hexToRgb(hex) {
+const hexToRgb = hex => {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
     r: parseInt(result[1], 16),

@@ -37,23 +37,19 @@ function inZeroOne(arr){
 }
 
 function customL(){
-  var str = prompt("Custom Linear Scaling. \nPlease enter the *min* and *max* values for your custom linear range. \
-  The values must be entered as an *array* of length 2, and must be in STRICTLY INCREASING order. ", "[  ,  ]");
-  if (str !== null){
-    try {
-      X = JSON.parse(str)
-      B = (X.constructor === Array)
-      L = (X.length === 2)
-      A = isAscending(X)
-      if (!(B == L == A == true)){
-        alert('Invalid, please read the instructions more carefully 😘')
-        customL()
-      }
-    }
-    catch(err) {
+  var str = prompt("~ Custom Linear Scaling ~ \n\nPlease enter the *min* and *max* for your custom linear scale. \nThe *two* values must be entered in *strictly increasing* order.\nFor percentages, enter values between 0 and 1.", "min , max");
+  if(str == null) return
+  try {
+    X = str.split(",").map(Number);
+    console.log(X)
+    if (!(X.constructor === Array && X.length === 2 && isAscending(X) === 2)){
       alert('Invalid, please read the instructions more carefully 😘')
       customL()
     }
+  }
+  catch(err) {
+    alert('Invalid, please read the instructions more carefully 😘')
+    customL()
   }
   try{
     LINEAR_RANGE = X;

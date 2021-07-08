@@ -19,7 +19,6 @@
   <link rel="stylesheet" href="styles/sidebar.css">
   <script type="text/javascript" src="index.js"></script>
   <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
-  <script type="text/javascript" src="scripts/addSourcesAndLayers.js"></script>
   <script type="text/javascript" src="scripts/DICTIONARIES.js"></script>
   <script type="text/javascript" src="scripts/INTRO.js"></script>
   <script type="text/javascript" src="scripts/snapshotHoverStates.js"></script>
@@ -33,6 +32,10 @@
   <script type="text/javascript" src="scripts/mapControls.js"></script>
   <script type="text/javascript" src="scripts/settings.js"></script>
   <script type="text/javascript" src="scripts/title.js"></script>
+
+  <script type="text/javascript" src="scripts/sources_layers.js"></script>
+  <script type="text/javascript" src="scripts/painting.js"></script>
+
 </head>
 <body>
 
@@ -275,7 +278,7 @@
                 <option value="Barney">Barney</option>
                 <option value="Watermelon">Watermelon</option>
               </select>
-              <button style="width: 49px;" onclick="reverseColorScale()">Invert</button>
+              <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
             </div>
           </td>
         </tr>
