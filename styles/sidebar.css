@@ -50,7 +50,7 @@
   background-color: transparent;
   color: white;
   border: solid 0px #333;
-  margin: 5px 0px 0px 10px;
+  margin: 0px;
   border-radius: 5px;
   position: relative;
 }
@@ -66,6 +66,8 @@
   padding:2px;
   /* border-bottom: 1px dotted black; */
 }
+
+.spacer { position: relative; width: 10px; background-color: red;}
 
 .tooltip .tooltiptext {
   visibility: hidden;

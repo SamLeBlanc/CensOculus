@@ -33,8 +33,12 @@
   <script type="text/javascript" src="scripts/settings.js"></script>
   <script type="text/javascript" src="scripts/title.js"></script>
 
-  <script type="text/javascript" src="scripts/sources_layers.js"></script>
+  <script type="text/javascript" src="scripts/sourcesLayers.js"></script>
   <script type="text/javascript" src="scripts/painting.js"></script>
+  <script type="text/javascript" src="scripts/hoverHoldFeatureStates.js"></script>
+  <script type="text/javascript" src="scripts/lens.js"></script>
+  <script type="text/javascript" src="scripts/wikis.js"></script>
+  <script type="text/javascript" src="scripts/heldData.js"></script>
 
 </head>
 <body>
@@ -142,7 +146,7 @@
         <tr>
           <td>Geography</td>
           <td>
-            <div id="geo-select" onchange="collectSettings(); update();">
+            <div id="geo-select" onchange="updateGeo(); update();">
               <select id="geo-select-" style="width:199px;">
                 <option value="nation">Nation</option>
                 <option value="state">State</option>
@@ -236,7 +240,7 @@
           <td>3D Height</td>
           <td>
             <div>
-              <input id="height" type="range" min="10" max="3000000" step="20000" value="100000" oninput="collectSettings(); updateVariable()">
+              <input id="height" type="range" min="10" max="3000000" step="20000" value="100000" oninput="collectSettings(); updatePaint()">
             </div>
           </td>
         </tr>
@@ -376,7 +380,7 @@
           <td>Flag Mode</td>
           <td>
             <div>
-              <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlagMode()">
+              <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlag()">
             </div>
           </td>
         </tr>
@@ -436,7 +440,7 @@
     <div style="padding: 20px; ">
     </div>
     <div style="width: 50%; margin: 0 auto; white-space: nowrap;">
-      <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav()">Close Settings</button>
+      <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav1()">Close Settings</button>
     </div>
   </div>
   <div id="mySidebar5" class="sidebar" style="background-color: #CBF6CE; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >

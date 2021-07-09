@@ -9,11 +9,10 @@ const main = () => {
 }
 const update = () => {
   console.log('updating')
-  collectSettings()
   updateGeo()
   updateVariable()
   updatePaint()
-  updateFlagMode()
+  updateFlag()
 }
 
 const updatePaint = () => {
@@ -26,7 +25,7 @@ const updatePaint = () => {
   updateLegend(fiveStep_values, colors);
   setLinePaint();
   setFillPaint(fiveStep_values, colors);
-  //setExtrusionPaint(fiveStep_values, colors);
+  setExtrusionPaint(fiveStep_values, colors);
   setLayerVisibility();
 }
 
@@ -34,6 +33,7 @@ let hoversCreated = [];
 const updateGeo = () => {
   hideAllLayers()
   clearAllHolds()
+  collectSettings()
   let geo = SETTINGS['Geo'];
   showCurrentLayer()
   if (!hoversCreated.includes(geo)){

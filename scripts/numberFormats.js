@@ -12,13 +12,6 @@ const metersSq2MilesSq = metersSq => {
   else return customRound(milesSq, 1)
 }
 
-const formatDensity = (pop,area) => {
-  let den = pop / area;
-  if (den > 30) return numberWithCommas(customRound(den, 1))
-  if (den > 2) return customRound(den, 2)
-  return customRound(den, 3)
-}
-
 const abbreviateNumber = num => {
   // format number to abbreviated version
   num = customRound(num, 1);

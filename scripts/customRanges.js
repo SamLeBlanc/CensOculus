@@ -36,59 +36,42 @@ function inZeroOne(arr){
   return (min >= 0 && max <= 1)
 }
 
+const ERR = () => {
+
+}
+
 function customL(){
-  var str = prompt("~ Custom Linear Scaling ~ \n\nPlease enter the *min* and *max* for your custom linear scale. \nThe *two* values must be entered in *strictly increasing* order.\nFor percentages, enter values between 0 and 1.", "min , max");
+  var str = prompt("~ Custom Linear Scaling ~\n\nPlease enter the *min* and *max* for your custom linear scale. \nThe *two* values must be entered in *strictly increasing* order.\nFor percentages, enter values between 0 and 1.", "min , max");
   if(str == null) return
-  try {
-    X = str.split(",").map(Number);
-    console.log(X)
-    if (!(X.constructor === Array && X.length === 2 && isAscending(X) === 2)){
-      alert('Invalid, please read the instructions more carefully 😘')
-      customL()
-    }
-  }
-  catch(err) {
-    alert('Invalid, please read the instructions more carefully 😘')
-    customL()
-  }
-  try{
+  X = str.split(",").map(Number);
+  if (X.constructor === Array && X.length === 2 && isAscending(X)){
     LINEAR_RANGE = X;
     customRanges["linearMin"] = X[0];
     customRanges["linearMax"] = X[1];
     update()
-  } catch { }
+  } else {
+    alert('Invalid, please read the instructions more carefully 😘')
+    customL()
+  }
 }
 
 function customQ(){
-  var str = prompt("Custom Quantile Scaling. \nPlease enter a range of five quantile values to scale over. \
-  The range must be entered as an *array* of length 5, from 0 to 1 inclusive, and must be in STRICTLY INCREASING order. \
-  The numbers represent the data quantiles, where 0 is the min, 1 is the max and 0.5 is the median.\
+  var str = prompt("~ Custom Quantile Scaling ~\n\nPlease enter a range of five quantile values to scale over. \
+  The range must be entered as a list of *five* decimals, from 0 to 1 inclusive, and must be in *strictly increasing* order. \
+  The numbers represent the data quantiles, where 0 is the min, 1 is the max and 0.5 is the median. Examples are listed below.\
   \n\nDefault: Min, Q1, Med, Q3, Max: [0, 0.25, 0.5, 0.75, 1]\nAccentuate Low Values: [0, 0.1, 0.3, 0.6, 1]\nAccentuate High Values: [0, 0.4, 0.7, 0.9, 1]", "[  ,  ,  ,  ,  ]");
-  console.log(str)
-  if (str !== null){
-    try {
-      Q = JSON.parse(str)
-      B = (Q.constructor === Array)
-      L = (Q.length === 5)
-      A = isAscending(Q)
-      M = inZeroOne(Q)
-      if (!(B == L == A == M == true)){
-        alert('Invalid, please read the instructions more carefully 😘')
-        customQ()
-      }
-    }
-    catch(err) {
-      alert('Invalid, please read the instructions more carefully 😘')
-      customQ()
-    }
-  }
-  try{
-    QUARTILE_RANGE = Q;
+  if(str == null) return
+  X = str.split(",").map(Number);
+  if (X.constructor === Array && X.length === 5 && isAscending(X)){
+    LINEAR_RANGE = X;
     customRanges["quantileQ0"] = X[0];
     customRanges["quantileQ1"] = X[1];
     customRanges["quantileQ2"] = X[2];
     customRanges["quantileQ3"] = X[3];
     customRanges["quantileQ4"] = X[4];
     update()
-  } catch { }
+  } else {
+    alert('Invalid, please read the instructions more carefully 😘')
+    customQ()
+  }
 }

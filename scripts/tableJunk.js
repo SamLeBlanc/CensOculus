@@ -56,6 +56,18 @@ function createMoveTableArray(s,geoid,obj){
   return arr
 }
 
+const heldData2TableARRAY = heldData => {
+  let arr = [];
+  for (const v in heldData) {
+    if (typeof heldData[v] == 'number'){
+      n = heldData[v] / heldData[`${v.slice(0,4)}001`];
+    }
+    a = NICKNAMES[v] ? NICKNAMES[v] : null
+    if (a && !['GEOID10','SIZE'].includes(v)) arr.push([a, numberWithCommas(heldData[v]), formatPercent(n)])
+  }
+  return arr
+}
+
 function createVariableDropdownSelect(id,list) {
   var x = document.getElementById(id);
   var length = x.length;
