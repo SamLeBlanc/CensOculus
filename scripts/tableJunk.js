@@ -1,3 +1,11 @@
+const updateMoveTable = (e, geoid) => {
+  let variable = SETTINGS['Variable'];
+  let geo = SETTINGS['Geo']
+  let geoidFeatureStates = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
+  let arr = createMoveTableArray([variable], e.features[0].properties.NAME10, geoidFeatureStates)
+  addMoveTable(arr)
+}
+
 function addMoveTable(arr) {
   if ($("#move-table")){
     $("#move-table").remove();

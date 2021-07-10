@@ -34,6 +34,16 @@ const onMouseUp = e => {
   if (isClick(mouseUpCords, mouseDownCords)) heldDistricts = holdDistrict(e, heldDistricts);
 }
 
+function holdDistrict(e, heldDistricts){
+  if (Object.keys(heldDistricts).length == 0 || $('#accumulate').is(":checked")){
+    heldDistricts = setHoldState(e, heldDistricts);
+    onHoldStart(e, heldDistricts)
+  } else {
+    heldDistricts = clearAllHolds()
+  }
+  return heldDistricts
+}
+
 const setHoverState = (e,hoveredId) => {
   let geo = SETTINGS['Geo'];
   if (e.features.length > 0) {
@@ -104,9 +114,9 @@ const onHoverFinish = () => onHoverFinish_style();
 
 const onHoldStart = (e, heldDistricts) => {
   if (Object.keys(heldDistricts).length > 0){
-    openNav2()
     updateBar(e)
-  }
+    openNav0()
+}
 }
 
-const onHoldFinish = () => closeNav2();
+const onHoldFinish = () => closeNav0();

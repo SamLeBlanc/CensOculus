@@ -21,7 +21,7 @@
   <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
   <script type="text/javascript" src="scripts/DICTIONARIES.js"></script>
   <script type="text/javascript" src="scripts/INTRO.js"></script>
-  <script type="text/javascript" src="scripts/snapshotHoverStates.js"></script>
+  <!-- <script type="text/javascript" src="scripts/snapshotHoverStates.js"></script> -->
   <script type="text/javascript" src="scripts/customRanges.js"></script>
   <script type="text/javascript" src="scripts/featureStatus.js"></script>
   <script type="text/javascript" src="scripts/numberFormats.js"></script>
@@ -39,54 +39,13 @@
   <script type="text/javascript" src="scripts/lens.js"></script>
   <script type="text/javascript" src="scripts/wikis.js"></script>
   <script type="text/javascript" src="scripts/heldData.js"></script>
+  <script type="text/javascript" src="scripts/dynamicStyling.js"></script>
 
 </head>
 <body>
 
   <div id="map"></div>
-  <div id="mySidebar3" class="sidebar" style="background-color: #F7E3CA; left: -500px; top: 115px; padding: 10px; width:365px;" >
-    <div><span class="navTitle">Land Acknowledgement</span></div>
-    <div style="padding:2px;"></div>
-    <div style="padding:2px;"></div>
-    Humans have lived on the North American continent for more than 120,000 years;
-    creating a cultural history that is as vibrant as it is diverse.<br>
-    <div style="padding:3px;"></div>
-    Ancestral historians estimate that tens of thousands of unique groups lived in this region over the last 100,000 years.
-    Indigenous Americans lived predominantly in hunter-gatherer groups with loosely defined territory that was ever changing.
-    <div style="padding:3px;"></div>
-    The current map shows the territory of many of the tribes thatlived here during the last millennium.
-    This data was borrowed from <a href='https://native-land.ca/'>Native-Land.ca</a>,
-    please visit and support their site to learn about the territory, languages and treaties of native peoples. <br>
-    <div style="padding:3px;"></div>
-    <span style="font-size:20px; font-weight:bold;">The Census</span><br>
-    <div style="padding:2px;"></div>
-    The United States and its decennial census have existed for a little less than 250 years,
-    equal to about 0.2% of the time that humans have lived on this continent.
-    To properly understand the context of the US Census, it must be remembered that the United States
-    was built on stolen land without the consent of native peoples.
-  </div>
-  <div id="mySidebar4" class="sidebar" style="background-color: #F5CCD7; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
-    <div><span class="navTitle">Save Map</span></div>
-    <div style="padding:2px;"></div>
-    <span>
-      Maps can be saved by copying the token below.<br>
-      Make sure to save it in a document for later use! <br>
-    </span>
-    <div style="padding:3px;"></div>
-    <span>
-      To access a previous map, paste your token in the box and click 'Go' <br>
-    </span>
-    <div style="padding:5px;"></div>
-    <div>
-      <button id="copy-button" type="submit" onclick="copyButton()">Copy</button>
-      <button id="go-button" type="submit" onclick="goButton()">Go</button>
-    </div>
-    <div style="padding:5px;"></div>
-    <div>
-      <textarea id="settings-json" name="settings-json" rows="10" cols="47" style="position: relative; width: 355px; "></textarea>
-    </div>
-  </div>
-  <div id="mySidebar2" class="sidebar" style="background-color: #CCCCCC; left: 4000px; margin-top:10px; padding: 10px; width:365px;">
+  <div id="mySidebar0" class="sidebar" style="background-color: #CCCCCC; left: 4000px; margin-top:10px; padding: 10px; width:365px;">
     <div style="padding-bottom: 5px;">
       <span id="b-name" style="font-size: 25px;"></span>
     </div>
@@ -116,6 +75,8 @@
         <a id="flag-link" href="" target="_blank">Flag</a>
         &nbsp&nbsp
         <button onclick="clearAllHolds()">Clear Holds</button>
+        &nbsp&nbsp
+        <button onclick="addTag()">🏷️</button>
       </div>
       <div id="held-data">      </div>
     </div>
@@ -437,22 +398,59 @@
         </tr>
       </table>
     </div>
-    <div style="padding: 20px; ">
-    </div>
+    <div style="padding: 5px"></div>
     <div style="width: 50%; margin: 0 auto; white-space: nowrap;">
-      <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav1()">Close Settings</button>
+      <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav(1)">Close Settings</button>
     </div>
   </div>
-  <div id="mySidebar5" class="sidebar" style="background-color: #CBF6CE; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
+  <div id="mySidebar2" class="sidebar" style="background-color: #F7E3CA; left: -500px; top: 115px; padding: 10px; width:365px;" >
+    <div><span class="navTitle">Land Acknowledgement</span></div>
+    <div style="padding:2px;"></div>
+    <div style="padding:2px;"></div>
+    Humans have lived on the North American continent for more than 120,000 years;
+    creating a cultural history that is as vibrant as it is diverse.<br>
+    <div style="padding:3px;"></div>
+    Ancestral historians estimate that tens of thousands of unique groups lived in this region over the last 100,000 years.
+    Indigenous Americans lived predominantly in hunter-gatherer groups with loosely defined territory that was ever changing.
+    <div style="padding:3px;"></div>
+    The current map shows the territory of many of the tribes thatlived here during the last millennium.
+    This data was borrowed from <a href='https://native-land.ca/'>Native-Land.ca</a>,
+    please visit and support their site to learn about the territory, languages and treaties of native peoples. <br>
+    <div style="padding:3px;"></div>
+    <span style="font-size:20px; font-weight:bold;">The Census</span><br>
+    <div style="padding:2px;"></div>
+    The United States and its decennial census have existed for a little less than 250 years,
+    equal to about 0.2% of the time that humans have lived on this continent.
+    To properly understand the context of the US Census, it must be remembered that the United States
+    was built on stolen land without the consent of native peoples.
+  </div>
+  <div id="mySidebar3" class="sidebar" style="background-color: #F5CCD7; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
+    <div><span class="navTitle">Save Map</span></div>
+    <div style="padding:2px;"></div>
+    <span>
+      Maps can be saved by copying the token below.<br>
+      Make sure to save it in a document for later use! <br>
+    </span>
+    <div style="padding:3px;"></div>
+    <span>
+      To access a previous map, paste your token in the box and click 'Go' <br>
+    </span>
+    <div style="padding:5px;"></div>
+    <div>
+      <button id="copy-button" type="submit" onclick="copyButton()">Copy</button>
+      <button id="go-button" type="submit" onclick="goButton()">Go</button>
+    </div>
+    <div style="padding:5px;"></div>
+    <div>
+      <textarea id="settings-json" name="settings-json" rows="10" cols="47" style="position: relative; width: 355px; "></textarea>
+    </div>
+  </div>
+  <div id="mySidebar4" class="sidebar" style="background-color: #CBF6CE; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
     <div><span class="navTitle">Tagged Places</span></div>
     <div style="padding:2px;"></div>
-    A<br>
-    A<br>
-    A<br>
-    A<br>
-    A<br>
+  <span id="tag-text"></span>
   </div>
-  <div id="mySidebar6" class="sidebar" style="background-color: #FFE2E0; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
+  <div id="mySidebar5" class="sidebar" style="background-color: #FFE2E0; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
     <div><span class="navTitle">Filter</span></div>
     <div style="padding:2px;"></div>
     A<br>
@@ -474,27 +472,27 @@
   <div id="title">CensusMapper</div>
 
   <div id="nav-buttons" style="position:fixed; z-index:9; top: 65px;">
-    <button id="iconbtn-1" class="iconbtn" onclick="openNav1()">
+    <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">
       <div class="tooltip">⚙️
         <!-- <span id="tooltip-1" class="tooltiptext">Settings</span> -->
       </div>
     </button>
-    <button id="iconbtn-2" class="iconbtn" onclick="openNav3()">
+    <button id="iconbtn-2" class="iconbtn" onclick="openNav(2)">
       <div class="tooltip">⛰️
         <!-- <span id="tooltip-2" class="tooltiptext">Land Acknowledgement</span> -->
       </div>
     </button>
-    <button id="iconbtn-3" class="iconbtn" onclick="openNav4()">
+    <button id="iconbtn-3" class="iconbtn" onclick="openNav(3)">
       <div class="tooltip">💾
         <!-- <span id="tooltip-3" class="tooltiptext">Save Map</span> -->
       </div>
     </button>
-    <button id="iconbtn-4" class="iconbtn" onclick="openNav5()">
+    <button id="iconbtn-4" class="iconbtn" onclick="openNav(4)">
       <div class="tooltip">🏷️
         <!-- <span id="tooltip-4" class="tooltiptext">Tags</span> -->
       </div>
     </button>
-    <button id="iconbtn-5" class="iconbtn" onclick="openNav6()">
+    <button id="iconbtn-5" class="iconbtn" onclick="openNav(5)">
       <div class="tooltip">
         <img src="images/filter.png" width="25" height="25" style="position: relative; top:4px">
         <!-- <span id="tooltip-5" class="tooltiptext">Filter</span> -->
@@ -577,10 +575,7 @@ $(document).on('mousemove', function(e){
 
 $('#geo-controls').css('top',window.innerHeight-45)
 $('#geo-controls').css('left',550)
-// $('#mySidebar2').css('left',window.innerWidth)
-//$('#mySidebar2').css('height',window.innerHeight-20)
-// $('#mySidebar').css('top', "65px")
-//$('#mySidebar').css('height', window.innerHeight-65)
+
 let h = parseInt($('#legend').css("height").slice(0,-2))
 $('#legend').css('top', `${window.innerHeight - h - 35}px`)
 
@@ -617,7 +612,8 @@ document.getElementById('geolocate').appendChild(geolocate.onAdd(map));
 //map.scrollZoom.disable();
 
 var hoveredId = null;
-var heldDistricts = {};
+let heldDistricts = {};
+let taggedDistricts = {};
 
 
 map.on('load', function () {

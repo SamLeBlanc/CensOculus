@@ -33,6 +33,7 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif 
     outline:none;
 }
 
+
 /* Legend Custom Colors */
 
 input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; border: none; }

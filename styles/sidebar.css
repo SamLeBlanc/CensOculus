@@ -6,7 +6,7 @@
   left: 0;
   background-color: black;
   overflow-x: hidden;
-  transition: 0.5s
+  transition: 0.3s;
   position: absolute;
   border-radius: 15px;
   overflow: hidden;
@@ -66,8 +66,6 @@
   padding:2px;
   /* border-bottom: 1px dotted black; */
 }
-
-.spacer { position: relative; width: 10px; background-color: red;}
 
 .tooltip .tooltiptext {
   visibility: hidden;

@@ -7,16 +7,34 @@ function setUpAll(){   // setup function called on first page load
   $('#cpick-4').on('change', () => addCustomColor(4) );
   $('#cpick-5').on('change', () => addCustomColor(5) );
   $('#cpick-6').on('change', () => addCustomColor(6) );
+
+  $("#b-name").keypress(function (e) {
+      if(e.which === 13 && !e.shiftKey) {
+          e.preventDefault();
+          var newcont = $("#newcont").val();
+          $("#b-name").text(newcont);
+      }
+  });
 }
 
-const closeAllNavs = () => {
-  console.log('close all')
-  closeNav1()
-  closeNav3()
-  closeNav4()
-  closeNav5()
-  closeNav6()
-}
+
+$(document).on("dblclick", "#b-name", function(){
+    var current = $(this).text();
+    $("#b-name").html(`<textarea class="form-control" id="newcont" rows="1" cols="50" style="width:345px; height:30px; font-size:25px; font-weight:bold; font-family: 'Lato', sans-serif;">${current}</textarea>`);
+    $("#newcont").focus();
+    $("#newcont").select();
+    $("#newcont").focus(function() {
+        console.log('in');
+    }).blur(function() {
+         var newcont = $("#newcont").val();
+         $("#b-name").text(newcont);
+    });
+})
+
+
+
+
+const closeAllNavs = () => Array.from({length: 5}, (_, i) => i + 1).forEach(n => closeNav(n));
 
 const unHighlightButtons = () => {
   [1,2,3,4,5].forEach( f => {
@@ -24,120 +42,47 @@ const unHighlightButtons = () => {
   });
 }
 
-const openNav1 = () => {
-  let check = $('#mySidebar1').css('left') == "-500px" ? true : false;
+const openNav = n => {
+  show = $(`#mySidebar${n}`).css('left') == "-500px" ? true : false;
   closeAllNavs()
   unHighlightButtons()
-  $('#mySidebar1').css('height',window.innerHeight-140);
-  // $('#tooltip-1').text("").css("padding","0px")
-  if (check) {
-    $('#mySidebar1').css('left',0);
-    $('#iconbtn-1').css("background-color","yellow")
-    if (window.innerWidth < 450){
-      $('#mySidebar1').width(window.innerWidth - 20);
-    }
+  tall = $(`#mySidebar${n}`).height() >= window.innerHeight-140 ? true : false;
+  mobile = window.innerWidth < 450 ? true : false;
+  console.log(show,tall,mobile)
+  if (!show) return
+  $(`#mySidebar${n}`).css('left',0);
+  $(`#iconbtn-${n}`).css("background-color","yellow")
+  $(`#mySidebar${n}`).css('overflow-y',"hidden");
+  if (tall) {
+    $(`#mySidebar${n}`).css('height',window.innerHeight-140);
+    $(`#mySidebar${n}`).css('overflow-y',"scroll");
+  }
+  if (mobile){
+    $(`#mySidebar${n}`).css('transition','0s')
+    $(`#mySidebar${n}`).width(window.innerWidth - 20);
+    $(`#mySidebar${n}`).css('border-radius',0)
+    $(`#mySidebar${n}`).css('top', window.innerHeight - $(`#mySidebar${n}`).height() - 20)
   }
 }
 
-const closeNav1 = () => {
-  $('#mySidebar1').css('left',-500)
-  $('#iconbtn-1').css("background-color","transparent")
-  // $('#tooltip-1').text("Settings").css("padding","5px")
+const closeNav = n => {
+  $(`#mySidebar${n}`).css('left',-500)
+  $(`#iconbtn-${n}`).css("background-color","transparent")
 }
 
-function openNav2() {
-  if ($('#mySidebar1').css('left') == "4000px"){
-    closeNav2()
+function openNav0() {
+  if ($('#mySidebar0').css('left') != `${window.innerWidth + 200}px` && Object.keys(heldDistricts).length == 0){
+    closeNav0()
   } else if (window.innerWidth < 450){
-    $('#mySidebar2').width(window.innerWidth - 20);
-    $('#mySidebar2').css('left',0)
+    $('#mySidebar0').width(window.innerWidth - 20);
+    $('#mySidebar0').css('top',window.innerHeight - $('#mySidebar0').height() - 30);
+    $('#mySidebar0').css('left',0)
+    $('#mySidebar0').css('border-radius',0)
   } else {
-    $('#mySidebar2').css('left', window.innerWidth - $('#mySidebar2').width()-30)
+    $('#mySidebar0').css('left', window.innerWidth - $('#mySidebar0').width()-30)
   }
 }
 
-function closeNav2() {
-  $('#mySidebar2').css('left',4000)
-}
-
-const openNav3 = () => {
-  let check = $('#mySidebar3').css('left') == "-500px" ? true : false;
-  closeAllNavs()
-  unHighlightButtons()
-
-  // $('#tooltip-1').text("").css("padding","0px")
-  if (check) {
-    $('#mySidebar3').css('left',0);
-    $('#iconbtn-2').css("background-color","yellow")
-    if (window.innerWidth < 450){
-      $('#mySidebar3').width(window.innerWidth - 20);
-    }
-  }
-}
-
-const closeNav3 = () => {
-  $('#mySidebar3').css('left',-500)
-  $('#iconbtn-2').css("background-color","transparent")
-  // $('#tooltip-1').text("Settings").css("padding","5px")
-}
-
-const openNav4 = () => {
-  let check = $('#mySidebar4').css('left') == "-500px" ? true : false;
-  closeAllNavs()
-  unHighlightButtons()
-  // $('#tooltip-1').text("").css("padding","0px")
-  if (check) {
-    $('#mySidebar4').css('left',0);
-    $('#iconbtn-3').css("background-color","yellow")
-    if (window.innerWidth < 450){
-      $('#mySidebar4').width(window.innerWidth - 20);
-    }
-  }
-}
-
-const closeNav4 = () => {
-  $('#mySidebar4').css('left',-500)
-  $('#iconbtn-3').css("background-color","transparent")
-  // $('#tooltip-1').text("Settings").css("padding","5px")
-}
-
-const openNav5 = () => {
-  let check = $('#mySidebar5').css('left') == "-500px" ? true : false;
-  closeAllNavs()
-  unHighlightButtons()
-  // $('#tooltip-1').text("").css("padding","0px")
-  if (check) {
-    $('#mySidebar5').css('left',0);
-    $('#iconbtn-4').css("background-color","yellow")
-    if (window.innerWidth < 450){
-      $('#mySidebar5').width(window.innerWidth - 20);
-    }
-  }
-}
-
-const closeNav5 = () => {
-  $('#mySidebar5').css('left',-500)
-  $('#iconbtn-4').css("background-color","transparent")
-  // $('#tooltip-1').text("Settings").css("padding","5px")
-}
-
-const openNav6 = () => {
-  let check = $('#mySidebar6').css('left') == "-500px" ? true : false;
-  closeAllNavs()
-  unHighlightButtons()
-
-  // $('#tooltip-1').text("").css("padding","0px")
-  if (check) {
-    $('#mySidebar6').css('left',0);
-    $('#iconbtn-5').css("background-color","yellow")
-    if (window.innerWidth < 450){
-      $('#mySidebar6').width(window.innerWidth - 20);
-    }
-  }
-}
-
-const closeNav6 = () => {
-  $('#mySidebar6').css('left',-500)
-  $('#iconbtn-5').css("background-color","transparent")
-  // $('#tooltip-1').text("Settings").css("padding","5px")
+function closeNav0() {
+  $('#mySidebar0').css('left',window.innerWidth + 200)
 }
