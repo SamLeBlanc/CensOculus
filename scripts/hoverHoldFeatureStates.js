@@ -110,13 +110,26 @@ const onHoverStart = e => {
   updateFlagSources(geoid);
 }
 
-const onHoverFinish = () => onHoverFinish_style();
+const onHoverFinish = () => {
+  onHoverFinish_style();
+  $('#move2').css({top:-400});
+}
 
 const onHoldStart = (e, heldDistricts) => {
   if (Object.keys(heldDistricts).length > 0){
     updateBar(e)
     openNav0()
-}
+    let offset = $('#mySidebar0').width() + 30;
+    let le = window.innerWidth - offset - $('#move2').width() - 30;
+    if(tack) $('#move2').css({left:le, top:10});
+  }
+
 }
 
-const onHoldFinish = () => closeNav0();
+const onHoldFinish = () => {
+  closeNav0();
+  console.log('holdFi')
+  let le = window.innerWidth - $('#move2').width() - 30;
+  if(tack) $('#move2').css({left:le, top:10});
+  // updateMove2();
+}

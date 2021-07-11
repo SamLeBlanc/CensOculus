@@ -2,31 +2,23 @@ const updateMoveTable = (e, geoid) => {
   let variable = SETTINGS['Variable'];
   let geo = SETTINGS['Geo']
   let geoidFeatureStates = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
-  let arr = createMoveTableArray([variable], e.features[0].properties.NAME10, geoidFeatureStates)
-  addMoveTable(arr)
+
+  $('#m-name').text(e.features[0].properties.NAME10)
+  $('#m-val').text(formatNumber(geoidFeatureStates[variable]))
+  $('#m-var').text(nickname(variable))
+  updateMove2()
+
+
 }
 
-function addMoveTable(arr) {
-  if ($("#move-table")){
-    $("#move-table").remove();
+const updateMove2 = () => {
+  if(!tack) {
+    $('#move2').css({left:event.pageX+10, top:event.pageY+10}).css('transition','0s');
   }
-  var myTableDiv = document.getElementById("move")
-  var table = document.createElement('TABLE')
-  var tableBody = document.createElement('TBODY')
-  table.id = 'move-table'
-  table.className = 'tableA'
-  table.appendChild(tableBody);
-
-  for (i = 0; i < arr.length; i++) {
-    var tr = document.createElement('TR');
-    for (j = 0; j < arr[i].length; j++) {
-      var td = document.createElement('TD')
-      td.appendChild(document.createTextNode(arr[i][j]));
-      tr.appendChild(td)
-    }
-    tableBody.appendChild(tr);
-  }
-  myTableDiv.appendChild(table)
+  let offset = 0;
+  if (Object.keys(heldDistricts).length > 0) offset = $('#mySidebar0').width() + 30;
+  let le = window.innerWidth - offset - $('#move2').width() - 30;
+  if(tack) $('#move2').css({left:le, top:10}).css('transition','0.3s');
 }
 
 function addheldTable(arr) {
@@ -50,18 +42,6 @@ function addheldTable(arr) {
     tableBody.appendChild(tr);
   }
   myTableDiv.appendChild(table)
-}
-
-function createMoveTableArray(s,geoid,obj){
-  var arr = [];
-  arr.push([geoid,""])
-  for (i = 0; i < s.length; i++){
-    var num = obj[s[i]];
-    num = formatNumber(num)
-    n = NICKNAMES[s[i]] ? NICKNAMES[s[i]] : s[i]
-    arr.push([n,num]);
-  }
-  return arr
 }
 
 const heldData2TableARRAY = heldData => {

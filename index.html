@@ -74,7 +74,7 @@
         &nbsp&nbsp
         <a id="flag-link" href="" target="_blank">Flag</a>
         &nbsp&nbsp
-        <button onclick="clearAllHolds()">Clear Holds</button>
+        <button onclick="clearAllHolds(); $('#move2').css({top:-400});">Clear Holds</button>
         &nbsp&nbsp
         <button onclick="addTag()">🏷️</button>
       </div>
@@ -446,9 +446,11 @@
     </div>
   </div>
   <div id="mySidebar4" class="sidebar" style="background-color: #CBF6CE; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
-    <div><span class="navTitle">Tagged Places</span></div>
+    <div>
+      <span class="navTitle">Tagged Places</span>
+    </div>
     <div style="padding:2px;"></div>
-  <span id="tag-text"></span>
+    <span id="tag-text"></span>
   </div>
   <div id="mySidebar5" class="sidebar" style="background-color: #FFE2E0; left: -500px; top: 115px; padding: 10px; width:365px; white-space: wrap;" >
     <div><span class="navTitle">Filter</span></div>
@@ -463,7 +465,7 @@
   <!-- <div id="mySidebar" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; width:365px;" >
 
   </div> -->
-  <div id="move" style="z-index:50"></div>
+  <!-- <div id="move" style="z-index:50"></div> -->
   <!-- <div id="click" style="z-index:50"></div> -->
   <div id="geo-controls">
     <div id="geolocate" class="geolocate"></div>
@@ -496,6 +498,11 @@
       <div class="tooltip">
         <img src="images/filter.png" width="25" height="25" style="position: relative; top:4px">
         <!-- <span id="tooltip-5" class="tooltiptext">Filter</span> -->
+      </div>
+    </button>
+    <button id="iconbtn-6" class="iconbtn" onclick="updateTack()">
+      <div class="tooltip">
+        <img src="images/pin-1.png" width="25" height="25" style="position: relative; top:4px">
       </div>
     </button>
   </div>
@@ -546,8 +553,17 @@
       <div class="legend-label" ><span id='leg-label-6'>Hover</span></div>
       <div class="legend-label" ><span id='leg-label-5'>Held</span></div>
     </div>
-    <div>
 
+  </div>
+  <div id="move2">
+    <div>
+      <span id="m-name" style="font-size:22px;">name</span>
+    </div>
+    <div>
+      <span id="m-val" style="font-size:36px;">val</span>
+    </div>
+    <div>
+      <span id="m-var" style="font-size:18px;">var</span>
     </div>
   </div>
   <!-- <div id="intro">
@@ -566,18 +582,20 @@
 </div> -->
 <script>
 
-$(document).on('mousemove', function(e){
-  $('#move').css({
-    left:  e.pageX+10,
-    top:   e.pageY+10
-  });
-});
+// $(document).on('mousemove', function(e){
+//   $('#move').css({
+//     left:  e.pageX+10,
+//     top:   e.pageY+10
+//   });
+// });
 
 $('#geo-controls').css('top',window.innerHeight-45)
 $('#geo-controls').css('left',550)
 
 let h = parseInt($('#legend').css("height").slice(0,-2))
 $('#legend').css('top', `${window.innerHeight - h - 35}px`)
+
+let tack = true;
 
 LORAX = {}
 updateTitle()

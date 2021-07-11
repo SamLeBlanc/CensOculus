@@ -31,7 +31,14 @@ $(document).on("dblclick", "#b-name", function(){
     });
 })
 
-
+const updateTack = () => {
+  if (tack) {
+    $('#iconbtn-6').css('border','solid 3px yellow')
+  } else {
+    $('#iconbtn-6').css('border','solid 3px transparent')
+  }
+  tack =! tack;
+}
 
 
 const closeAllNavs = () => Array.from({length: 5}, (_, i) => i + 1).forEach(n => closeNav(n));

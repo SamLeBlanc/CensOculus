@@ -4,7 +4,7 @@ const updateTitle = () => {
   $('#title').css('font-size',titleSize)
   $('#title').css('color',`#${randomTitleColor()}`)
   $('#title').css('-webkit-text-stroke',`1.5px ivory`);
-  $('#nav-buttons').css('top','50px')
+  if (mobile) $('#nav-buttons').css('top','50px')
 }
 
 const randomTitleColor = () => {

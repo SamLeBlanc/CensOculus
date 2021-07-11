@@ -54,10 +54,10 @@ const updateConcept = () => {
   getVariableListByConcept(concept)
   setTimeout(function(){
     createVariableDropdownSelect("variable-select-",VLbC[concept])
-  }, 1000);
+  }, 2000);
   setTimeout(function(){
     update()
-  }, 2000);
+  }, 3000);
 }
 
 ////==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
@@ -67,7 +67,7 @@ const updateConcept = () => {
 const addTag = () => {
   let name = $('#b-name').text()
   taggedDistricts[name] = {
-    geoids: Object.values(heldDistricts).map(h => h.GEOID10)
+    geoids: Object.values(heldDistricts).map(h => h.GEOID10),
   }
   $('#tag-text').text(JSON.stringify(taggedDistricts))
 }

@@ -25,6 +25,12 @@ const abbreviateNumber = num => {
   return scaled.toFixed(decimal) + suffix;   // format number and add suffix
 }
 
+const nickname = v => {
+  if (NICKNAMES[v]) return NICKNAMES[v];
+  if (NICKNAMES[v.slice(0, -1)]) return NICKNAMES[v.slice(0, -1)];
+  return v
+}
+
 // format float to string percentage
 const formatPercent = number => `${(100*number).toFixed(1)}%`;
 
