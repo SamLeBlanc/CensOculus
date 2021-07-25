@@ -33,13 +33,21 @@ $(document).on("dblclick", "#b-name", function(){
 
 const updateTack = () => {
   if (tack) {
-    $('#iconbtn-6').css('border','solid 3px yellow')
+    $('#iconbtn-6').css('border','solid 3px #e72cdc')
   } else {
     $('#iconbtn-6').css('border','solid 3px transparent')
   }
   tack =! tack;
 }
 
+const updateAcc = () => {
+  if (acc) {
+    $('#iconbtn-7').css('border','solid 3px #e72cdc')
+  } else {
+    $('#iconbtn-7').css('border','solid 3px transparent')
+  }
+  acc =! acc;
+}
 
 const closeAllNavs = () => Array.from({length: 5}, (_, i) => i + 1).forEach(n => closeNav(n));
 
@@ -58,7 +66,7 @@ const openNav = n => {
   console.log(show,tall,mobile)
   if (!show) return
   $(`#mySidebar${n}`).css('left',0);
-  $(`#iconbtn-${n}`).css("background-color","yellow")
+  $(`#iconbtn-${n}`).css("background-color","#EF6CE6")
   $(`#mySidebar${n}`).css('overflow-y',"hidden");
   if (tall) {
     $(`#mySidebar${n}`).css('height',window.innerHeight-140);

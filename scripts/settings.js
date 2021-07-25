@@ -22,10 +22,10 @@ const getCenter = () => {
 
 const collectSettings = () => {
   SETTINGS = {
-      "Year":         $('#year-select').find(':selected').val(),
-      "Geo":          $('#geo-select').find(':selected').val(),
-      "Concept":      $('#concept-select').find(':selected').val(),
-      "Variable":     $('#variable-select').find(':selected').val(),
+      "Year":         $('#year-select-').find(':selected').val(),
+      "Geo":          $('#geo-select-').find(':selected').val(),
+      "Concept":      $('#concept-select-').find(':selected').val(),
+      "Variable":     $('#variable-select-').find(':selected').val(),
       "3D":           $('#3d-mode').is(":checked"),
       "Scheme":       $('#color-select').find(':selected').val(),
       "Scale":        $('#scale-select').find(':selected').val(),

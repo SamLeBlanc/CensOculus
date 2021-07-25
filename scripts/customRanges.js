@@ -56,19 +56,18 @@ function customL(){
 }
 
 function customQ(){
-  var str = prompt("~ Custom Quantile Scaling ~\n\nPlease enter a range of five quantile values to scale over. \
-  The range must be entered as a list of *five* decimals, from 0 to 1 inclusive, and must be in *strictly increasing* order. \
-  The numbers represent the data quantiles, where 0 is the min, 1 is the max and 0.5 is the median. Examples are listed below.\
-  \n\nDefault: Min, Q1, Med, Q3, Max: [0, 0.25, 0.5, 0.75, 1]\nAccentuate Low Values: [0, 0.1, 0.3, 0.6, 1]\nAccentuate High Values: [0, 0.4, 0.7, 0.9, 1]", "[  ,  ,  ,  ,  ]");
+  var str = prompt("~ Custom Quantile Scaling ~\n\nPlease enter a range of five quantile values to scale over.\nThe range must be entered as a list of *five* decimals, from 0 to 1 inclusive, and must be in *strictly increasing* order.\nThe numbers represent the data quantiles, where 0 is the min, 1 is the max and 0.5 is the median. Examples are listed below.\n\nDefault: Min, Q1, Med, Q3, Max: 0, 0.25, 0.5, 0.75, 1\nAccentuate Low Values: 0, 0.1, 0.3, 0.6, 1\nAccentuate High Values: 0, 0.4, 0.7, 0.9, 1", "");
   if(str == null) return
-  X = str.split(",").map(Number);
+  X = str.split(",")
+      .map(Number)
+      .map(i => customRound(i,3));
   if (X.constructor === Array && X.length === 5 && isAscending(X)){
     LINEAR_RANGE = X;
-    customRanges["quantileQ0"] = X[0];
-    customRanges["quantileQ1"] = X[1];
-    customRanges["quantileQ2"] = X[2];
-    customRanges["quantileQ3"] = X[3];
-    customRanges["quantileQ4"] = X[4];
+    customRanges["quantileQ0"] = QSummary[X[0]];
+    customRanges["quantileQ1"] = QSummary[X[1]];
+    customRanges["quantileQ2"] = QSummary[X[2]];
+    customRanges["quantileQ3"] = QSummary[X[3]];
+    customRanges["quantileQ4"] = QSummary[X[4]];
     update()
   } else {
     alert('Invalid, please read the instructions more carefully 😘')

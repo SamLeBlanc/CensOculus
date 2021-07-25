@@ -6,6 +6,7 @@ const getHeldData = () => {
   heldData = getHeldLoraxData(H, heldData);
   let arr = heldData2TableARRAY(heldData)
   addheldTable(arr)
+  return heldData
 }
 
 const getBaseLoraxData = (geo,concept) => LORAX[concept].filter(d => (Object.keys(heldDistricts).includes(d.GEOID10) && d.SIZE == geo.toUpperCase() ) );

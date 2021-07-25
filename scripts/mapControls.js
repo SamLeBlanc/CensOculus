@@ -19,6 +19,13 @@ function updateZoom(val){
   });
 }
 
+function updateBearing(val){
+  map.flyTo({
+    bearing: val,
+    essential: true
+  });
+}
+
 function unpitch(){
   map.flyTo({
     pitch: 0,

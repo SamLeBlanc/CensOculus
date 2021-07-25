@@ -1,5 +1,5 @@
 function featureQuery(){
-  var geo = $('#geo-select').find(":selected").val();
+  var geo = $('#geo-select-').find(":selected").val();
   var source = SOURCE_DICT[geo]
   F = map.queryRenderedFeatures()
   G = []

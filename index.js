@@ -65,9 +65,32 @@ const updateConcept = () => {
 //==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
 
 const addTag = () => {
-  let name = $('#b-name').text()
-  taggedDistricts[name] = {
+  let id = $('#b-name').text()
+  taggedDistricts[id] = {
+    id: id,
     geoids: Object.values(heldDistricts).map(h => h.GEOID10),
+    names: Object.values(heldDistricts).map(h => h.NAME10),
   }
-  $('#tag-text').text(JSON.stringify(taggedDistricts))
+  dispayTags();
+}
+
+const dispayTags = () => {
+  $('#tag-text').text("");
+  Object.keys(taggedDistricts).forEach(t => {
+    $('#tag-text').append(`${taggedDistricts[t].id}<br>`)
+  })
+}
+
+const loadingIcon = () => {
+  map.on('idle', function() {
+      $('#loading').css('left','-500px')
+      var d = new Date();
+      startTime = d.getTime();
+  });
+
+  map.on('render', function() {
+      var d = new Date();
+      endTime = d.getTime();
+      if(endTime - startTime > 1000) $('#loading').css('left',`${$('#title').width() + 25}px`)
+  });
 }

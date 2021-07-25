@@ -53,14 +53,10 @@ function getQuantileValues(){
     values = data.map(d => (d[cat] / d[cat_total]) )
   }
   values = values.sort((a, b) => a - b);
-
-  if (scale == 'Quantile') QUARTILE_RANGE = [0, 0.25, 0.5, 0.75, 1, 0.05, 0.95]
-  var quants = [];
-  [...Array(101).keys()].forEach(k => QSummary[k/100] =
+  [...Array(100).keys()].forEach(k => QSummary[k/100] =
     d3.quantile(
-    values.sort((a, b) => a - b)
-          .filter( v => !Number.isNaN(v)),
+    values.filter( v => !Number.isNaN(v)),
     k/100))
-  QUARTILE_RANGE.forEach((q) => quants.push(d3.quantile(values, q)));
-  return quants
+  QSummary['1'] = d3.max(values.filter( v => !Number.isNaN(v)))
+
 }

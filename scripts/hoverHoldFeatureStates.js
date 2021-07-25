@@ -18,6 +18,13 @@ const onMouseMove = e => {
   hoveredId = setHoverState(e, hoveredId)
 }
 
+const accumulateShortcut = () => {
+  let test = $('#accumulate').is(":checked");
+  $('#accumulate').prop('checked', !test);
+  collectSettings();
+  clearAllHolds()
+}
+
 const onMouseLeave = () => {
   onHoverFinish()
   removeHoverState(hoveredId)
@@ -68,6 +75,15 @@ const setHoldState = (e, heldDistricts) => {
   });
   return heldDistricts
 }
+
+// const reloadHoldState = heldDistricts => {
+//   let geo = SETTINGS['Geo'];
+//   heldDistricts = addHeldInfo(e)
+//   Object.keys(heldDistricts).forEach(h => {
+//     map.setFeatureState({ source: SOURCE_DICT[geo], id: h, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: true });
+//   });
+//   return heldDistricts
+// }
 
 const removeSingleHoldState = (id,geo) =>{
   delete heldDistricts[id];
@@ -122,14 +138,16 @@ const onHoldStart = (e, heldDistricts) => {
     let offset = $('#mySidebar0').width() + 30;
     let le = window.innerWidth - offset - $('#move2').width() - 30;
     if(tack) $('#move2').css({left:le, top:10});
+    console.log('onholdStart')
   }
 
 }
 
 const onHoldFinish = () => {
   closeNav0();
-  console.log('holdFi')
   let le = window.innerWidth - $('#move2').width() - 30;
-  if(tack) $('#move2').css({left:le, top:10});
+  if (tack && !initialRun) $('#move2').css({left:le, top:10});
+  initialRun = false;
+  console.log('onholdFinish')
   // updateMove2();
 }
