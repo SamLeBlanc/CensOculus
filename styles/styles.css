@@ -21,7 +21,7 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif 
 .legend-label { padding: 2px; }
 #inline { position: relative; top: 0px; left: 0px; height: 5px; width: 24px; background: white; border: solid 1px black; border-radius: 3px;}
 
-.navTitle { color: #333; font-size: 25px; font-weight: 700;}
+.navTitle { color: #333; font-size: 28px; font-weight: 700;}
 
 .emoji-button {
     font-size: 1.4em;

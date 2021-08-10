@@ -8,6 +8,10 @@ function threeDContolSetup(){
   	$('#pitch-label').text(Math.round(map.getPitch()));
   });
 
+  map.on('rotateend', function() {
+  	$('#bearing-label').text(Math.round(map.getBearing()));
+  });
+
   $('#zoom-v').val(3.6)
   $('#pitch-v').val(0)
 }

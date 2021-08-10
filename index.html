@@ -45,9 +45,8 @@
 
 </head>
 <body>
-
   <div id="map"></div>
-  <div id="mySidebar0" class="sidebar" style="background-color: #CCCCCC; left: 4000px; margin:10px 0 0 0; padding: 10px; width:365px;">
+  <div id="mySidebar0" class="sidebar" style="background-color: lightgrey; left: 4000px; margin:10px 0 0 0; padding: 10px; width:365px;">
     <div style="padding-bottom: 5px;">
       <span id="b-name" style="font-size: 25px;"></span>
     </div>
@@ -84,12 +83,13 @@
     </div>
 
   </div>
-  <div id="mySidebar1" class="sidebar" style="background-color: #CCE1F5; left: -500px; top: 80px; width:365px;overflow-y: scroll;" >
+  <div id="mySidebar1" class="sidebar" style="background-color: #c9e4f8; left: -500px; top: 80px; width:365px;overflow-y: scroll;" >
     <div id="settings" style="color:#666666; font-weight:bold;">
       <div><span class="navTitle">Settings</span></div>
+      <div><i>Customize the map with the options below!</i></div>
       <div style="padding:5px;"></div>
       <div>
-        <span style="font-weight:900; color:#333333; font-size:1.1em">Data Selection</span>
+        <span style="font-weight:900; color:#333333; font-size:1.15em">Data Selection</span>
         <div style="padding:2px;"></div>
         Year&nbsp
         <select id="year-select-" onchange="collectSettings(); update();">
@@ -151,30 +151,30 @@
           <option value="P001001" onclick="update()" selected>P001001</option>
         </select>
         <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.1em">3D&nbsp</span>
+        <span style="font-weight:900; color:#333333; font-size:1.15em">3D&nbsp</span>
         <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updatePaint()">
-        &nbsp&nbspHeight&nbsp
+        &nbsp&nbspHeight&nbsp&nbsp&nbsp
         <input id="height" type="range" min="10" max="3000000" step="5000" value="100000" oninput="collectSettings(); updatePaint()" style="top: 7px;position: relative;">
         <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.1em">Number Format&nbsp</span>
+        <span style="font-weight:900; color:#333333; font-size:1.15em">Number Format&nbsp&nbsp&nbsp</span>
         <select id="numformat-select">
           <option value="short">Short</option>
           <option value="comma">Commas</option>
         </select>
         <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.1em">Modes&nbsp</span>
+        <span style="font-weight:900; color:#333333; font-size:1.15em">Modes&nbsp&nbsp&nbsp</span>
         Flag&nbsp
         <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlag()">
         &nbsp&nbspWiki&nbsp
         <input type="checkbox" id="wiki-mode" name="wiki-mode" onclick="collectSettings()">
         <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.1em">Map Views&nbsp</span>
+        <span style="font-weight:900; color:#333333; font-size:1.15em">Map Views&nbsp&nbsp&nbsp</span>
         <button onclick="lower48View()">Lower 48</button>
         <button onclick="alaskaView()">AK</button>
         <button onclick="hawaiiView()">HI</button>
         <button onclick="puertoRicoView()">PR</button>
         <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.1em">Colors</span>
+        <span style="font-weight:900; color:#333333; font-size:1.15em">Colors</span>
         <div style="padding:1px;"></div>
         Scheme&nbsp
         <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
@@ -215,7 +215,7 @@
         <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); updateFillOpacity()" style="top: 7px;position: relative;">
         <span id="to-label">0.5</span>
         <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.1em">Map Controls</span>
+        <span style="font-weight:900; color:#333333; font-size:1.15em">Map Controls</span>
         <div style="padding:1px;"></div>
         Zoom&nbsp
         <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="collectSettings(); updateZoom(this.value)" style="top: 7px;position: relative;">
@@ -235,33 +235,34 @@
       <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav(1)">Close Settings</button>
     </div>
   </div>
-  <div id="mySidebar2" class="sidebar" style="background-color: #F7E3CA; left: -500px; top: 80px; width:365px;" >
+  <div id="mySidebar2" class="sidebar" style="background-color: #cabdef; left: -500px; top: 80px; width:365px;" >
     <div><span class="navTitle">Land Acknowledgement</span></div>
+    <div style="color: #666666;font-weight: bold;"><i>This map was made while occupying the stolen land of the Duwamish, Salish, and Nanticoke peoples.</i></div>
     <div style="padding:2px;"></div>
     <div style="padding:2px;"></div>
     Humans have lived on the North American continent for more than 120,000 years;
-    creating a cultural history that is as vibrant as it is diverse.<br>
+    creating a cultural history that is both vibrant and diverse.<br>
     <div style="padding:3px;"></div>
-    Ancestral historians estimate that tens of thousands of unique groups lived in this region over the last 100,000 years.
-    Indigenous Americans lived predominantly in hunter-gatherer groups with loosely defined territory that was ever changing.
+    Ancestral historians estimate that many thousands of unique groups have lived in this region over the last 100,000 years.
+    Indigenous Americans lived predominantly in hunter-gatherer groups with loosely-defined territory that was ever changing.
     <div style="padding:3px;"></div>
-    The current map shows the territory of many of the tribes thatlived here during the last millennium.
+    The current map shows the territory of many of the tribes that lived here during the last millennium.
     This data was borrowed from <a href='https://native-land.ca/'>Native-Land.ca</a>,
     please visit and support their site to learn about the territory, languages and treaties of native peoples. <br>
-    <div style="padding:3px;"></div>
+    <div style="padding:5px;"></div>
     <span style="font-size:20px; font-weight:bold;">The Census</span><br>
     <div style="padding:2px;"></div>
-    The United States and its decennial census have existed for a little less than 250 years,
-    equal to about 0.2% of the time that humans have lived on this continent.
-    To properly understand the context of the US Census, it must be remembered that the United States
-    was built on stolen land without the consent of native peoples.
+    The United States and its decennial census have existed for less than 250 years,
+    about 0.3% of the time that humans have lived here.
+    To properly understand the context of the Census, it must be remembered that the United States
+    was built (very recently!) on stolen land with stolen resources.
   </div>
-  <div id="mySidebar3" class="sidebar" style="background-color: #F5CCD7; left: -500px; top: 80px; width:365px; white-space: wrap;" >
+  <div id="mySidebar3" class="sidebar" style="background-color: #dda7c8; left: -500px; top: 80px; width:365px; white-space: wrap;" >
     <div><span class="navTitle">Save Map</span></div>
     <div style="padding:2px;"></div>
     <span>
       Maps can be saved by copying the token below.<br>
-      Make sure to save it in a document for later use! <br>
+      Be sure to save it in a document for later use! <br>
     </span>
     <div style="padding:3px;"></div>
     <span>
@@ -271,13 +272,15 @@
     <div>
       <button id="copy-button" type="submit" onclick="copyButton()">Copy</button>
       <button id="go-button" type="submit" onclick="goButton()">Go</button>
+      &nbsp&nbsp
+      <span id='save-message'></span>
     </div>
     <div style="padding:5px;"></div>
     <div>
       <textarea id="settings-json" name="settings-json" rows="10" cols="47" style="position: relative; width: 355px; "></textarea>
     </div>
   </div>
-  <div id="mySidebar4" class="sidebar" style="background-color: #CBF6CE; left: -500px; top: 80px; width:365px; white-space: wrap;" >
+  <div id="mySidebar4" class="sidebar" style="background-color: #f6a2ad; left: -500px; top: 80px; width:365px; white-space: wrap;" >
     <div>
       <span class="navTitle">Tagged Places</span>
     </div>
@@ -286,10 +289,10 @@
       <span id="tag-text"></span>
     </div>
   </div>
-  <div id="mySidebar5" class="sidebar" style="background-color: #FFE2E0; left: -500px; top: 80px; width:365px; white-space: wrap;" >
+  <div id="mySidebar5" class="sidebar" style="background-color: #ffcc99; left: -500px; top: 80px; width:365px; white-space: wrap;" >
     <div><span class="navTitle">Filter</span></div>
+    <div style="color: #666666;font-weight: bold;"><i>Hide places based on the selection criteria. Filters can only be applied from the current concept.</i></div>
     <div style="padding:2px;"></div>
-    Use the settings below to filter visible areas by a variable in the currently selected concept. <br> <br>
     <table class="tableD">
       <tr>
         <td><b>View By</b></td>
@@ -328,6 +331,12 @@
     &nbsp&nbsp<button onclick="resetFilter()" style="font-size:1.05em">Clear</button>
 
   </div>
+
+
+<div style="position: fixed; z-index:0; top: -1000px; left: -1000px;">
+  <input type="checkbox" id="accumulate" name="accumulate">
+</div>
+
 
   <!-- <div id="mySidebar" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; width:365px;" >
 
@@ -379,14 +388,14 @@
     </div>
   </button>
   <div style="padding:15px;"></div>
-  <button id="iconbtn-6" class="iconbtn" onclick="updateTack()">
+  <button id="iconbtn-6" class="iconbtn" onclick="updateTack()" style="margin:3px; border: solid 2px #bebebe; ">
     <div class="tooltip">
       <img src="images/pin-3.png" width="25" height="25" style="position: relative; top:4px; padding: 2px;">
       <span id="tooltip-6" class="tooltiptext">Pin Window</span>
     </div>
   </button>
-  <br>
-  <button id="iconbtn-7" class="iconbtn" onclick="accumulateShortcut(); updateAcc();">
+  <div style="padding:1px;"></div>
+  <button id="iconbtn-7" class="iconbtn" onclick="accumulateShortcut(); updateAcc();" style="margin:3px; border: solid 2px #bebebe; ">
     <div class="tooltip">
       <div class="tooltip">
         <img src="images/plus.png" width="25" height="25" style="position: relative; top:4px">
@@ -487,7 +496,7 @@
 // });
 
 $( () => $( "#drag" ).draggable() );
-
+highlightAllButtons()
 $('#geo-controls').css('top',window.innerHeight-45)
 $('#geo-controls').css('left',550)
 

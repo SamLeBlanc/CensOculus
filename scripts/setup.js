@@ -33,40 +33,50 @@ $(document).on("dblclick", "#b-name", function(){
 
 const updateTack = () => {
   if (tack) {
-    $('#iconbtn-6').css('border','solid 3px #e72cdc')
+    $('#iconbtn-6').css('border','solid 5px #bebebe').css('margin','0px')
   } else {
-    $('#iconbtn-6').css('border','solid 3px transparent')
+    $('#iconbtn-6').css('border','solid 2px #bebebe').css('margin','3px')
   }
   tack =! tack;
 }
 
 const updateAcc = () => {
   if (acc) {
-    $('#iconbtn-7').css('border','solid 3px #e72cdc')
+    $('#iconbtn-7').css('border','solid 5px #bebebe').css('margin','0px')
   } else {
-    $('#iconbtn-7').css('border','solid 3px transparent')
+    $('#iconbtn-7').css('border','solid 2px #bebebe').css('margin','3px')
   }
   acc =! acc;
 }
 
-const closeAllNavs = () => Array.from({length: 5}, (_, i) => i + 1).forEach(n => closeNav(n));
+const closeAllNavs = () => {
+  Array.from({length: 5}, (_, i) => i + 1).forEach(n => closeNav(n));
+  highlightAllButtons()
+}
 
 const unHighlightButtons = () => {
   [1,2,3,4,5].forEach( f => {
-    $(`#iconbtn-${f}`).css("background-color","transparent")
+     $(`#iconbtn-${f}`).css("background-color","transparent")
+  });
+}
+
+const highlightAllButtons = () => {
+  [1,2,3,4,5].forEach( f => {
+     $(`#iconbtn-${f}`).css("background-color",$(`#mySidebar${f}`).css('background-color'));
   });
 }
 
 const openNav = n => {
   show = $(`#mySidebar${n}`).css('left') == "-500px" ? true : false;
   closeAllNavs()
-  unHighlightButtons()
+  highlightAllButtons()
   tall = $(`#mySidebar${n}`).height() >= window.innerHeight-140 ? true : false;
   mobile = window.innerWidth < 450 ? true : false;
   console.log(show,tall,mobile)
   if (!show) return
   $(`#mySidebar${n}`).css('left',0);
-  $(`#iconbtn-${n}`).css("background-color","#EF6CE6")
+  unHighlightButtons()
+  $(`#iconbtn-${n}`).css("background-color",$(`#mySidebar${n}`).css('background-color'));
   $(`#mySidebar${n}`).css('overflow-y',"hidden");
   if (tall) {
     $(`#mySidebar${n}`).css('height',window.innerHeight-140);
@@ -82,7 +92,6 @@ const openNav = n => {
 
 const closeNav = n => {
   $(`#mySidebar${n}`).css('left',-500)
-  $(`#iconbtn-${n}`).css("background-color","transparent")
 }
 
 function openNav0() {

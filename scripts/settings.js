@@ -2,20 +2,37 @@ SETTINGS = {};
 
 const copyButton = () => {
   $("#settings-json").select();
-  document.execCommand('copy');
+  $('#save-message').text('')
+  try {
+    document.execCommand('copy');
+    $('#save-message').text('Copied!')
+  } catch (error) {
+    $('#save-message').text('Failed to copy')
+  }
   console.log('Save token copied to clipboard');
 }
 
 const goButton = () => {
   let token = $('#settings-json').val();
-  SETTINGS = JSON.parse(token);
-  distributeSettings();
-  closeNav4();
-  update();
+  try {
+    SETTINGS = JSON.parse(token);
+    distributeSettings();
+    closeNav(4);
+    update();
+    $('#save-message').text('Successful')
+  } catch (error) {
+    $('#save-message').text('Invalid token')
+    return
+  }
 }
 
 const getCenter = () => {
-  if (map) return map.getCenter()
+  if (map) {
+    let cen = map.getCenter();
+    cen.lng = customRound(cen.lng,8);
+    cen.lat = customRound(cen.lat,8);
+    return cen
+  }
   else return {lat:-104.800644, lng: 38.846127}
 
 }
@@ -27,6 +44,7 @@ const collectSettings = () => {
       "Concept":      $('#concept-select-').find(':selected').val(),
       "Variable":     $('#variable-select-').find(':selected').val(),
       "3D":           $('#3d-mode').is(":checked"),
+      "Height":       $('#height').val(),
       "Scheme":       $('#color-select').find(':selected').val(),
       "Scale":        $('#scale-select').find(':selected').val(),
       "TileOpacity":  parseFloat($('#tileopacity-v').val()),
@@ -35,8 +53,9 @@ const collectSettings = () => {
       "FlagMode":     $('#flag-mode').is(":checked"),
       "WikiMode":     $('#wiki-mode').is(":checked"),
       "Center":       getCenter(),
-      "Zoom":         parseFloat($('#zoom-v').val()),
-      "Pitch":        parseFloat($('#pitch-v').val()),
+      "Zoom":         parseFloat(customRound(map.getZoom(),3)),
+      "Pitch":        parseFloat(customRound(map.getPitch(),0)),
+      "Bearing":      parseFloat(customRound(map.getBearing(),0)),
   };
   console.log(`Settings updated`);
   $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
@@ -60,6 +79,7 @@ const distributeSettings = () => {
   $('#concept-select-').val(SETTINGS['Concept']);
   $('#variable-select-').val(SETTINGS['Variable']);
   $('#3d-mode').prop("checked", SETTINGS['3D']);
+  $('#height').val(SETTINGS['Height']);
   $('#color-select-').val(SETTINGS['Scheme']);
   $('#scale-select-').val(SETTINGS['Scale']);
   $('#tileopacity-v').val(parseFloat(SETTINGS["TileOpacity"]));
@@ -69,6 +89,7 @@ const distributeSettings = () => {
   $('#wiki-mode').prop("checked", SETTINGS['WikiMode']);
   $('#zoom-v').val(parseFloat(SETTINGS["Zoom"]));
   $('#pitch-v').val(parseFloat(SETTINGS["Pitch"]));
+  $('#bearing-v').val(parseFloat(SETTINGS["Bearing"]));
   distributeMapControls()
   $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
   console.log(`Settings distributed`);

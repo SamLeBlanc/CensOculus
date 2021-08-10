@@ -85,6 +85,8 @@ const dispayTags = () => {
 const loadingIcon = () => {
   map.on('idle', function() {
       $('#loading').css('left','-500px')
+      collectSettings()
+      $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
       var d = new Date();
       startTime = d.getTime();
   });
