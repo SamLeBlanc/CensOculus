@@ -17,6 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/sidebar.css">
+  <link rel="stylesheet" href="styles/draggable.css">
   <script type="text/javascript" src="index.js"></script>
   <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
   <script type="text/javascript" src="scripts/DICTIONARIES.js"></script>
@@ -33,6 +34,7 @@
   <script type="text/javascript" src="scripts/settings.js"></script>
   <script type="text/javascript" src="scripts/title.js"></script>
 
+  <script type="text/javascript" src="scripts/filters.js"></script>
   <script type="text/javascript" src="scripts/sourcesLayers.js"></script>
   <script type="text/javascript" src="scripts/painting.js"></script>
   <script type="text/javascript" src="scripts/hoverHoldFeatureStates.js"></script>
@@ -45,7 +47,7 @@
 <body>
 
   <div id="map"></div>
-  <div id="mySidebar0" class="sidebar" style="background-color: #CCCCCC; left: 4000px; margin-top:10px; padding: 10px; width:365px;">
+  <div id="mySidebar0" class="sidebar" style="background-color: #CCCCCC; left: 4000px; margin:10px 0 0 0; padding: 10px; width:365px;">
     <div style="padding-bottom: 5px;">
       <span id="b-name" style="font-size: 25px;"></span>
     </div>
@@ -287,11 +289,44 @@
   <div id="mySidebar5" class="sidebar" style="background-color: #FFE2E0; left: -500px; top: 80px; width:365px; white-space: wrap;" >
     <div><span class="navTitle">Filter</span></div>
     <div style="padding:2px;"></div>
-    A<br>
-    A<br>
-    A<br>
-    A<br>
-    A<br>
+    Use the settings below to filter visible areas by a variable in the currently selected concept. <br> <br>
+    <table class="tableD">
+      <tr>
+        <td><b>View By</b></td>
+        <td>
+          <select id="variable-select-2" style="width:250px;" onchange="SETTINGS['Variable'] = this.value; distributeSettings(); update();">
+            <option value="empty" selected>empty</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Filter By</b></td>
+        <td>
+          <select id="variable-select-1" style="width:250px;">
+            <option value="empty" selected>empty</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Operation</b>&nbsp&nbsp</td>
+        <td>
+          <select id="filter-operation">
+            <option value="<=" selected> < (less than) </option>
+            <option value=">=" > > (more than) </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Value</b></td>
+        <td>
+          <input type="text" style="width:100px" id="filter-value" name="filter-value">
+        </td>
+      </tr>
+    </table>
+    <div style="padding:5px;"></div>
+    &nbsp&nbsp<button onclick="applyFilter()" style="font-size:1.05em">Apply</button>
+    &nbsp&nbsp<button onclick="resetFilter()" style="font-size:1.05em">Clear</button>
+
   </div>
 
   <!-- <div id="mySidebar" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; width:365px;" >
@@ -308,7 +343,7 @@
   <div style="padding:100px"></div>
 </div>
 <div id='loading' class="loader"></div>
-<div id="nav-buttons" style="position:fixed; z-index:9; top: 80px;">
+<div id="nav-buttons" style="position:relative; z-index:9; top: 80px; width:47px;">
   <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">
     <div class="tooltip">
       <img src="images/gear.png" width="25" height="25" style="position: relative; top:4px; padding: 0px 4px;">
@@ -364,51 +399,59 @@
   <img id="flog_img" style="width: auto;height: 300px;" src="">
 </div>
 
-<div id="legend">
-  <div id="sqaures">
-    <div style="padding:3px;">
-      <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
-      <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
-      <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
-      <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
-      <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
-      <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
-    </div>
-    <br>
-    <div style="padding:3px;">
-      <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
-      <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
-    </div>
-    <div style="padding:3px;">
-      <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
-      <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
-      <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
-    </div>
-  </div>
-  <div id="labels" ondblclick="getCustomRange();" style="padding-top:7px; position:absolute; top:0px; left:60px;">
-    <div class="legend-label" ><span id='leg-label-0'>Min</span></div>
-    <div class="legend-label" ><span id='leg-label-1'>Q1</span></div>
-    <div class="legend-label" ><span id='leg-label-2'>Med</span></div>
-    <div class="legend-label" ><span id='leg-label-3'>Q3</span></div>
-    <div class="legend-label" ><span id='leg-label-4'>Max</span></div>
-    <br>
-    <div class="legend-label" ><span id='leg-label-6'>Hover</span></div>
-    <div class="legend-label" ><span id='leg-label-5'>Held</span></div>
-  </div>
+<div class="draggable" id="drag" style="left:400px;top:0;z-index:20;">
+    <div class="box" id="box-3">
+      <div id="legend">
+        <div id="sqaures">
+          <div style="padding:3px;">
+            <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
+            <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
+          </div>
+          <div style="padding:3px;">
+            <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
+            <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
+          </div>
+          <div style="padding:3px;">
+            <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
+            <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
+          </div>
+          <div style="padding:3px;">
+            <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
+            <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
+          </div>
+          <div style="padding:3px;">
+            <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
+            <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
+          </div>
+          <br>
+          <div style="padding:3px;">
+            <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
+            <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
+          </div>
+          <div style="padding:3px;">
+            <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
+            <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
+            <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
+          </div>
+        </div>
+        <div id="labels" ondblclick="getCustomRange();" style="padding-top:7px; position:absolute; top:0px; left:60px;">
+          <div class="legend-label" ><span id='leg-label-0'>Min</span></div>
+          <div class="legend-label" ><span id='leg-label-1'>Q1</span></div>
+          <div class="legend-label" ><span id='leg-label-2'>Med</span></div>
+          <div class="legend-label" ><span id='leg-label-3'>Q3</span></div>
+          <div class="legend-label" ><span id='leg-label-4'>Max</span></div>
+          <br>
+          <div class="legend-label" ><span id='leg-label-6'>Hover</span></div>
+          <div class="legend-label" ><span id='leg-label-5'>Held</span></div>
+        </div>
 
+
+    </div>
+  </div>
 </div>
+
+
+
 <div id="move2">
   <div>
     <span id="m-name" style="font-size:22px;">name</span>
@@ -443,11 +486,16 @@
 //   });
 // });
 
+$( () => $( "#drag" ).draggable() );
+
 $('#geo-controls').css('top',window.innerHeight-45)
 $('#geo-controls').css('left',550)
 
 let h = parseInt($('#legend').css("height").slice(0,-2))
-$('#legend').css('top', `${window.innerHeight - h - 35}px`)
+$('#drag').css('top', `${window.innerHeight - h - 45}px`)
+let w = parseInt($('#legend').css("width").slice(0,-2))
+let w1 = Math.min(window.innerWidth - w - 80, 390)
+$('#drag').css('left', `${w1}px`)
 
 let tack = true;
 let acc = true;

@@ -8,10 +8,11 @@
   overflow-x: hidden;
   /* transition: 0.3s; */
   position: absolute;
-  border-radius: 15px;
+  border-radius: 10px;
   overflow: hidden;
-  padding: 10px 10px 10px 50px;
-  min-height: 163px;
+  padding: 10px;
+  margin-left: 52px;
+  min-height: 160px;
 }
 
 .sidebar a {
@@ -53,7 +54,7 @@
   color: white;
   border: solid 0px #333;
   margin: 0px;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
 }
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

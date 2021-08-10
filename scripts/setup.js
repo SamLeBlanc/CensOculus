@@ -76,7 +76,7 @@ const openNav = n => {
     $(`#mySidebar${n}`).css('transition','0s')
     $(`#mySidebar${n}`).width(window.innerWidth - 20);
     $(`#mySidebar${n}`).css('border-radius',0)
-    $(`#mySidebar${n}`).css('top', window.innerHeight - $(`#mySidebar${n}`).height() - 20)
+    $(`#mySidebar${n}`).css('top', 50)
   }
 }
 

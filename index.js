@@ -9,6 +9,7 @@ const main = () => {
 }
 const update = () => {
   console.log('updating')
+  collectSettings()
   updateGeo()
   updateVariable()
   updatePaint()
@@ -33,7 +34,6 @@ let hoversCreated = [];
 const updateGeo = () => {
   hideAllLayers()
   clearAllHolds()
-  collectSettings()
   let geo = SETTINGS['Geo'];
   showCurrentLayer()
   if (!hoversCreated.includes(geo)){
@@ -43,7 +43,6 @@ const updateGeo = () => {
 }
 
 const updateVariable = () => {
-  collectSettings()
   setFeatStates()
   getQuantileValues()
 }
@@ -54,6 +53,8 @@ const updateConcept = () => {
   getVariableListByConcept(concept)
   setTimeout(function(){
     createVariableDropdownSelect("variable-select-",VLbC[concept])
+    createVariableDropdownSelect("variable-select-1",VLbC[concept])
+    createVariableDropdownSelect("variable-select-2",VLbC[concept])
   }, 2000);
   setTimeout(function(){
     update()

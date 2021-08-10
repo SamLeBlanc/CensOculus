@@ -14,8 +14,8 @@ const setLayerVisibility = () => {
   if ($('#3d-mode').is(":checked")){
     map.setLayoutProperty(`${geo}-fills`,'visibility','none');
     map.setLayoutProperty(`${geo}-3d`,'visibility','visible');
-      map.setLayoutProperty(`${geo}-lines`,'visibility','none');
-    map.flyTo({pitch: 10, essential: true});
+    map.setLayoutProperty(`${geo}-lines`,'visibility','none');
+    map.getPitch() < 10 ? map.flyTo({pitch: 10, essential: true}) : false;
   } else {
     map.setLayoutProperty(`${geo}-fills`,'visibility','visible');
     map.setLayoutProperty(`${geo}-3d`,'visibility','none');
@@ -66,8 +66,7 @@ const setLineOpacity = () => {
 }
 
 const setFillOpacity = () => {
-  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val()));
-  $('#to-label').text($('#tileopacity-v').val()); // needed? not sure
+  resetFilter()
 }
 const setFillColor = (arr,colors) => {
   map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-color',
