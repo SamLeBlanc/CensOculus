@@ -1,5 +1,20 @@
-function setUpAll(){   // setup function called on first page load
-  // required for custom color choice on swatch click
+// Methods pertaining to the initial setup of the sidebars and such
+// Not realating to map setup function, which can be found elsewhere
+
+// Setup function called on first page load
+const setUpAll = () => {
+  $('#accumulate').prop('checked', false);
+  updateTitle(); // color and re-size title
+  highlightAllNavButtons(); // color all left sidebar buttons
+  customColorSetup(); // allow custom colors to be picked from legend
+  reTitleLens(); // allow Lens to be re-titled with double click
+  dragSetup(); // allow some divs to be dragged
+  legendSetup(); // position the legend in the proper location
+  geoControlsSetup(); // position the geo-locate and search bar
+}
+
+// Required for custom color choice on swatch click choice
+const customColorSetup = () => {
   $('#cpick-0').on('change', () => addCustomColor(0) );
   $('#cpick-1').on('change', () => addCustomColor(1) );
   $('#cpick-2').on('change', () => addCustomColor(2) );
@@ -7,106 +22,46 @@ function setUpAll(){   // setup function called on first page load
   $('#cpick-4').on('change', () => addCustomColor(4) );
   $('#cpick-5').on('change', () => addCustomColor(5) );
   $('#cpick-6').on('change', () => addCustomColor(6) );
+}
 
-  $("#b-name").keypress(function (e) {
-      if(e.which === 13 && !e.shiftKey) {
+// Allows for the custom naming of the Lens by clicking the title
+// Lots of BS here, move along if there is literally ANYTHING else better to fix
+const reTitleLens = () => {
+  $(document).on("dblclick", "#lens-name", function(){
+      var current = $(this).text();
+      $("#lens-name").html(`<textarea class="form-control" id="newcont" rows="1" cols="50" style="width:345px; height:30px; font-size:25px; font-weight:bold; font-family: 'Lato', sans-serif;">${current}</textarea>`);
+      $("#newcont").focus();
+      $("#newcont").select();
+      $("#newcont").focus(function() {
+          console.log('in');
+      }).blur(function() {
+           var newcont = $("#newcont").val();
+           $("#lens-name").text(newcont);
+      });
+  })
+  $("#lens-name").keypress(function (e) {
+      if (e.which === 13 && !e.shiftKey) {
           e.preventDefault();
           var newcont = $("#newcont").val();
-          $("#b-name").text(newcont);
+          $("#lens-name").text(newcont);
       }
   });
 }
 
-
-$(document).on("dblclick", "#b-name", function(){
-    var current = $(this).text();
-    $("#b-name").html(`<textarea class="form-control" id="newcont" rows="1" cols="50" style="width:345px; height:30px; font-size:25px; font-weight:bold; font-family: 'Lato', sans-serif;">${current}</textarea>`);
-    $("#newcont").focus();
-    $("#newcont").select();
-    $("#newcont").focus(function() {
-        console.log('in');
-    }).blur(function() {
-         var newcont = $("#newcont").val();
-         $("#b-name").text(newcont);
-    });
-})
-
-const updateTack = () => {
-  if (tack) {
-    $('#iconbtn-6').css('border','solid 5px #bebebe').css('margin','0px')
-  } else {
-    $('#iconbtn-6').css('border','solid 2px #bebebe').css('margin','3px')
-  }
-  tack =! tack;
+// Ensures that the draggable divs are actually draggable
+const dragSetup = () => {
+  $( () => $( "#drag-1" ).draggable() );
+  $( () => $( "#drag-2" ).draggable() );
 }
 
-const updateAcc = () => {
-  if (acc) {
-    $('#iconbtn-7').css('border','solid 5px #bebebe').css('margin','0px')
-  } else {
-    $('#iconbtn-7').css('border','solid 2px #bebebe').css('margin','3px')
-  }
-  acc =! acc;
+const legendSetup = () => {
+  let h = parseInt($('#legend').css("height").slice(0,-2))
+  $('#drag-1').css('top', `${window.innerHeight - h - 45}px`);
+  let w = parseInt($('#legend').css("width").slice(0,-2));
+  let w_ = Math.min(window.innerWidth - w - 80, 390);
+  $('#drag-1').css('left', `${w_}px`);
 }
-
-const closeAllNavs = () => {
-  Array.from({length: 5}, (_, i) => i + 1).forEach(n => closeNav(n));
-  highlightAllButtons()
-}
-
-const unHighlightButtons = () => {
-  [1,2,3,4,5].forEach( f => {
-     $(`#iconbtn-${f}`).css("background-color","transparent")
-  });
-}
-
-const highlightAllButtons = () => {
-  [1,2,3,4,5].forEach( f => {
-     $(`#iconbtn-${f}`).css("background-color",$(`#mySidebar${f}`).css('background-color'));
-  });
-}
-
-const openNav = n => {
-  show = $(`#mySidebar${n}`).css('left') == "-500px" ? true : false;
-  closeAllNavs()
-  highlightAllButtons()
-  tall = $(`#mySidebar${n}`).height() >= window.innerHeight-140 ? true : false;
-  mobile = window.innerWidth < 450 ? true : false;
-  console.log(show,tall,mobile)
-  if (!show) return
-  $(`#mySidebar${n}`).css('left',0);
-  unHighlightButtons()
-  $(`#iconbtn-${n}`).css("background-color",$(`#mySidebar${n}`).css('background-color'));
-  $(`#mySidebar${n}`).css('overflow-y',"hidden");
-  if (tall) {
-    $(`#mySidebar${n}`).css('height',window.innerHeight-140);
-    $(`#mySidebar${n}`).css('overflow-y',"scroll");
-  }
-  if (mobile){
-    $(`#mySidebar${n}`).css('transition','0s')
-    $(`#mySidebar${n}`).width(window.innerWidth - 20);
-    $(`#mySidebar${n}`).css('border-radius',0)
-    $(`#mySidebar${n}`).css('top', 50)
-  }
-}
-
-const closeNav = n => {
-  $(`#mySidebar${n}`).css('left',-500)
-}
-
-function openNav0() {
-  if ($('#mySidebar0').css('left') != `${window.innerWidth + 200}px` && Object.keys(heldDistricts).length == 0){
-    closeNav0()
-  } else if (window.innerWidth < 450){
-    $('#mySidebar0').width(window.innerWidth - 20);
-    $('#mySidebar0').css('top',window.innerHeight - $('#mySidebar0').height() - 30);
-    $('#mySidebar0').css('left',0)
-    $('#mySidebar0').css('border-radius',0)
-  } else {
-    $('#mySidebar0').css('left', window.innerWidth - $('#mySidebar0').width()-30)
-  }
-}
-
-function closeNav0() {
-  $('#mySidebar0').css('left',window.innerWidth + 200)
+const geoControlsSetup = () => {
+  $('#geo-controls').css('top',window.innerHeight-45)
+  $('#geo-controls').css('left',550)
 }

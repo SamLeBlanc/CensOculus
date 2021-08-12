@@ -1,0 +1,14 @@
+table.tableA { color; white }
+table.tableA th{ border-bottom: 1px solid blue;}
+table.tableA td {border-bottom: 1px solid blue; padding: 0px 5px 0px 0px;}
+
+table.tableB { border: 1px solid transparent; }
+table.tableB td, table.tableB th{ width: 120px; padding-right:5px; white-space: nowrap;}
+
+table.tableC { border-spacing: 5px 4px; }
+table.tableC th { border: 1px solid black; }
+table.tableC td { border: 1px solid black; padding: 0px 5px 0px 5px;  }
+
+table.tableD { border: 1px solid transparent; }
+table.tableD th { border: 1px solid transparent; }
+table.tableD td { border: 1px solid transparent; }

@@ -2,29 +2,37 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>CensusMapper</title>
+  <title>CensOculus</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   <script src="https://d3js.org/d3.v5.min.js"></script>
+
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/sidebar.css">
   <link rel="stylesheet" href="styles/draggable.css">
+  <link rel="stylesheet" href="styles/tables.css">
+
+
   <script type="text/javascript" src="index.js"></script>
-  <script type="text/javascript" src="scripts/dataLoadingAndManipulation.js"></script>
-  <script type="text/javascript" src="scripts/DICTIONARIES.js"></script>
-  <script type="text/javascript" src="scripts/INTRO.js"></script>
-  <!-- <script type="text/javascript" src="scripts/snapshotHoverStates.js"></script> -->
-  <script type="text/javascript" src="scripts/customRanges.js"></script>
-  <script type="text/javascript" src="scripts/featureStatus.js"></script>
+  <script type="text/javascript" src="scripts/dataPipeline.js"></script>
+  <script type="text/javascript" src="scripts/dictionaries.js"></script>
+  <script type="text/javascript" src="scripts/customValues.js"></script>
+  <script type="text/javascript" src="scripts/featureStates.js"></script>
   <script type="text/javascript" src="scripts/numberFormats.js"></script>
   <script type="text/javascript" src="scripts/coloring.js"></script>
   <script type="text/javascript" src="scripts/tableJunk.js"></script>
@@ -33,533 +41,532 @@
   <script type="text/javascript" src="scripts/mapControls.js"></script>
   <script type="text/javascript" src="scripts/settings.js"></script>
   <script type="text/javascript" src="scripts/title.js"></script>
-
+  <script type="text/javascript" src="scripts/quantiles.js"></script>
+  <script type="text/javascript" src="scripts/map.js"></script>
+  <script type="text/javascript" src="scripts/loading.js"></script>
   <script type="text/javascript" src="scripts/filters.js"></script>
   <script type="text/javascript" src="scripts/sourcesLayers.js"></script>
   <script type="text/javascript" src="scripts/painting.js"></script>
-  <script type="text/javascript" src="scripts/hoverHoldFeatureStates.js"></script>
+  <script type="text/javascript" src="scripts/hoverHoldStates.js"></script>
   <script type="text/javascript" src="scripts/lens.js"></script>
   <script type="text/javascript" src="scripts/wikis.js"></script>
   <script type="text/javascript" src="scripts/heldData.js"></script>
   <script type="text/javascript" src="scripts/dynamicStyling.js"></script>
+  <script type="text/javascript" src="scripts/tagging.js"></script>
 
 </head>
 <body>
   <div id="map"></div>
-  <div id="mySidebar0" class="sidebar" style="background-color: lightgrey; left: 4000px; margin:10px 0 0 0; padding: 10px; width:365px;">
-    <div style="padding-bottom: 5px;">
-      <span id="b-name" style="font-size: 25px;"></span>
+  <div id="title">
+    <span>CensOculus</span>
+    <div id="author">
+      <a href="https://github.com/SamLeBlanc/" target="_blank" style="font-weight: 900; font-size:20px; margin-top: -10px; color: white; -webkit-text-stroke: 0px white; text-decoration: none;" >&nbspSam LeBlanc </a>
+      <a href="https://github.com/SamLeBlanc/Census-Mapper">
+        <img src="images/github.png" width="25" height="25">
+      </a>
     </div>
-    <div>
-      <div>
-        <img class="tag-label" src="images/tag-pop.png">
-        <span id="b-pop"></span>
-        <span>👤</span>
-      </div>
-      <div>
-        <img class="tag-label" src="images/tag-geoid.png">
-        <span id="b-geoid"></span>
-      </div>
-      <div>
-        <img class="tag-label" src="images/tag-area.png">
-        <span id="b-area"></span>
-        <span>mi<sup>2</sup></span>
-      </div>
-      <div>
-        <img class="tag-label" src="images/tag-den.png">
-        <span id="b-den"></span>
-        <span>👤/mi<sup>2</sup></span>
-      </div>
-      <div style="padding: 5px; font-size:16px;">
-        <a id="wiki-link" href="" target="_blank">Wiki</a>
-        &nbsp&nbsp
-        <a id="flag-link" href="" target="_blank">Flag</a>
-        &nbsp&nbsp
-        <button onclick="clearAllHolds(); $('#move2').css({top:-400});">Clear Holds</button>
-        &nbsp&nbsp
-        <button onclick="addTag()">🏷️</button>
-      </div>
-      <div id="held-data">      </div>
-    </div>
-
   </div>
-  <div id="mySidebar1" class="sidebar" style="background-color: #c9e4f8; left: -500px; top: 80px; width:365px;overflow-y: scroll;" >
-    <div id="settings" style="color:#666666; font-weight:bold;">
-      <div><span class="navTitle">Settings</span></div>
-      <div><i>Customize the map with the options below!</i></div>
-      <div style="padding:5px;"></div>
-      <div>
-        <span style="font-weight:900; color:#333333; font-size:1.15em">Data Selection</span>
+  <div id="sidebars">
+    <div id="right-sidebars">
+      <!-- Lens -->
+      <div id="sidebar0" class="sidebar">
+        <div style="padding-bottom: 5px;">
+          <span id="lens-name" style="font-size: 25px;"></span>
+        </div>
+        <div>
+          <div>
+            <img class="tag-label" src="images/tag-pop.png">
+            <span id="lens-pop"></span>
+            <span>👤</span>
+          </div>
+          <div>
+            <img class="tag-label" src="images/tag-geoid.png">
+            <span id="lens-geoid"></span>
+          </div>
+          <div>
+            <img class="tag-label" src="images/tag-area.png">
+            <span id="lens-area"></span>
+            <span>mi<sup>2</sup></span>
+          </div>
+          <div>
+            <img class="tag-label" src="images/tag-den.png">
+            <span id="lens-density"></span>
+            <span>👤/mi<sup>2</sup></span>
+          </div>
+          <div style="padding: 5px; font-size:16px;">
+            <a id="wiki-link" href="" target="_blank">Wiki</a>
+            <span>&nbsp&nbsp</span>
+            <a id="flag-link" href="" target="_blank">Flag</a>
+            <span>&nbsp&nbsp</span>
+            <button onclick="clearAllHolds(); $('#move-window').css({top:-400});">Clear Holds</button>
+            <span>&nbsp&nbsp</span>
+          </div>
+          <div id="held-data"></div>
+        </div>
+
+      </div>
+    </div>
+    <div id="left-sidebars">
+      <div id="sidebar1" class="sidebar" style="background-color: #a4dfa7;" >
+        <div>
+          <span class="sidebar-title">Welcome!</span>
+        </div>
+        <div id="scroller" style="max-height: 500px; overflow-y:scroll; padding-right: 3px;">
+          <div style="padding:5px;"></div>
+          <span>
+            CensOculus is a dynamic and interactive data visualization of the
+            <a href="https://en.wikipedia.org/wiki/United_States_census" target="_blank">United States Census</a>.
+            Users can explore the map for fun, or customize it to fit virtually any need. The possibilties are endless!
+          </span>
+          <div style="padding:5px"></div>
+          <span>
+            If this is your first time here, please take the
+            <a href="" target="_blank">tour!</a>
+          </span>
+          <div style="padding:5px"></div>
+          <span>
+            Constructed using
+            <a href="https://www.mapbox.com/mapbox-gljs" target="_blank">Mapbox GL JS</a>,
+            this map showcases the potential of the
+            <a href="https://www.mapbox.com/" target="_blank">Mapbox</a>
+            suite, while providing a powerful visualization tool.
+            Mapbox has an exceptional framework for projects like this, complete with hundreds of
+            <a href="https://docs.mapbox.com/mapbox-gl-js/example/" target="_blank">examples</a>
+            to get started.
+          </span>
+          <div style="padding:5px"></div>
+          <span>
+            CensOculus was created by Sam LeBlanc.
+            The code is available on
+            <a href="https://github.com/SamLeBlanc/Census-Mapper" target="_blank">Github</a>.
+            CensOculus is my first front-end project, and my first major project with Mapbox, so please be nice. 🙃
+          </span>
+          <div style="padding:2px;"></div>
+        </div>
+      </div>
+      <div id="sidebar2" class="sidebar" style="background-color: #c9e4f8;" >
+        <div id="settings">
+          <div>
+            <span class="sidebar-title">Settings</span>
+          </div>
+          <div class="sidebar-subtitle">
+            <i>Customize the map with the options below!</i>
+          </div>
+          <div style="padding:5px;"></div>
+          <div>
+            <span class="settings-subtitle">Data Selection</span>
+            <div style="padding:2px;"></div>
+            <span>Year&nbsp</span>
+            <select id="year-select-" onchange="collectSettings(); update();">
+              <option value="2010">2010</option>
+            </select>
+            <span>&nbsp&nbsp&nbspGeography&nbsp</span>
+            <select id="geo-select-" onchange="updateGeo(); update();">
+              <option value="nation">Nation</option>
+              <option value="state" selected>State</option>
+              <option value="county">County</option>
+              <option value="csub">County Subdivision</option>
+              <option value="place">Place</option>
+              <option value="tract">Tract</option>
+              <option value="group">Group</option>
+              <option value="metroSA">M(et)(ic)ro Stat Area</option>
+              <option value="urban">Urban Area</option>
+              <option value="zip">Zip Code</option>
+              <option value="uschool">Unified School Dist</option>
+            </select>
+            <div style="padding:5px;"></div>
+            <span>Concept&nbsp</span>
+            <select id="concept-select-" style="width:300px;" onchange="collectSettings(); updateConcept();">
+              <option value="P1">P1 - TOTAL POPULATION </option>
+              <option value="P2">P2 - URBAN AND RURAL</option>
+              <option value="P3">P3 - RACE</option>
+              <option value="P4">P4 - HISPANIC OR LATINO ORIGIN</option>
+              <option value="P5">P5 - HISPANIC OR LATINO ORIGIN BY RACE</option>
+              <option value="P6">P6 - RACE (TOTAL RACES TALLIED)</option>
+              <option value="P7">P7 - HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
+              <option value="P8">P8 - RACE</option>
+              <option value="P9">P9 - HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
+              <option value="P10">P10 - RACE FOR THE POPULATION 18 YEARS AND OVER</option>
+              <option value="H1">H1 - HOUSING UNITS</option>
+              <option value="H2">H2 - URBAN AND RURAL</option>
+              <option value="H3">H3 - OCCUPANCY STATUS</option>
+              <option value="H4">H4 - TENURE</option>
+              <option value="H5">H5 - VACANCY STATUS</option>
+              <option value="H6">H6 - RACE OF HOUSEHOLDER</option>
+              <option value="H7">H7 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER BY RACE OF HOUSEHOLDER</option>
+              <option value="H8">H8 - TOTAL RACES TALLIED FOR HOUSEHOLDERS</option>
+              <option value="H9">H9 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDERS BY TOTAL RACES TALLIED</option>
+              <option value="H10">H10 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS</option>
+              <option value="H11">H11 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS BY TENURE</option>
+              <option value="H12">H12 - AVERAGE HOUSEHOLD SIZE OF OCCUPIED HOUSING UNITS BY TENURE</option>
+              <option value="H13">H13 - HOUSEHOLD SIZE</option>
+              <option value="H14">H14 - TENURE BY RACE OF HOUSEHOLDER</option>
+              <option value="H15">H15 - TENURE BY HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER</option>
+              <option value="H16">H16 - TENURE BY HOUSEHOLD SIZE</option>
+              <option value="H17">H17 - TENURE BY AGE OF HOUSEHOLDER</option>
+              <option value="H18">H18 - TENURE BY HOUSEHOLD TYPE BY AGE OF HOUSEHOLDER</option>
+              <option value="H19">H19 - TENURE BY PRESENCE OF PEOPLE UNDER 18 YEARS (EXCLUDING HOUSEHOLDERS, SPOUSES, AND UNMARRIED PARTNERS)</option>
+              <option value="H20">H20 - OCCUPIED HOUSING UNITS SUBSTITUTED</option>
+              <option value="H21">H21 - ALLOCATION OF VACANCY STATUS</option>
+              <option value="H22">H22 - ALLOCATION OF TENURE</option>
+            </select>
+            <div style="padding:5px;"></div>
+            <span>Variable&nbsp</span>
+            <select id="variable-select-0" style="width:300px;" onchange="collectSettings(); update();">
+              <option value="P001001" onclick="update()" selected>P001001</option>
+            </select>
+            <div style="padding:10px;"></div>
+            <span class="settings-subtitle">3D&nbsp</span>
+            <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updatePaint()">
+            <span>&nbsp&nbspHeight&nbsp&nbsp&nbsp</span>
+            <input id="height" type="range" min="10" max="3000000" step="5000" value="100000" oninput="collectSettings(); updatePaint()" style="top: 7px;position: relative;">
+            <div style="padding:10px;"></div>
+            <span class="settings-subtitle">Number Format&nbsp&nbsp&nbsp</span>
+            <select id="numformat-select">
+              <option value="short">Short</option>
+              <option value="comma">Commas</option>
+            </select>
+            <div style="padding:10px;"></div>
+            <span class="settings-subtitle">Modes&nbsp&nbsp&nbsp</span>
+            <span>Flag&nbsp</span>
+            <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlag()">
+            <span>&nbsp&nbspWiki&nbsp</span>
+            <input type="checkbox" id="wiki-mode" name="wiki-mode" onclick="collectSettings()">
+            <div style="padding:10px;"></div>
+            <span class="settings-subtitle">Map Views&nbsp&nbsp&nbsp</span>
+            <button onclick="lower48View()">Lower 48</button>
+            <button onclick="alaskaView()">AK</button>
+            <button onclick="hawaiiView()">HI</button>
+            <button onclick="puertoRicoView()">PR</button>
+            <div style="padding:10px;"></div>
+            <span class="settings-subtitle">Colors</span>
+            <div style="padding:1px;"></div>
+            <span>Scheme&nbsp</span>
+            <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
+              <option value="Viridis">Viridis</option>
+              <option value="Red">Red</option>
+              <option value="Blue">Blue</option>
+              <option value="Green">Green</option>
+              <option value="Purple">Purple</option>
+              <option value="Black">Black</option>
+              <option value="Rainbow">Rainbow</option>
+              <option value="Viridis Light">Viridis Light</option>
+              <option value="Greyscale">Greyscale</option>
+              <option value="Heat">Heat</option>
+              <option value="Magma">Magma</option>
+              <option value="Brown-Teal">Brown-Teal</option>
+              <option value="Blue-Red">Blue-Red</option>
+              <option value="Green II">Green II</option>
+              <option value="Purple II">Purple II</option>
+              <option value="Ocean">Ocean</option>
+              <option value="Valentine">Valentine</option>
+              <option value="Forest">Forest</option>
+              <option value="Burnt Toast">Toast</option>
+              <option value="Cividis">Cividis</option>
+              <option value="Plasma">Plasma</option>
+              <option value="Warm">Warm</option>
+              <option value="Cool">Cool</option>
+              <option value="Barney">Barney</option>
+              <option value="Watermelon">Watermelon</option>
+            </select>
+            <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
+            <span>&nbsp&nbsp&nbspScale&nbsp</span>
+            <select id="scale-select" onchange="collectSettings(); update()">
+              <option value="Linear" >Linear</option>
+              <option value="Quantile" >Quantile</option>
+            </select>
+            <div style="padding:1px;"></div>
+            <span>Tile Opacity&nbsp</span>
+            <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
+            <span id="to-label">0.5</span>
+            <div style="padding:10px;"></div>
+            <span class="settings-subtitle">Map Controls</span>
+            <div style="padding:1px;"></div>
+            <span>Zoom&nbsp</span>
+            <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="collectSettings(); updateZoom(this.value)" style="top: 7px;position: relative;">
+            <span id="zoom-label">3.6</span>
+            <div style="padding:1px;"></div>
+            <span>Pitch&nbsp</span>
+            <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="collectSettings(); updatePitch(this.value)" style="top: 7px;position: relative;">
+            <span id="pitch-label">0</span>
+            <div style="padding:1px;"></div>
+            <span>Bearing&nbsp</span>
+            <input id="bearing-v" type="range" min="-180" max="180" step="15" value="0" oninput="collectSettings(); updateBearing(this.value)" style="top: 7px;position: relative;">
+            <span id="bearing-label">0</span>
+          </div>
+        </div>
+      </div>
+      <div id="sidebar3" class="sidebar" style="background-color: #cabdef;" >
+        <div>
+          <span class="sidebar-title">Land Acknowledgement</span>
+        </div>
+        <div class="sidebar-subtitle">
+          <i>This map was made while occupying the stolen land of the Duwamish, Salish, and Nanticoke peoples.</i>
+        </div>
+        <div style="padding-top:6px;">
+          Humans have lived on the North American continent for more than 120,000 years;
+          creating a cultural history that is both vibrant and diverse.
+        </div>
+        <div style="padding-top:8px;">
+          Ancestral historians estimate that many thousands of unique groups have lived in this region over the last 100,000 years.
+          Indigenous Americans lived predominantly in hunter-gatherer groups with loosely-defined territory that was ever changing.
+        </div>
+        <div style="padding-top:8px;">
+          The current map shows the territory of many of the tribes that lived here during the last millennium.
+          This data was borrowed from <a href='https://native-land.ca/'>Native-Land.ca</a>,
+          please visit and support their site to learn about the territory, languages and treaties of native peoples. <br>
+        </div>
+        <div style="padding-top:10px; font-size:20px; font-weight:bold;">
+          <span>The Census</span>
+        </div>
+        <div style="padding-top:4px;">
+          The United States and its decennial census have existed for less than 250 years,
+          about 0.3% of the time that humans have lived here.
+          To properly understand the context of the Census, it must be remembered that the United States
+          was built (very recently!) on stolen land with stolen resources.
+        </div>
+      </div>
+      <div id="sidebar4" class="sidebar" style="background-color: #dda7c8;" >
+        <div>
+          <span class="sidebar-title">Save Map</span>
+        </div>
+        <div class="sidebar-subtitle">
+          <i>Copy or paste a token to save or access a map</i>
+        </div>
+        <div style="padding-top:10px;">
+          <button id="copy-button" type="submit" onclick="copyButton()" style="font-size:1.05em">Copy</button>
+          <button id="go-button" type="submit" onclick="goButton()" style="font-size:1.05em">Go</button>
+          <span>&nbsp&nbsp</span>
+          <span id='save-message'></span>
+        </div>
+        <div style="padding-top:10px;">
+          <textarea id="settings-json" name="settings-json" rows="10" cols="47" style="position: relative; width: 355px; "></textarea>
+        </div>
+      </div>
+      <div id="sidebar5" class="sidebar" style="background-color: #f6a2ad;" >
+        <div>
+          <span class="sidebar-title">Tagged Places</span>
+        </div>
+        <div class="sidebar-subtitle">
+          <i>Tag groups of places for easy access ~ Coming soon</i>
+        </div>
+        <div id="tag-div" style="padding-top:4px;">
+          <span id="tag-text"></span>
+        </div>
+      </div>
+      <div id="sidebar6" class="sidebar" style="background-color: #ffcc99;" >
+        <div>
+          <span class="sidebar-title">Land Acknowledgement</span>
+        </div>
+        <div class="sidebar-subtitle">
+          <i>Hide places based on the selection criteria. Filters can only be applied from the current concept.</i>
+        </div>
         <div style="padding:2px;"></div>
-        Year&nbsp
-        <select id="year-select-" onchange="collectSettings(); update();">
-          <option value="2010">2010</option>
-        </select>
-        &nbsp&nbsp&nbspShape&nbsp
-        <select id="geo-select-" onchange="updateGeo(); update();">
-          <option value="nation">Nation</option>
-          <option value="state">State</option>
-          <option value="county">County</option>
-          <option value="csub">County Subdivision</option>
-          <option value="place">Place</option>
-          <option value="tract">Tract</option>
-          <option value="group">Group</option>
-          <option value="metroSA">M(et)(ic)ro Stat Area</option>
-          <option value="urban">Urban Area</option>
-          <option value="zip">Zip Code</option>
-          <option value="uschool">Unified School Dist</option>
-        </select>
+        <div>
+          <table class="tableD">
+            <tr>
+              <td><b>View By</b></td>
+              <td>
+                <select id="variable-select-2" style="width:250px;" onchange="SETTINGS['Variable'] = this.value; distributeSettings(); update();">
+                  <option value="empty" selected>empty</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><b>Filter On</b></td>
+              <td>
+                <select id="variable-select-1" style="width:250px;">
+                  <option value="empty" selected>empty</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><b>Operation</b>&nbsp&nbsp</td>
+              <td>
+                <select id="filter-operation">
+                  <option value="<=" selected> < </option>
+                  <option value=">=" > > </option>
+                </select>
+                &nbsp&nbsp
+                <b>Value</b>
+                &nbsp
+                <input type="text" style="width:100px" id="filter-value" name="filter-value">
+              </td>
+            </tr>
+          </table>
+        </div>
         <div style="padding:5px;"></div>
-        Concept&nbsp
-        <select id="concept-select-" style="width:300px;" onchange="collectSettings(); updateConcept();">
-          <option value="P1">P1 - TOTAL POPULATION </option>
-          <option value="P2">P2 - URBAN AND RURAL</option>
-          <option value="P3">P3 - RACE</option>
-          <option value="P4">P4 - HISPANIC OR LATINO ORIGIN</option>
-          <option value="P5">P5 - HISPANIC OR LATINO ORIGIN BY RACE</option>
-          <option value="P6">P6 - RACE (TOTAL RACES TALLIED)</option>
-          <option value="P7">P7 - HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
-          <option value="P8">P8 - RACE</option>
-          <option value="P9">P9 - HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
-          <option value="P10">P10 - RACE FOR THE POPULATION 18 YEARS AND OVER</option>
-          <option value="H1">H1 - HOUSING UNITS</option>
-          <option value="H2">H2 - URBAN AND RURAL</option>
-          <option value="H3">H3 - OCCUPANCY STATUS</option>
-          <option value="H4">H4 - TENURE</option>
-          <option value="H5">H5 - VACANCY STATUS</option>
-          <option value="H6">H6 - RACE OF HOUSEHOLDER</option>
-          <option value="H7">H7 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER BY RACE OF HOUSEHOLDER</option>
-          <option value="H8">H8 - TOTAL RACES TALLIED FOR HOUSEHOLDERS</option>
-          <option value="H9">H9 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDERS BY TOTAL RACES TALLIED</option>
-          <option value="H10">H10 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS</option>
-          <option value="H11">H11 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS BY TENURE</option>
-          <option value="H12">H12 - AVERAGE HOUSEHOLD SIZE OF OCCUPIED HOUSING UNITS BY TENURE</option>
-          <option value="H13">H13 - HOUSEHOLD SIZE</option>
-          <option value="H14">H14 - TENURE BY RACE OF HOUSEHOLDER</option>
-          <option value="H15">H15 - TENURE BY HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER</option>
-          <option value="H16">H16 - TENURE BY HOUSEHOLD SIZE</option>
-          <option value="H17">H17 - TENURE BY AGE OF HOUSEHOLDER</option>
-          <option value="H18">H18 - TENURE BY HOUSEHOLD TYPE BY AGE OF HOUSEHOLDER</option>
-          <option value="H19">H19 - TENURE BY PRESENCE OF PEOPLE UNDER 18 YEARS (EXCLUDING HOUSEHOLDERS, SPOUSES, AND UNMARRIED PARTNERS)</option>
-          <option value="H20">H20 - OCCUPIED HOUSING UNITS SUBSTITUTED</option>
-          <option value="H21">H21 - ALLOCATION OF VACANCY STATUS</option>
-          <option value="H22">H22 - ALLOCATION OF TENURE</option>
-        </select>
-        <div style="padding:5px;"></div>
-        Variable&nbsp
-        <select id="variable-select-" style="width:300px;" onchange="collectSettings(); update();">
-          <option value="P001001" onclick="update()" selected>P001001</option>
-        </select>
-        <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.15em">3D&nbsp</span>
-        <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updatePaint()">
-        &nbsp&nbspHeight&nbsp&nbsp&nbsp
-        <input id="height" type="range" min="10" max="3000000" step="5000" value="100000" oninput="collectSettings(); updatePaint()" style="top: 7px;position: relative;">
-        <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.15em">Number Format&nbsp&nbsp&nbsp</span>
-        <select id="numformat-select">
-          <option value="short">Short</option>
-          <option value="comma">Commas</option>
-        </select>
-        <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.15em">Modes&nbsp&nbsp&nbsp</span>
-        Flag&nbsp
-        <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlag()">
-        &nbsp&nbspWiki&nbsp
-        <input type="checkbox" id="wiki-mode" name="wiki-mode" onclick="collectSettings()">
-        <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.15em">Map Views&nbsp&nbsp&nbsp</span>
-        <button onclick="lower48View()">Lower 48</button>
-        <button onclick="alaskaView()">AK</button>
-        <button onclick="hawaiiView()">HI</button>
-        <button onclick="puertoRicoView()">PR</button>
-        <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.15em">Colors</span>
-        <div style="padding:1px;"></div>
-        Scheme&nbsp
-        <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
-          <option value="Viridis">Viridis</option>
-          <option value="Red">Red</option>
-          <option value="Blue">Blue</option>
-          <option value="Green">Green</option>
-          <option value="Purple">Purple</option>
-          <option value="Black">Black</option>
-          <option value="Rainbow">Rainbow</option>
-          <option value="Viridis Light">Viridis Light</option>
-          <option value="Greyscale">Greyscale</option>
-          <option value="Heat">Heat</option>
-          <option value="Magma">Magma</option>
-          <option value="Brown-Teal">Brown-Teal</option>
-          <option value="Blue-Red">Blue-Red</option>
-          <option value="Green II">Green II</option>
-          <option value="Purple II">Purple II</option>
-          <option value="Ocean">Ocean</option>
-          <option value="Valentine">Valentine</option>
-          <option value="Forest">Forest</option>
-          <option value="Burnt Toast">Toast</option>
-          <option value="Cividis">Cividis</option>
-          <option value="Plasma">Plasma</option>
-          <option value="Warm">Warm</option>
-          <option value="Cool">Cool</option>
-          <option value="Barney">Barney</option>
-          <option value="Watermelon">Watermelon</option>
-        </select>
-        <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
-        &nbsp&nbsp&nbspScale&nbsp
-        <select id="scale-select" onchange="collectSettings(); update()">
-          <option value="Linear" >Linear</option>
-          <option value="Quantile" >Quantile</option>
-        </select>
-        <div style="padding:1px;"></div>
-        Tile Opacity&nbsp
-        <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); updateFillOpacity()" style="top: 7px;position: relative;">
-        <span id="to-label">0.5</span>
-        <div style="padding:10px;"></div>
-        <span style="font-weight:900; color:#333333; font-size:1.15em">Map Controls</span>
-        <div style="padding:1px;"></div>
-        Zoom&nbsp
-        <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="collectSettings(); updateZoom(this.value)" style="top: 7px;position: relative;">
-        <span id="zoom-label">3.6</span>
-        <div style="padding:1px;"></div>
-        Pitch&nbsp
-        <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="collectSettings(); updatePitch(this.value)" style="top: 7px;position: relative;">
-        <span id="pitch-label">0</span>
-        <div style="padding:1px;"></div>
-        Bearing&nbsp
-        <input id="bearing-v" type="range" min="-180" max="180" step="15" value="0" oninput="collectSettings(); updateBearing(this.value)" style="top: 7px;position: relative;">
-        <span id="bearing-label">0</span>
+        <span>&nbsp&nbsp</span>
+        <button onclick="applyFilter()" style="font-size:1.05em">Apply</button>
+        <span>&nbsp&nbsp</span>
+        <button onclick="resetFilter()" style="font-size:1.05em">Clear</button>
+      </div>
+      <div id="sidebar7" class="sidebar" style="background-color: #fcf99c;" >
+        <div>
+          <span class="sidebar-title">Coming Soon</span>
+        </div>
+        <div class="sidebar-subtitle">
+          <i>Coming Soon</i>
+        </div>
       </div>
     </div>
-    <div style="padding: 5px"></div>
-    <div style="width: 50%; margin: 0 auto; white-space: nowrap;">
-      <button class="openbtn" style="background-color: red; border-radius: 5px;" onclick="closeNav(1)">Close Settings</button>
-    </div>
-  </div>
-  <div id="mySidebar2" class="sidebar" style="background-color: #cabdef; left: -500px; top: 80px; width:365px;" >
-    <div><span class="navTitle">Land Acknowledgement</span></div>
-    <div style="color: #666666;font-weight: bold;"><i>This map was made while occupying the stolen land of the Duwamish, Salish, and Nanticoke peoples.</i></div>
-    <div style="padding:2px;"></div>
-    <div style="padding:2px;"></div>
-    Humans have lived on the North American continent for more than 120,000 years;
-    creating a cultural history that is both vibrant and diverse.<br>
-    <div style="padding:3px;"></div>
-    Ancestral historians estimate that many thousands of unique groups have lived in this region over the last 100,000 years.
-    Indigenous Americans lived predominantly in hunter-gatherer groups with loosely-defined territory that was ever changing.
-    <div style="padding:3px;"></div>
-    The current map shows the territory of many of the tribes that lived here during the last millennium.
-    This data was borrowed from <a href='https://native-land.ca/'>Native-Land.ca</a>,
-    please visit and support their site to learn about the territory, languages and treaties of native peoples. <br>
-    <div style="padding:5px;"></div>
-    <span style="font-size:20px; font-weight:bold;">The Census</span><br>
-    <div style="padding:2px;"></div>
-    The United States and its decennial census have existed for less than 250 years,
-    about 0.3% of the time that humans have lived here.
-    To properly understand the context of the Census, it must be remembered that the United States
-    was built (very recently!) on stolen land with stolen resources.
-  </div>
-  <div id="mySidebar3" class="sidebar" style="background-color: #dda7c8; left: -500px; top: 80px; width:365px; white-space: wrap;" >
-    <div><span class="navTitle">Save Map</span></div>
-    <div style="padding:2px;"></div>
-    <span>
-      Maps can be saved by copying the token below.<br>
-      Be sure to save it in a document for later use! <br>
-    </span>
-    <div style="padding:3px;"></div>
-    <span>
-      To access a previous map, paste your token in the box and click 'Go' <br>
-    </span>
-    <div style="padding:5px;"></div>
     <div>
-      <button id="copy-button" type="submit" onclick="copyButton()">Copy</button>
-      <button id="go-button" type="submit" onclick="goButton()">Go</button>
-      &nbsp&nbsp
-      <span id='save-message'></span>
-    </div>
-    <div style="padding:5px;"></div>
-    <div>
-      <textarea id="settings-json" name="settings-json" rows="10" cols="47" style="position: relative; width: 355px; "></textarea>
+      <div id="accumulate-button">
+        <input type="checkbox" id="accumulate" name="accumulate">
+      </div>
     </div>
   </div>
-  <div id="mySidebar4" class="sidebar" style="background-color: #f6a2ad; left: -500px; top: 80px; width:365px; white-space: wrap;" >
-    <div>
-      <span class="navTitle">Tagged Places</span>
-    </div>
-    <div style="padding:2px;"></div>
-    <div id="tag-div">
-      <span id="tag-text"></span>
-    </div>
+  <div id="loading-icons">
+    <div id='loading-1' class="loader" style="border-top: 8px solid #3498db"></div>
+    <div id='loading-2' class="loader" style="border-top: 8px solid #ce9dd9"></div>
   </div>
-  <div id="mySidebar5" class="sidebar" style="background-color: #ffcc99; left: -500px; top: 80px; width:365px; white-space: wrap;" >
-    <div><span class="navTitle">Filter</span></div>
-    <div style="color: #666666;font-weight: bold;"><i>Hide places based on the selection criteria. Filters can only be applied from the current concept.</i></div>
-    <div style="padding:2px;"></div>
-    <table class="tableD">
-      <tr>
-        <td><b>View By</b></td>
-        <td>
-          <select id="variable-select-2" style="width:250px;" onchange="SETTINGS['Variable'] = this.value; distributeSettings(); update();">
-            <option value="empty" selected>empty</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td><b>Filter By</b></td>
-        <td>
-          <select id="variable-select-1" style="width:250px;">
-            <option value="empty" selected>empty</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td><b>Operation</b>&nbsp&nbsp</td>
-        <td>
-          <select id="filter-operation">
-            <option value="<=" selected> < (less than) </option>
-            <option value=">=" > > (more than) </option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td><b>Value</b></td>
-        <td>
-          <input type="text" style="width:100px" id="filter-value" name="filter-value">
-        </td>
-      </tr>
-    </table>
-    <div style="padding:5px;"></div>
-    &nbsp&nbsp<button onclick="applyFilter()" style="font-size:1.05em">Apply</button>
-    &nbsp&nbsp<button onclick="resetFilter()" style="font-size:1.05em">Clear</button>
-
-  </div>
-
-
-<div style="position: fixed; z-index:0; top: -1000px; left: -1000px;">
-  <input type="checkbox" id="accumulate" name="accumulate">
-</div>
-
-
-  <!-- <div id="mySidebar" class="sidebar" style="background-color: black; left: -500px; top: 65px; padding: 10px; width:365px;" >
-
-</div> -->
-<!-- <div id="move" style="z-index:50"></div> -->
-<!-- <div id="click" style="z-index:50"></div> -->
-<div id="geo-controls">
-  <div id="geolocate" class="geolocate"></div>
-  <div id="geocoder" class="geocoder"></div>
-</div>
-<div id="title">
-  <span id="title-letter-0">C</span><span id="title-letter-1">e</span><span id="title-letter-2">n</span><span id="title-letter-3">s</span><span id="title-letter-4">u</span><span id="title-letter-5">s</span><span id="title-letter-6">M</span><span id="title-letter-7">a</span><span id="title-letter-8">p</span><span id="title-letter-9">p</span><span id="title-letter-10">e</span><span id="title-letter-11">r</span>
-  <div style="padding:100px"></div>
-</div>
-<div id='loading' class="loader"></div>
-<div id="nav-buttons" style="position:relative; z-index:9; top: 80px; width:47px;">
-  <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">
-    <div class="tooltip">
-      <img src="images/gear.png" width="25" height="25" style="position: relative; top:4px; padding: 0px 4px;">
-      <span id="tooltip-1" class="tooltiptext">Settings</span>
-    </div>
-  </button>
-  <br>
-  <button id="iconbtn-2" class="iconbtn" onclick="openNav(2)">
-    <div class="tooltip">
-      <img src="images/land.png" width="25" height="25" style="position: relative; top:4px; padding: 0px 4px;">
-      <span id="tooltip-2" class="tooltiptext">Land Acknowledgement</span>
-    </div>
-  </button>
-  <br>
-  <button id="iconbtn-3" class="iconbtn" onclick="openNav(3)">
-    <div class="tooltip">
-      <img src="images/save.png" width="25" height="25" style="position: relative; top:4px; padding: 0px 4px;">
-      <span id="tooltip-3" class="tooltiptext">Save Map</span>
-    </div>
-  </button>
-  <br>
-  <button id="iconbtn-4" class="iconbtn" onclick="openNav(4)">
-    <div class="tooltip">
-      <img src="images/tag.png" width="25" height="25" style="position: relative; top:4px; padding: 0px 4px;">
-      <span id="tooltip-4" class="tooltiptext">Tags</span>
-    </div>
-  </button>
-  <br>
-  <button id="iconbtn-5" class="iconbtn" onclick="openNav(5)">
-    <div class="tooltip">
-      <img src="images/filter.png" width="25" height="25" style="position: relative; top:4px; padding: 0px 4px;">
-      <span id="tooltip-5" class="tooltiptext">Filter</span>
-    </div>
-  </button>
-  <div style="padding:15px;"></div>
-  <button id="iconbtn-6" class="iconbtn" onclick="updateTack()" style="margin:3px; border: solid 2px #bebebe; ">
-    <div class="tooltip">
-      <img src="images/pin-3.png" width="25" height="25" style="position: relative; top:4px; padding: 2px;">
-      <span id="tooltip-6" class="tooltiptext">Pin Window</span>
-    </div>
-  </button>
-  <div style="padding:1px;"></div>
-  <button id="iconbtn-7" class="iconbtn" onclick="accumulateShortcut(); updateAcc();" style="margin:3px; border: solid 2px #bebebe; ">
-    <div class="tooltip">
+  <div id="sidebar-buttons">
+    <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">
       <div class="tooltip">
-        <img src="images/plus.png" width="25" height="25" style="position: relative; top:4px">
-        <span id="tooltip-7" class="tooltiptext">Accumulate</span>
+        <img src="images/chat1.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-1" class="tooltiptext">Chat</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-2" class="iconbtn" onclick="openNav(2)">
+      <div class="tooltip">
+        <img src="images/gear.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-2" class="tooltiptext">Settings</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-3" class="iconbtn" onclick="openNav(3)">
+      <div class="tooltip">
+        <img src="images/land.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-3" class="tooltiptext">Land Acknowledgement</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-4" class="iconbtn" onclick="openNav(4)">
+      <div class="tooltip">
+        <img src="images/save.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-4" class="tooltiptext">Save Map</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-5" class="iconbtn" onclick="openNav(5)">
+      <div class="tooltip">
+        <img src="images/tag.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-5" class="tooltiptext">Tags</span>
+      </div>
+    </button>
+    <button id="iconbtn-6" class="iconbtn" onclick="openNav(6)">
+      <div class="tooltip">
+        <img src="images/filter.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-6" class="tooltiptext">Filter</span>
+      </div>
+    </button>
+    <button id="iconbtn-7" class="iconbtn" onclick="openNav(7)">
+      <div class="tooltip">
+        <img src="images/question.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-7" class="tooltiptext">?</span>
+      </div>
+    </button>
+    <div style="padding:15px;"></div>
+    <button id="iconbtn-10" class="iconbtn" onclick="updateTack()" style="margin:3px; border: solid 2px #bebebe; ">
+      <div class="tooltip">
+        <img src="images/pin-3.png" width="25" height="25" style="position: relative; top:4px; padding: 2px;">
+        <span id="iconbtn-10" class="tooltiptext">Pin Window</span>
+      </div>
+    </button>
+    <div style="padding:1px;"></div>
+    <button id="iconbtn-11" class="iconbtn" onclick="accumulateShortcut(); updateAcc();" style="margin:3px; border: solid 2px #bebebe; ">
+      <div class="tooltip">
+        <div class="tooltip">
+          <img src="images/plus.png" width="25" height="25" style="position: relative; top:4px">
+          <span id="iconbtn-11" class="tooltiptext">Accumulate</span>
+        </div>
+      </div>
+    </button>
+  </div>
+  <div id="flag-view">
+    <img id="flog_img" src="" style="width: auto;height: 300px;">
+  </div>
+  <div id="legend-">
+    <div class="draggable" id="drag-1" style="left:400px;top:0;z-index:20;">
+      <div class="box">
+        <div id="legend">
+          <div id="sqaures">
+            <div style="padding:3px;">
+              <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
+              <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
+              <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
+              <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
+              <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
+              <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div>&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-size:0.7em; color:#888;">Drag me!</span></div>
+            <div style="padding:3px;">
+              <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
+              <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
+              <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
+              <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
+            </div>
+          </div>
+          <div id="labels" ondblclick="getCustomRange();" style="padding-top:7px; position:absolute; top:0px; left:60px;">
+            <div class="legend-label" ><span id='leg-label-0'>Min</span></div>
+            <div class="legend-label" ><span id='leg-label-1'>Q1</span></div>
+            <div class="legend-label" ><span id='leg-label-2'>Med</span></div>
+            <div class="legend-label" ><span id='leg-label-3'>Q3</span></div>
+            <div class="legend-label" ><span id='leg-label-4'>Max</span></div>
+            <div><span style="font-size:0.7em; color:transparent;">.</span></div>
+            <div class="legend-label" style="padding-top:6px"><span id='leg-label-6' >Hover</span></div>
+            <div class="legend-label" style="padding-top:6px"><span id='leg-label-5' >Held</span></div>
+          </div>
+
+
+        </div>
       </div>
     </div>
-  </button>
-</div>
-<div id="flag-div" style="z-index:6;">
-  <img id="flog_img" style="width: auto;height: 300px;" src="">
-</div>
-
-<div class="draggable" id="drag" style="left:400px;top:0;z-index:20;">
-    <div class="box" id="box-3">
-      <div id="legend">
-        <div id="sqaures">
-          <div style="padding:3px;">
-            <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
-            <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
-          </div>
-          <div style="padding:3px;">
-            <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
-            <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
-          </div>
-          <div style="padding:3px;">
-            <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
-            <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
-          </div>
-          <div style="padding:3px;">
-            <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
-            <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
-          </div>
-          <div style="padding:3px;">
-            <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
-            <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
-          </div>
-          <br>
-          <div style="padding:3px;">
-            <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
-            <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
-          </div>
-          <div style="padding:3px;">
-            <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
-            <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
-            <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
-          </div>
-        </div>
-        <div id="labels" ondblclick="getCustomRange();" style="padding-top:7px; position:absolute; top:0px; left:60px;">
-          <div class="legend-label" ><span id='leg-label-0'>Min</span></div>
-          <div class="legend-label" ><span id='leg-label-1'>Q1</span></div>
-          <div class="legend-label" ><span id='leg-label-2'>Med</span></div>
-          <div class="legend-label" ><span id='leg-label-3'>Q3</span></div>
-          <div class="legend-label" ><span id='leg-label-4'>Max</span></div>
-          <br>
-          <div class="legend-label" ><span id='leg-label-6'>Hover</span></div>
-          <div class="legend-label" ><span id='leg-label-5'>Held</span></div>
-        </div>
-
-
+  </div>
+  <div id="geo-controls">
+    <div id="geolocate" class="geolocate"></div>
+    <div id="geocoder" class="geocoder"></div>
+  </div>
+  <div id="move-window">
+    <div>
+      <span id="m-name" style="font-size:22px;">Hover over something!</span>
+    </div>
+    <div>
+      <span id="m-val" style="font-size:36px;">...</span>
+    </div>
+    <div>
+      <span id="m-var" style="font-size:18px;"></span>
     </div>
   </div>
-</div>
 
+  <script>
+  setUpAll()
 
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
 
-<div id="move2">
-  <div>
-    <span id="m-name" style="font-size:22px;">name</span>
-  </div>
-  <div>
-    <span id="m-val" style="font-size:36px;">val</span>
-  </div>
-  <div>
-    <span id="m-var" style="font-size:18px;">var</span>
-  </div>
-</div>
-<!-- <div id="intro">
-<div>
-<span id = "intro-title"></span>
-</div>
-<br>
-<div style="width:480px; padding: 5px; border-radius: 10px;">
-<span id = "intro-text" style="font-weight:900; color:black;"></span>
-<button id="next-1" class="next-button" style="opacity: 0" onclick="holder()">➜</button>
-</div>
-</div> -->
-<!-- <div id="current-view">
-<span style="font-size:20px;">Current Map View:<br></span>
-<span id="cur-view" style="font-size:15px;">May 14 12:23am</span>
-</div> -->
-<script>
+  let map = initializeMap()
+  setupMap(map)
 
-// $(document).on('mousemove', function(e){
-//   $('#move').css({
-//     left:  e.pageX+10,
-//     top:   e.pageY+10
-//   });
-// });
+  map.on('load', function () {
+    main()
+  });
 
-$( () => $( "#drag" ).draggable() );
-highlightAllButtons()
-$('#geo-controls').css('top',window.innerHeight-45)
-$('#geo-controls').css('left',550)
-
-let h = parseInt($('#legend').css("height").slice(0,-2))
-$('#drag').css('top', `${window.innerHeight - h - 45}px`)
-let w = parseInt($('#legend').css("width").slice(0,-2))
-let w1 = Math.min(window.innerWidth - w - 80, 390)
-$('#drag').css('left', `${w1}px`)
-
-let tack = true;
-let acc = true;
-
-let initialRun = true;
-
-let startTime = 0;
-let endTime = 0;
-
-$('#accumulate').prop('checked', false);
-
-LORAX = {}
-updateTitle()
-
-// loadingIcon()
-
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
-var map = new mapboxgl.Map({
-  container: 'map',
-  style: 'mapbox://styles/mapbox/dark-v10', // style URL
-  center: [-104.800644, 38.846127],
-  zoom: 3.6,
-  pitch: 0,
-  interactive: true, // true required
-});
-
-map.doubleClickZoom.disable();
-
-var geolocate = new mapboxgl.GeolocateControl({
-  positionOptions: { enableHighAccuracy: true  },
-  trackUserLocation: true
-});
-
-var geocoder = new MapboxGeocoder({
-  accessToken: mapboxgl.accessToken,
-  mapboxgl: mapboxgl,
-  countries: 'us',
-  placeholder:"Pie Town, New Mexico"
-});
-
-document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
-document.getElementById('geolocate').appendChild(geolocate.onAdd(map));
-
-//map.scrollZoom.disable();
-
-var hoveredId = null;
-let heldDistricts = {};
-let taggedDistricts = {};
-
-
-map.on('load', function () {
-  threeDContolSetup()
-  main()
-  loadingIcon()
-});
 </script>
 </body>
 </html>

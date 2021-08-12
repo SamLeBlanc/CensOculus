@@ -2,128 +2,55 @@ body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif 
 #map { position: absolute; top: 0; bottom: 0; width: 100%; z-index:5; overflow: hidden}
 
 /* Heading */
-
-#title{ position: absolute; z-index:20; font-weight:700; font-family: 'Lato', sans-serif; margin-left: 5px; margin-top: -5px; pointer-events: none; -webkit-text-stroke: 2px grey;}
+#title{ position: absolute; z-index:20; font-weight:700; font-family: 'Lato', sans-serif; margin-left: 5px; margin-top: -5px; -webkit-text-stroke: 2px grey;}
 @media (max-height: 450px) {
   #title{font-size: 100px;}
 }
+#author { font-size:0px; margin-top: -10px; }
 
+/* Accumulate */
+#accumulate-button { position: fixed; z-index:0; top: -1000px; left: -1000px; }
+
+
+/* Geo Controls */
 #geo-controls{ position:fixed; margin:5px; z-index: 6;  }
 .geocoder { position: absolute; z-index: 6; left: 35px; top: 0%; }
 .geolocate { position: absolute; z-index: 6; left: 0%; top: 0%; margin-top:3px; width:30px; }
 
 /* Legend */
-
 #legend { position: absolute; left: 65%; z-index:6; width:110px; background: white; padding: 10px; border: solid 1px black; border-radius:10px; margin:10px; color: black;}
 .legend-square { position: relative; z-index: 11; height: 15px; width: 30px; background: black; border: solid 1px black; border-radius: 5px;}
 .legend-square-outline { position: relative; z-index: 11; height: 10px; width: 25px; background: transparent; border: solid 5px black; border-radius: 5px;}
-
 .legend-label { padding: 2px; }
 #inline { position: relative; top: 0px; left: 0px; height: 5px; width: 24px; background: white; border: solid 1px black; border-radius: 3px;}
 
-.navTitle { color: #333; font-size: 28px; font-weight: 700;}
+/* Legend Custom Colors */
+input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; border: none; }
+.color-picker-wrapper { position:fixed; z-index:100; margin-left:3px; margin-top:2px; float: left; }
 
-.emoji-button {
-    font-size: 1.4em;
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-}
-
-.loader {
-  position: absolute;
-  z-index: 10;
-  top: 25px;
-  left: -500px;
-  border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 2s linear infinite;
-}
-
+/* Loading Icon */
+.loader { position: absolute; z-index: 10; top: 23px; left: -500px; border: 8px solid #f3f3f3; border-top: 8px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 2s linear infinite; }
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-#move2 {
-  top: -500px;
-  left: 500px;
-  width: 200px;
-  position: absolute;
-  text-align: center;
-  z-index: 6;
-  background-color: lightgrey;
-  font-weight: 700;
-  padding: 5px 10px;
-  border-radius: 10px;
-  transition: 0.3s;
-}
+/* Move Window */
+#move-window { top: -500px; left: 1200px; width: 200px; position: absolute; text-align: center; z-index: 6; background-color: lightgrey; font-weight: 700; padding: 5px 10px; border-radius: 10px; transition: 0.3s; }
 
-/* Legend Custom Colors */
+/* Settings */
+#settings { position: relative; left: 0%; z-index:10; white-space: nowrap; color:#666666; font-weight:bold; padding-bottom: 10px;}
+.settings-subtitle { font-weight:900; color:#333333; font-size:1.15em }
 
-input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; border: none; }
-.color-picker-wrapper { position:fixed; z-index:100; margin-left:3px; margin-top:2px; float: left; }
-
-/* Settings and Selections */
-
-#settings { position: relative; left: 0%; z-index:10; white-space: nowrap;}
+/* Selections */
 #geo-select { z-index:10; }
 #variable-select { z-index:10; }
 #color-select {z-index:10; }
 #numformat-select { z-index:10; }
 #scale-select { z-index:10; }
 
-/* move */
+/* Flags */
+#flag-view { position: fixed; bottom: 0px; left: 0px; z-index:6; }
 
-#move { position: absolute; background-color: white; border-radius: 3px; font-family: monospace;}
-table.tableA { color; white }
-table.tableA th{ border-bottom: 1px solid blue;}
-table.tableA td {border-bottom: 1px solid blue; padding: 0px 5px 0px 0px;}
-
-table.tableB { border: 1px solid transparent; }
-table.tableB td, table.tableB th{ width: 120px; padding-right:5px; white-space: nowrap;}
-
-table.tableC { border-spacing: 5px 4px; }
-table.tableC th { border: 1px solid black; }
-table.tableC td { border: 1px solid black; padding: 0px 5px 0px 5px;  }
-
-table.tableD { border: 1px solid transparent; }
-table.tableD th { border: 1px solid transparent; }
-table.tableD td { border: 1px solid transparent; }
-
-/* Intro */
-
-#intro { position: fixed; z-index:100; padding: 10px; pointer-events: none; }
-.next-button { background-color: transparent; border: solid 3px black; border-radius: 20px; color: black; padding: 5px 10px; text-align: center; display: inline-block; font-size: 16px; animation: blinker 2.5s linear infinite; pointer-events: all; }
-
-#flag-div{
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-}
-
-.tag-label{
-  vertical-align:middle;
-  width:auto;
-  height:20px;
-  padding: 3px;
-}
-
-#bar{
-  position: absolute; background: white; z-index:0; top: 0%; left:270%; min-width: 300px; padding:8px 14px 8px 14px; margin: 10px; border: 4px solid black; border-radius: 10px; display: inline-block;
-}
-
-
-#filter-icon {
-    background-image: url('/images/filter.png');
-    height: 20px;
-    width: 20px;
-    position: absolute;
-    /* Other styles here */
-}
+/* Other */
+.tag-label{ vertical-align: middle; width:auto; height:20px; padding: 3px; }

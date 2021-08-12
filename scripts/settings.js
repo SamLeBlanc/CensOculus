@@ -1,48 +1,17 @@
+// // These methods pertain to the SETTINGS object, which stores all of the current CensOculus settings
+// // The SETTINGS objects allows maps to be easily saved or restored and allows for easy trasnition between maps
+
 SETTINGS = {};
 
-const copyButton = () => {
-  $("#settings-json").select();
-  $('#save-message').text('')
-  try {
-    document.execCommand('copy');
-    $('#save-message').text('Copied!')
-  } catch (error) {
-    $('#save-message').text('Failed to copy')
-  }
-  console.log('Save token copied to clipboard');
-}
-
-const goButton = () => {
-  let token = $('#settings-json').val();
-  try {
-    SETTINGS = JSON.parse(token);
-    distributeSettings();
-    closeNav(4);
-    update();
-    $('#save-message').text('Successful')
-  } catch (error) {
-    $('#save-message').text('Invalid token')
-    return
-  }
-}
-
-const getCenter = () => {
-  if (map) {
-    let cen = map.getCenter();
-    cen.lng = customRound(cen.lng,8);
-    cen.lat = customRound(cen.lat,8);
-    return cen
-  }
-  else return {lat:-104.800644, lng: 38.846127}
-
-}
-
+// This method collects the settings from the user's settings panel (and also the map object itself)
+// Then, these settings are applied to update the SETTINGS object
+// Also, here we set the new token in the Save Map sidebar
 const collectSettings = () => {
   SETTINGS = {
       "Year":         $('#year-select-').find(':selected').val(),
       "Geo":          $('#geo-select-').find(':selected').val(),
       "Concept":      $('#concept-select-').find(':selected').val(),
-      "Variable":     $('#variable-select-').find(':selected').val(),
+      "Variable":     $('#variable-select-0').find(':selected').val(),
       "3D":           $('#3d-mode').is(":checked"),
       "Height":       $('#height').val(),
       "Scheme":       $('#color-select').find(':selected').val(),
@@ -53,31 +22,21 @@ const collectSettings = () => {
       "FlagMode":     $('#flag-mode').is(":checked"),
       "WikiMode":     $('#wiki-mode').is(":checked"),
       "Center":       getCenter(),
-      "Zoom":         parseFloat(customRound(map.getZoom(),3)),
+      "Zoom":         parseFloat(customRound(map.getZoom(),5)),
       "Pitch":        parseFloat(customRound(map.getPitch(),0)),
       "Bearing":      parseFloat(customRound(map.getBearing(),0)),
   };
-  console.log(`Settings updated`);
-  $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
+  console.log(`Settings Collected`);
+  $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", ")); // the sets the proper token in the Save Map sidebar
 }
 
-const distributeMapControls = () => {
-  let cen = SETTINGS["Center"];
-  setTimeout(function(){
-    map.flyTo({
-      zoom: parseFloat(SETTINGS["Zoom"]),
-      pitch: parseFloat(SETTINGS["Pitch"]),
-      center: [cen['lng'],cen['lat']],
-      essential: true
-    });
-  }, 1000);
-}
-
+// The opposite of collectSettings(), this takes a SETTINGS token and re-configures the map to fit
+// Also updates the token in the Save Map sidebar
 const distributeSettings = () => {
   $('#year-select-').val(SETTINGS['Year']);
   $('#geo-select-').val(SETTINGS['Geo']);
   $('#concept-select-').val(SETTINGS['Concept']);
-  $('#variable-select-').val(SETTINGS['Variable']);
+  $('#variable-select-0').val(SETTINGS['Variable']);
   $('#3d-mode').prop("checked", SETTINGS['3D']);
   $('#height').val(SETTINGS['Height']);
   $('#color-select-').val(SETTINGS['Scheme']);
@@ -92,12 +51,18 @@ const distributeSettings = () => {
   $('#bearing-v').val(parseFloat(SETTINGS["Bearing"]));
   distributeMapControls()
   $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
-  console.log(`Settings distributed`);
+  console.log(`Settings Distributed`);
 }
 
-const copyToClipboard = () => {
-  let copyText = document.getElementById("settings-json"); // Get text field
-  copyText.select(); // Select text field
-  copyText.setSelectionRange(0, 99999); // For mobile devices?
-  document.execCommand("copy"); // Copy text to clipboard
+// Distribute the Mapbox map settings from the SETTINGS object
+const distributeMapControls = () => {
+  let cen = SETTINGS["Center"];
+  setTimeout(function(){
+    map.flyTo({
+      zoom: parseFloat(SETTINGS["Zoom"]),
+      pitch: parseFloat(SETTINGS["Pitch"]),
+      center: [cen['lng'],cen['lat']],
+      essential: true
+    });
+  }, 1000);
 }

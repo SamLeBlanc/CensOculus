@@ -1,24 +1,31 @@
+// Methods having to do with tables or other stupid things
+// A bunch of gobbldy gook that I do not want to real with right now
+
 const updateMoveTable = (e, geoid) => {
   let variable = SETTINGS['Variable'];
   let geo = SETTINGS['Geo']
   let geoidFeatureStates = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
-
+  console.log('hete')
   $('#m-name').text(e.features[0].properties.NAME10)
   $('#m-val').text(formatNumber(geoidFeatureStates[variable]))
+
+  const nickname = v => {
+    if (NICKNAMES[v]) return NICKNAMES[v];
+    if (NICKNAMES[v.slice(0, -1)]) return NICKNAMES[v.slice(0, -1)];
+    return v
+  }
   $('#m-var').text(nickname(variable))
-  updateMove2()
-
-
+  updateMovingWindow()
 }
 
-const updateMove2 = () => {
+const updateMovingWindow = () => {
   if(!tack) {
-    $('#move2').css({left:event.pageX+10, top:event.pageY+10}).css('transition','0s');
+    $('#move-window').css({left:event.pageX+10, top:event.pageY+10}).css('transition','0s');
+  } else {
+    let offset = (Object.keys(heldDistricts).length > 0) ? $('#sidebar0').width() + 20 : 0;
+    let le = window.innerWidth - offset - $('#move-window').width() - 30;
+    $('#move-window').css({ left:le, top:10 });
   }
-  let offset = 0;
-  if (Object.keys(heldDistricts).length > 0) offset = $('#mySidebar0').width() + 30;
-  let le = window.innerWidth - offset - $('#move2').width() - 30;
-  if(tack) $('#move2').css({left:le, top:10}).css('transition','0.3s');
 }
 
 function addheldTable(arr) {
@@ -44,7 +51,7 @@ function addheldTable(arr) {
   myTableDiv.appendChild(table)
 }
 
-const heldData2TableARRAY = heldData => {
+const heldData2Array = heldData => {
   let arr = [];
   for (const v in heldData) {
     if (typeof heldData[v] == 'number'){
@@ -56,24 +63,27 @@ const heldData2TableARRAY = heldData => {
   return arr
 }
 
-function createVariableDropdownSelect(id,list) {
-  var x = document.getElementById(id);
-  var length = x.length;
-  for (i = length-1; i >= 0; i--) {
-    x.options[i] = null;
-  }
-  for (const item of list) {
-    var z = document.createElement("option");
-    z.setAttribute("value", item);
-    var tag = `${item} - ${TAG[item]}`
-    var t = document.createTextNode(tag);
-    z.appendChild(t);
-    x.appendChild(z);
-    var z = document.createElement("option");
-    z.setAttribute("value", `${item}P`);
-    var tag = `${item}P - ${TAG[item.concat("P")]}`
-    var t = document.createTextNode(tag);
-    z.appendChild(t);
-    x.appendChild(z);
+function createVariableDropdownSelect(list) {
+  for (qq = 0; qq < 3; qq++) {
+    let id = `variable-select-${qq}`
+    var x = document.getElementById(id);
+    var length = x.length;
+    for (i = length-1; i >= 0; i--) {
+      x.options[i] = null;
+    }
+    for (const item of list) {
+      var z = document.createElement("option");
+      z.setAttribute("value", item);
+      var tag = `${item} - ${TAG[item]}`
+      var t = document.createTextNode(tag);
+      z.appendChild(t);
+      x.appendChild(z);
+      var z = document.createElement("option");
+      z.setAttribute("value", `${item}P`);
+      var tag = `${item}P - ${TAG[item.concat("P")]}`
+      var t = document.createTextNode(tag);
+      z.appendChild(t);
+      x.appendChild(z);
+    }
   }
 }

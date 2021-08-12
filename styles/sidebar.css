@@ -1,27 +1,41 @@
 .sidebar {
-  width: 0;
   position: fixed;
   z-index: 7;
-  top: 0;
-  left: 0;
+  left: -500px; top: 105px; width:365px;
+  white-space: wrap;
   background-color: black;
   overflow-x: hidden;
-  /* transition: 0.3s; */
   position: absolute;
   border-radius: 10px;
   overflow: hidden;
   padding: 10px;
   margin-left: 52px;
-  min-height: 160px;
+}
+
+.sidebar-title { color: #333; font-size: 28px; font-weight: 700;}
+.sidebar-subtitle { color: #666666; font-weight: bold; }
+
+#sidebar0 {
+  background-color: lightgrey;
+  left: 4000px;
+  top: 0;
+  width:365px;
+  margin:10px 0 0 0;
+  padding: 10px;
+  transition: 0.3s;
+}
+
+#sidebar-buttons {
+  position:relative; z-index:9; top: 100px; width:47px;
 }
 
 .sidebar a {
   color: blue;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .sidebar a:hover {
-  color: #f1f1f1;
+  color: #222;
 }
 
 .sidebar .closebtn {
@@ -58,7 +72,12 @@
   position: relative;
   margin-top: 6px;
 }
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+
+
+.icon-img {
+  position: relative; top:4px; padding: 0px 4px;
+}
+
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
@@ -68,15 +87,12 @@
   position: relative;
   display: inline-block;
   padding:2px;
-  /* border-bottom: 1px dotted black; */
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  /* width: 120px; */
   background-color: black;
   color: #fff;
-  /* text-align: center; */
   border-radius: 6px;
   padding: 5px 5px;
   white-space: nowrap;

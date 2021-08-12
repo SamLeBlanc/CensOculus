@@ -1,3 +1,6 @@
+// // A LARGE list of LARGE dictionaries for all sorts of things
+// // if you value your sanity, you will go no further than this....seriously...move along
+
 const CONCEPTS = [
   'TotalULATION',
   'URBAN AND RURAL',
@@ -12,9 +15,9 @@ const CONCEPTS = [
   'GROUP QUARTERS POPULATION BY TYPE'
 ]
 
-var TAG = {}
+let TAG = {}
 
-var VLbC = {}
+let VLbC = {}
 
 const SOURCE_DICT = {
   // 'native':'nativelands',
@@ -31,7 +34,7 @@ const SOURCE_DICT = {
   'place':'place'
 }
 
-const BAR_SUFFIX = {
+const LENS_SUFFIX = {
   'state':'States',
   'county':'Counties',
   'tract':'Tracts',

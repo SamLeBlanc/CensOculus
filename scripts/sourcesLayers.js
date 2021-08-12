@@ -2,14 +2,7 @@
 // There are 3 types of vector layers: line, fill, and extrusion
 // All layers are added on the initial page load (although I may chage this later for the sake of speed)
 
-const addFillLineExtrusionLayers = () => {
-  Object.keys(LAYER_DICT).forEach(geo => {
-    addFillLayer(geo)
-    addExtrusionLayer(geo)
-    addLineLayer(geo)
-  });
-}
-
+// Add Mapbox sources
 const addSources = () => {
   Object.keys(SOURCE_TILESET_ID).forEach(geo => {
     map.addSource(geo, {
@@ -18,6 +11,15 @@ const addSources = () => {
       'promoteId': 'GEOID10',
       // nativelands layer has no pre-set GEOID, use 'generateId': true instead of 'promoteId'
     })
+  });
+}
+
+// For each source, add the fill, line and extrusion layer
+const addFillLineExtrusionLayers = () => {
+  Object.keys(LAYER_DICT).forEach(geo => {
+    addFillLayer(geo)
+    addExtrusionLayer(geo)
+    addLineLayer(geo)
   });
 }
 

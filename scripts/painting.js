@@ -1,7 +1,17 @@
+// // These methods pertain to the *painting* of mapbox tile layers (this includes, visibility, color, opacity, and lines)
+// // That is, the actual application of the colors to the layers
+// // We are not finding the colors here, that has already been done in coloring.js
+// // instead we are just *applying* those colors
+
+// // There are three types of layers that are being painted here, fills, lines, and extrusions (3D)
+
+// Set the visibility for the requested layer
+// all three layers (line,fill,extrusion) are loaded in at the beginning, but we choose which one to see
 const showCurrentLayer = () => {
   hideAllLayers()
   setLayerVisibility()
 }
+// Sets the visibility of all layers (line,fill,extrusion) for all geos to none
 const hideAllLayers = () => {
   Object.keys(SOURCE_DICT).forEach( geo => {
     map.setLayoutProperty(`${geo}-fills`,'visibility','none');
@@ -9,21 +19,24 @@ const hideAllLayers = () => {
     map.setLayoutProperty(`${geo}-3d`,'visibility','none');
   });
 }
+// Make visible only the desired layer based on the settings
 const setLayerVisibility = () => {
   let geo = SETTINGS['Geo'];
-  if ($('#3d-mode').is(":checked")){
+  if (SETTINGS['3D']){ // if we are in 3D mode
     map.setLayoutProperty(`${geo}-fills`,'visibility','none');
     map.setLayoutProperty(`${geo}-3d`,'visibility','visible');
     map.setLayoutProperty(`${geo}-lines`,'visibility','none');
     map.getPitch() < 10 ? map.flyTo({pitch: 10, essential: true}) : false;
-  } else {
+  } else { // normal (2D) mode
     map.setLayoutProperty(`${geo}-fills`,'visibility','visible');
     map.setLayoutProperty(`${geo}-3d`,'visibility','none');
-    map.flyTo({pitch: 0, essential: true});
     map.setLayoutProperty(`${geo}-lines`,'visibility','visible');
+    map.flyTo({pitch: 0, essential: true});
   }
 }
 
+// Combo methods for setting the paint features for each layer
+// setFillPaint() and setExtrusionPaint() need the values and colors from the updatePaint() method
 const setLinePaint = () => {
   setLineColor()
   setLineWidth()
@@ -39,7 +52,9 @@ const setExtrusionPaint = (arr, colors) => {
   setExtrusionOpacity()
 }
 
+// Line color is unique for hover or held areas, otherwise it is black
 const setLineColor = () => {
+  // get the custom colors if they exist
   let c1 = customColors[5] ? customColors[5] : "#e72cdc";
   let c2 = customColors[6] ? customColors[6] : "#32cc32";
   map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-color',
@@ -48,6 +63,7 @@ const setLineColor = () => {
     ['boolean', ['feature-state', 'hover'], false], c2, 'black',
   ]);
 }
+// Only have line width if the area is hovered, held, or has a flag
 const setLineWidth = () => {
   map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-width',
     ['case',
@@ -56,6 +72,7 @@ const setLineWidth = () => {
     ['boolean', ['feature-state', 'flag'], false], 1, 0,
   ]);
 }
+// Only have line opacity if the area is hovered, held, or has a flag
 const setLineOpacity = () => {
   map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-opacity',
     ['case',
@@ -65,9 +82,12 @@ const setLineOpacity = () => {
   ]);
 }
 
+// see filters.js
 const setFillOpacity = () => {
   resetFilter()
 }
+
+// Set fill-color based on values and colors from updatePaint()
 const setFillColor = (arr,colors) => {
   map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-color',
     ['interpolate',
@@ -80,6 +100,8 @@ const setFillColor = (arr,colors) => {
   ]);
 }
 
+// Set extrusion-color based on values and colors from updatePaint()
+// Hovered or held areas get a unique extrusion color, can be customized by user
 const setExtrusionColor = (arr,colors) => {
   let c1 = customColors[5] ? customColors[5] : "#e72cdc"
   let c2 = customColors[6] ? customColors[6] : "#32cc32"
@@ -97,14 +119,17 @@ const setExtrusionColor = (arr,colors) => {
     ],
   ]);
 }
+// Set 3D height based on user settings
 const setExtrusionHeight = arr => {
   map.setPaintProperty(`${SETTINGS['Geo']}-3d`, 'fill-extrusion-height',
     ['interpolate',
     ['linear'], ['feature-state', SETTINGS['Variable']],
-    arr[0], 0.5,
-    arr[4], parseFloat($('#height').val())
+    arr[0], 0.5, // Important! make sure base height is >0
+    arr[4], parseFloat(SETTINGS['Height'])
   ]);
 }
+
+// Set extrusiont opacity based on user expression (cannot be a data expression 😡 )
 const setExtrusionOpacity = () => {
-  map.setPaintProperty(`${SETTINGS['Geo']}-3d`, 'fill-extrusion-opacity', parseFloat($('#tileopacity-v').val()));
+  map.setPaintProperty(`${SETTINGS['Geo']}-3d`, 'fill-extrusion-opacity', SETTINGS['TileOpacity']);
 }

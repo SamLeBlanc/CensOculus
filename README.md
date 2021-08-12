@@ -1,8 +1,8 @@
-# [CensusMapper](https://samleblanc.github.io/Census-Mapper/)
+# [CensOculus](https://samleblanc.github.io/Census-Mapper/)
 *(still in beta until the release of 2020 Census data in ~August)*
 
-## What is CensusMapper?
-CensusMapper is a browser-based, interactive mapping application used to visualize the results of the [United States Census](https://en.wikipedia.org/wiki/United_States_census). Developed with [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs), CensusMapper empowers users to create complex data visualizations perfectly tailored to fit their needs.
+## What is CensOculus?
+CensOculus is a browser-based, interactive mapping application used to visualize the results of the [United States Census](https://en.wikipedia.org/wiki/United_States_census). Developed with [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs), CensOculus empowers users to create complex data visualizations perfectly tailored to fit their needs.
 <p align="center">
   <img src="https://github.com/SamLeBlanc/Census-Mapper/blob/main/images/readMeImage2.png" width="800">
   <br>
@@ -10,9 +10,9 @@ CensusMapper is a browser-based, interactive mapping application used to visuali
 </p>
 
 
-## Why CensusMapper?
+## Why CensOculus?
 
-Three words: versatility, usability, and speed. CensusMapper is highly adaptive, suitable for use in political campiaigns, marketing, industry, community planning, and much more. CensusMapper provides access to thousands of variables tallied by the Census Bureau, including data relating to age, race, sex, ethnicity, housing, rurality, and more. Each categoty is viewable across many levels of geography, down to block group granularity, without compromising overall efficiency.
+Versatility. Usability. Speed. CensOculus is highly adaptive, suitable for use in political campiaigns, marketing, industry, community planning, and much more. CensOculus provides access to thousands of variables tallied by the Census Bureau, including data relating to age, race, sex, ethnicity, housing, rurality, and more. Each categoty is viewable across many levels of geography, down to block group granularity, without compromising overall efficiency.
 
 ## Getting Started
 
