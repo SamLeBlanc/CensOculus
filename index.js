@@ -74,7 +74,7 @@ const updateConcept = async() => {
   update()
 }
 
-const updateRealm = () => {
+const updateRealm = async() => {
   let realm = SETTINGS['Realm'];
   let op = getRealmOptions(realm)
   let st = getRealmSelectString(op)

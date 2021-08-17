@@ -29,7 +29,7 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 .color-picker-wrapper { position:fixed; z-index:100; margin-left:3px; margin-top:2px; float: left; }
 
 /* Loading Icon */
-.loader { position: absolute; z-index: 10; top: 23px; left: -500px; border: 8px solid #f3f3f3; border-top: 8px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 2s linear infinite; }
+.loader { position: absolute; z-index: 10; top: 10px; left: -500px; border: 8px solid #f3f3f3; border-top: 8px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 2s linear infinite; }
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

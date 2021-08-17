@@ -47,8 +47,9 @@ const tour1 = async() => {
   currentTourSlide = 1;
   full52View();
   SETTINGS["Geo"] = 'state';
+  SETTINGS["Realm"] = 'Total';
+  await updateRealm()
   SETTINGS["Concept"] = 'P1';
-  SETTINGS["Variable"] = "P001001"
   distributeSettings();
   updateConcept();
   $('#tour-text').html(
@@ -193,6 +194,8 @@ const tour3 = async() => {
   </div>`)
   currentTourSlide = 3;
   SETTINGS["Geo"] = 'state';
+  SETTINGS["Realm"] = 'Race';
+  await updateRealm()
   SETTINGS["Concept"] = 'P6';
   distributeSettings();
   await updateConcept();
@@ -253,14 +256,14 @@ const tour5 = async() => {
       Demographic maps are powerful because they are also
       <span style="color:#A16F0A"><b>maps of history</b></span>.
       <div style="padding-top:8px;"></div>
-      In this map alone, there are still visible effects from
+      This map alone shows many residual effects from
       <a href="https://en.wikipedia.org/wiki/Slavery_in_the_United_States" target="_blank">slavery</a>,
       <a href="https://en.wikipedia.org/wiki/Reconstruction_era" target="_blank">the Reconstruction</a>,
       <a href="https://en.wikipedia.org/wiki/Great_Migration_(African_American)" target="_blank">the Great Migration</a>,
       <a href="https://en.wikipedia.org/wiki/Black_flight" target="_blank">Black flight</a>,
       <a href="https://en.wikipedia.org/wiki/West_Indian_Americans" target="_blank">Caribbean immigration</a>, and much more.
       <div style="padding-top:8px;"></div>
-      By changing the geography size, new insights can be made about the data that would have been otherwise impossible.
+      By changing the <span style="color:#dd6000"><b>Geography</b></span>, new insights can be made about the data that would have been otherwise impossible.
       There area many different geography options to choose from under:&nbsp
       <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
       <span style="font-size:1.0em; font-weight:600; color:#555;">Settings > Data Selection > Geography</span>
@@ -290,9 +293,18 @@ const tour6 = async() => {
       <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
       <span style="font-size:1.0em; font-weight:600; color:#555;">Settings > Data Selection > Realm</span>
       <div style="padding-top:8px;"></div>
-      The <span style="color:#dd6000"><b>Realm</b></span> is the most broad category of data classification.
-      With the Realm, you can select what general topic you are interested in.
-      The Realm determines what Concepts and Variables are available, so be sure to select the Realm first. 
+      The <span style="color:#dd6000; font-size:1.1em;"><b>Realm</b></span> is the most broad category of data classification.
+      With the Realm, you can select what <span style="color:#0055b3"><b>general topic</b></span> you are interested in.
+      The Realm determines what Concepts and Variables are available, so be sure to select the Realm first.
+      <div style="padding-top:8px;"></div>
+      Next, you can select the <span style="color:#dd6000; font-size:1.1em;"><b>Concept</b></span>.
+      These are narrower in scope than Realms, as each Concept points to a <span style="color:#0055b3"><b>specific topic</b></span>, rather than a broad one.
+      <div style="padding-top:2px;"></div>
+      <span style="color:#666"><i>Due to crossover topics, the same Concept may appear under multiple Realms.</i></span>
+      <div style="padding-top:8px;"></div>
+      Last to be selected is the <span style="color:#dd6000"; font-size:1.1em;><b>Variable</b></span>; the specific value of the Concept that
+      will be applied to the map. Variables represent the <span style="color:#0055b3"><b>actual tablulated Census values</b></span>, and their percentages.
+      In all, the Census counts almost 10,000 variables!
     </span>
   </div>
   </div>
@@ -301,6 +313,27 @@ const tour6 = async() => {
   <div style="padding-top:6px;">
     <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour5()">
     <img src="images/arrow-right.png" height="16" style="position: relative; left:510px;" onclick="tour7()">
+  </div>
+`)
+}
+
+const tour7 = async() => {
+  currentTourSlide = 7;
+
+  $('#tour-text').html(`
+  <div>
+    <span style="font-size:1.4em">More Tour Coming Soon</span>
+  </div>
+  <div style="padding-top:4px;">
+    <span class="tour-text-style">
+
+    </span>
+  </div>
+  </div>
+    <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
+  </div>
+  <div style="padding-top:6px;">
+    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour6()">
   </div>
 `)
 }
