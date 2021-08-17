@@ -5,7 +5,6 @@ const updateMoveTable = (e, geoid) => {
   let variable = SETTINGS['Variable'];
   let geo = SETTINGS['Geo']
   let geoidFeatureStates = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
-  console.log('hete')
   $('#m-name').text(e.features[0].properties.NAME10)
   $('#m-val').text(formatNumber(geoidFeatureStates[variable]))
 
@@ -63,27 +62,36 @@ const heldData2Array = heldData => {
   return arr
 }
 
-function createVariableDropdownSelect(list) {
-  for (qq = 0; qq < 3; qq++) {
-    let id = `variable-select-${qq}`
-    var x = document.getElementById(id);
-    var length = x.length;
-    for (i = length-1; i >= 0; i--) {
-      x.options[i] = null;
+const createVariableDropdownSelect = async(list) => {
+  const constructList = async(list) => {
+    for (qq = 0; qq < 3; qq++) {
+      let id = `variable-select-${qq}`
+      var x = document.getElementById(id);
+      var length = x.length;
+      for (i = length-1; i >= 0; i--) {
+        x.options[i] = null;
+      }
+      for (const item of list) {
+        var z = document.createElement("option");
+        z.setAttribute("value", item);
+        var tag = `${item} - ${TAG[item]}`
+        var t = document.createTextNode(tag);
+        z.appendChild(t);
+        x.appendChild(z);
+        if (!item.endsWith("001")){
+          var z = document.createElement("option");
+          z.setAttribute("value", `${item}P`);
+          var tag = `${item}P - ${TAG[item.concat("P")]}`
+          var t = document.createTextNode(tag);
+          z.appendChild(t);
+          x.appendChild(z);
+        }
+      }
     }
-    for (const item of list) {
-      var z = document.createElement("option");
-      z.setAttribute("value", item);
-      var tag = `${item} - ${TAG[item]}`
-      var t = document.createTextNode(tag);
-      z.appendChild(t);
-      x.appendChild(z);
-      var z = document.createElement("option");
-      z.setAttribute("value", `${item}P`);
-      var tag = `${item}P - ${TAG[item.concat("P")]}`
-      var t = document.createTextNode(tag);
-      z.appendChild(t);
-      x.appendChild(z);
-    }
+  }
+  try {
+    await constructList(list)
+  } catch(error) {
+    console.log(`createVariableDropdownSelect${error}`)
   }
 }

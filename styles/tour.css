@@ -1,0 +1,15 @@
+#tour-window { top: -2000px; left: 500px; color:#333; width: 570px; position: fixed; text-align: left; z-index: 10; background-color: #e3e3e3; font-weight: 700; padding: 5px 10px; border-radius: 10px; transition: 0.3s; }
+
+
+#tour-text-style{
+  font-size:1.1em; font-weight:550;
+}
+
+.tour a {
+  color: blue;
+  transition: 0.2s;
+}
+
+.tour a:hover {
+  color: #222;
+}

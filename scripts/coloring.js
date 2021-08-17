@@ -68,6 +68,7 @@ const getCustomColors = colors => {
 // Update the legend to have the appropriate colors and labels showing
 // Must have 'arr' and 'colors' from updatePaint() method
 const updateLegend = (arr, colors) => {
+  console.log(arr)
   var colors = COLOR_DICT[SETTINGS['Scheme']]
   $(`#leg-square-5`).css("border", `solid 5px ${customColors[5]}`)
   $(`#leg-square-6`).css("border", `solid 5px ${customColors[6]}`)
@@ -77,7 +78,9 @@ const updateLegend = (arr, colors) => {
       colors[i] = `rgba(${col.r}, ${col.g}, ${col.b}, 1)`
     }
     $(`#leg-square-${i}`).css("background", colors[i])
-    $(`#leg-label-${i}`).text(formatNumber(Math.max(arr[i],0)))
+    if ( Math.round(arr[i], 1) <= 1.5 && SETTINGS["Variable"].endsWith("P")) n = formatPercent(arr[i]);
+    else n = abbreviateNumber(arr[i]);
+    $(`#leg-label-${i}`).text(n)
   }
 }
 

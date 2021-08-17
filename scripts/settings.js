@@ -10,6 +10,7 @@ const collectSettings = () => {
   SETTINGS = {
       "Year":         $('#year-select-').find(':selected').val(),
       "Geo":          $('#geo-select-').find(':selected').val(),
+      "Realm":        $('#realm-select-').find(':selected').val(),
       "Concept":      $('#concept-select-').find(':selected').val(),
       "Variable":     $('#variable-select-0').find(':selected').val(),
       "3D":           $('#3d-mode').is(":checked"),
@@ -26,7 +27,6 @@ const collectSettings = () => {
       "Pitch":        parseFloat(customRound(map.getPitch(),0)),
       "Bearing":      parseFloat(customRound(map.getBearing(),0)),
   };
-  console.log(`Settings Collected`);
   $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", ")); // the sets the proper token in the Save Map sidebar
 }
 
@@ -36,6 +36,7 @@ const distributeSettings = () => {
   $('#year-select-').val(SETTINGS['Year']);
   $('#geo-select-').val(SETTINGS['Geo']);
   $('#concept-select-').val(SETTINGS['Concept']);
+  $('#realm-select-').val(SETTINGS['Realm']);
   $('#variable-select-0').val(SETTINGS['Variable']);
   $('#3d-mode').prop("checked", SETTINGS['3D']);
   $('#height').val(SETTINGS['Height']);
@@ -49,9 +50,7 @@ const distributeSettings = () => {
   $('#zoom-v').val(parseFloat(SETTINGS["Zoom"]));
   $('#pitch-v').val(parseFloat(SETTINGS["Pitch"]));
   $('#bearing-v').val(parseFloat(SETTINGS["Bearing"]));
-  distributeMapControls()
   $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", "));
-  console.log(`Settings Distributed`);
 }
 
 // Distribute the Mapbox map settings from the SETTINGS object

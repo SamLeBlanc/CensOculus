@@ -1,7 +1,7 @@
 // Methods pertaining to the loading icon that appears when the map is loading
 
 // For moving loading icon in and out of view
-const startLoadingIcon = i => $(`#loading-${i}`).css('left',`${$('#title').width() + 25}px`);
+const startLoadingIcon = i => $(`#loading-${i}`).css('left',`${$('#title').width() + 10}px`);
 const endLoadingIcon = i => $(`#loading-${i}`).css('left','-500px');
 
 // Mapbox event to show loading icon when map is loading

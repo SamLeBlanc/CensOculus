@@ -36,7 +36,9 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 }
 
 /* Move Window */
-#move-window { top: -500px; left: 1200px; width: 200px; position: absolute; text-align: center; z-index: 6; background-color: lightgrey; font-weight: 700; padding: 5px 10px; border-radius: 10px; transition: 0.3s; }
+#move-window { top: -500px; left: 1200px; min-width: 200px;  max-width: 280px; position: absolute; text-align: center; z-index: 6; background-color: lightgrey; font-weight: 700; padding: 5px 15px; border-radius: 10px; transition: 0.3s; }
+
+
 
 /* Settings */
 #settings { position: relative; left: 0%; z-index:10; white-space: nowrap; color:#666666; font-weight:bold; padding-bottom: 10px;}

@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="styles/sidebar.css">
   <link rel="stylesheet" href="styles/draggable.css">
   <link rel="stylesheet" href="styles/tables.css">
+  <link rel="stylesheet" href="styles/tour.css">
+
 
 
   <script type="text/javascript" src="index.js"></script>
@@ -53,17 +55,22 @@
   <script type="text/javascript" src="scripts/heldData.js"></script>
   <script type="text/javascript" src="scripts/dynamicStyling.js"></script>
   <script type="text/javascript" src="scripts/tagging.js"></script>
+  <script type="text/javascript" src="scripts/tour.js"></script>
+  <script type="text/javascript" src="scripts/realms.js"></script>
+
 
 </head>
 <body>
   <div id="map"></div>
   <div id="title">
     <span>CensOculus</span>
-    <div id="author">
-      <a href="https://github.com/SamLeBlanc/" target="_blank" style="font-weight: 900; font-size:20px; margin-top: -10px; color: white; -webkit-text-stroke: 0px white; text-decoration: none;" >&nbspSam LeBlanc </a>
+    <span style="color: white; font-size: 16px; -webkit-text-stroke: 0px white;">Beta</span>
+    <div id="author" style="font-weight: 900; font-size:20px; margin-top: -10px; -webkit-text-stroke: 0px white;">
+      <a href="https://github.com/SamLeBlanc/" target="_blank" style="color: white; text-decoration: none;">&nbspSam LeBlanc&nbsp&nbsp</a>
       <a href="https://github.com/SamLeBlanc/Census-Mapper">
-        <img src="images/github.png" width="25" height="25">
+        <img src="images/github.png" width="25" height="25" style="position: relative; top:5px;">
       </a>
+      <span style="color: white; font-size: 0.8em">&nbsp&nbsp*Still using 2010 data*</span>
     </div>
   </div>
   <div id="sidebars">
@@ -76,8 +83,8 @@
         <div>
           <div>
             <img class="tag-label" src="images/tag-pop.png">
-            <span id="lens-pop"></span>
-            <span>👤</span>
+            <span id="lens-pop" style="font-size: 1.2em; font-weight:600;"></span>
+            <span style="font-size: 1.2em;">👤</span>
           </div>
           <div>
             <img class="tag-label" src="images/tag-geoid.png">
@@ -111,38 +118,36 @@
         <div>
           <span class="sidebar-title">Welcome!</span>
         </div>
-        <div id="scroller" style="max-height: 500px; overflow-y:scroll; padding-right: 3px;">
-          <div style="padding:5px;"></div>
-          <span>
-            CensOculus is a dynamic and interactive data visualization of the
-            <a href="https://en.wikipedia.org/wiki/United_States_census" target="_blank">United States Census</a>.
-            Users can explore the map for fun, or customize it to fit virtually any need. The possibilties are endless!
-          </span>
-          <div style="padding:5px"></div>
-          <span>
-            If this is your first time here, please take the
-            <a href="" target="_blank">tour!</a>
-          </span>
-          <div style="padding:5px"></div>
-          <span>
-            Constructed using
-            <a href="https://www.mapbox.com/mapbox-gljs" target="_blank">Mapbox GL JS</a>,
-            this map showcases the potential of the
-            <a href="https://www.mapbox.com/" target="_blank">Mapbox</a>
-            suite, while providing a powerful visualization tool.
-            Mapbox has an exceptional framework for projects like this, complete with hundreds of
-            <a href="https://docs.mapbox.com/mapbox-gl-js/example/" target="_blank">examples</a>
-            to get started.
-          </span>
-          <div style="padding:5px"></div>
-          <span>
-            CensOculus was created by Sam LeBlanc.
-            The code is available on
-            <a href="https://github.com/SamLeBlanc/Census-Mapper" target="_blank">Github</a>.
-            CensOculus is my first front-end project, and my first major project with Mapbox, so please be nice. 🙃
-          </span>
-          <div style="padding:2px;"></div>
-        </div>
+        <div style="padding-top:8px;"></div>
+        <span>
+          CensOculus is a dynamic and interactive data visualization of the
+          <a href="https://en.wikipedia.org/wiki/United_States_census" target="_blank">United States Census</a>.
+          Users can explore the map for fun, or customize it to fit virtually any need. The possibilties are endless!
+        </span>
+        <div style="padding:5px"></div>
+        <span>
+          If this is your first time here, please take the
+          <a href="javascript:takeTour()">tour!</a>
+        </span>
+        <div style="padding:5px"></div>
+        <span>
+          Constructed using
+          <a href="https://www.mapbox.com/mapbox-gljs" target="_blank">Mapbox GL JS</a>,
+          this map demonstrates the potential of the
+          <a href="https://www.mapbox.com/" target="_blank">Mapbox</a>
+          suite by providing a powerful and versatile visualization tool.
+          Mapbox has an exceptional framework complete with hundreds of
+          <a href="https://docs.mapbox.com/mapbox-gl-js/example/" target="_blank">examples</a>
+          to get started.
+        </span>
+        <div style="padding:5px"></div>
+        <span>
+          CensOculus was created by Sam LeBlanc.
+          The code is available on
+          <a href="https://github.com/SamLeBlanc/Census-Mapper" target="_blank">Github</a>.
+          CensOculus is my first front-end project, and my first major project with Mapbox, so please be nice. Thank you for stopping by!
+        </span>
+        <div style="padding:2px;"></div>
       </div>
       <div id="sidebar2" class="sidebar" style="background-color: #c9e4f8;" >
         <div id="settings">
@@ -155,67 +160,51 @@
           <div style="padding:5px;"></div>
           <div>
             <span class="settings-subtitle">Data Selection</span>
-            <div style="padding:2px;"></div>
-            <span>Year&nbsp</span>
+            <div style="padding:4px;"></div>
+            <span>Year&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
             <select id="year-select-" onchange="collectSettings(); update();">
               <option value="2010">2010</option>
             </select>
-            <span>&nbsp&nbsp&nbspGeography&nbsp</span>
-            <select id="geo-select-" onchange="updateGeo(); update();">
-              <option value="nation">Nation</option>
-              <option value="state" selected>State</option>
-              <option value="county">County</option>
-              <option value="csub">County Subdivision</option>
-              <option value="place">Place</option>
-              <option value="tract">Tract</option>
-              <option value="group">Group</option>
-              <option value="metroSA">M(et)(ic)ro Stat Area</option>
-              <option value="urban">Urban Area</option>
-              <option value="zip">Zip Code</option>
-              <option value="uschool">Unified School Dist</option>
-            </select>
+            <div style="padding:5px 0px;">
+              <span>Geography&nbsp</span>
+              <select id="geo-select-" onchange="updateGeo(); update();">
+                <option value="nation">Nation</option>
+                <option value="state" selected>State</option>
+                <option value="county">County</option>
+                <option value="csub">County Subdivision</option>
+                <option value="place">Place</option>
+                <option value="tract">Tract</option>
+                <option value="group">Group</option>
+                <option value="metroSA">M(et)(ic)ro Stat Area</option>
+                <option value="urban">Urban Area</option>
+                <option value="zip">Zip Code</option>
+                <option value="uschool">Unified School Dist</option>
+              </select>
+            </div>
+            <div style="padding:5px 0px;">
+              <span>Realm</span>
+              <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+              <select id="realm-select-" style="width:153px;" onclick="collectSettings(); updateRealm();">
+                <option value="Total" selected>Total Population</option>
+                <option value="Race">Race</option>
+                <option value="Ethnicity">Ethnicity</option>
+                <option value="Urban">Urban/Rural</option>
+                <option value="Housing">Housing</option>
+                <option value="Age" disabled>Age</option>
+                <option value="Sex" disabled>Sex</option>
+              </select>
+            </div>
+            <div id="con-con" style="padding:5px 0px;">
+              <span>Concept&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+              <select id="concept-select-" style="width:280px;" onchange="collectSettings(); updateConcept();">
+                <option value="P1">Total Population</option>
+              </select>
+            </div>
+            <div id="var-var" style="padding:5px 0px;">
+              <span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+              <select id="variable-select-0" style="width:280px;" onchange="collectSettings(); update();"></select>
+            </div>
             <div style="padding:5px;"></div>
-            <span>Concept&nbsp</span>
-            <select id="concept-select-" style="width:300px;" onchange="collectSettings(); updateConcept();">
-              <option value="P1">P1 - TOTAL POPULATION </option>
-              <option value="P2">P2 - URBAN AND RURAL</option>
-              <option value="P3">P3 - RACE</option>
-              <option value="P4">P4 - HISPANIC OR LATINO ORIGIN</option>
-              <option value="P5">P5 - HISPANIC OR LATINO ORIGIN BY RACE</option>
-              <option value="P6">P6 - RACE (TOTAL RACES TALLIED)</option>
-              <option value="P7">P7 - HISPANIC OR LATINO ORIGIN BY RACE (TOTAL RACES TALLIED)</option>
-              <option value="P8">P8 - RACE</option>
-              <option value="P9">P9 - HISPANIC OR LATINO, AND NOT HISPANIC OR LATINO BY RACE</option>
-              <option value="P10">P10 - RACE FOR THE POPULATION 18 YEARS AND OVER</option>
-              <option value="H1">H1 - HOUSING UNITS</option>
-              <option value="H2">H2 - URBAN AND RURAL</option>
-              <option value="H3">H3 - OCCUPANCY STATUS</option>
-              <option value="H4">H4 - TENURE</option>
-              <option value="H5">H5 - VACANCY STATUS</option>
-              <option value="H6">H6 - RACE OF HOUSEHOLDER</option>
-              <option value="H7">H7 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER BY RACE OF HOUSEHOLDER</option>
-              <option value="H8">H8 - TOTAL RACES TALLIED FOR HOUSEHOLDERS</option>
-              <option value="H9">H9 - HISPANIC OR LATINO ORIGIN OF HOUSEHOLDERS BY TOTAL RACES TALLIED</option>
-              <option value="H10">H10 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS</option>
-              <option value="H11">H11 - TOTAL POPULATION IN OCCUPIED HOUSING UNITS BY TENURE</option>
-              <option value="H12">H12 - AVERAGE HOUSEHOLD SIZE OF OCCUPIED HOUSING UNITS BY TENURE</option>
-              <option value="H13">H13 - HOUSEHOLD SIZE</option>
-              <option value="H14">H14 - TENURE BY RACE OF HOUSEHOLDER</option>
-              <option value="H15">H15 - TENURE BY HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER</option>
-              <option value="H16">H16 - TENURE BY HOUSEHOLD SIZE</option>
-              <option value="H17">H17 - TENURE BY AGE OF HOUSEHOLDER</option>
-              <option value="H18">H18 - TENURE BY HOUSEHOLD TYPE BY AGE OF HOUSEHOLDER</option>
-              <option value="H19">H19 - TENURE BY PRESENCE OF PEOPLE UNDER 18 YEARS (EXCLUDING HOUSEHOLDERS, SPOUSES, AND UNMARRIED PARTNERS)</option>
-              <option value="H20">H20 - OCCUPIED HOUSING UNITS SUBSTITUTED</option>
-              <option value="H21">H21 - ALLOCATION OF VACANCY STATUS</option>
-              <option value="H22">H22 - ALLOCATION OF TENURE</option>
-            </select>
-            <div style="padding:5px;"></div>
-            <span>Variable&nbsp</span>
-            <select id="variable-select-0" style="width:300px;" onchange="collectSettings(); update();">
-              <option value="P001001" onclick="update()" selected>P001001</option>
-            </select>
-            <div style="padding:10px;"></div>
             <span class="settings-subtitle">3D&nbsp</span>
             <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updatePaint()">
             <span>&nbsp&nbspHeight&nbsp&nbsp&nbsp</span>
@@ -224,7 +213,7 @@
             <span class="settings-subtitle">Number Format&nbsp&nbsp&nbsp</span>
             <select id="numformat-select">
               <option value="short">Short</option>
-              <option value="comma">Commas</option>
+              <option value="comma" selected>Commas</option>
             </select>
             <div style="padding:10px;"></div>
             <span class="settings-subtitle">Modes&nbsp&nbsp&nbsp</span>
@@ -235,6 +224,7 @@
             <div style="padding:10px;"></div>
             <span class="settings-subtitle">Map Views&nbsp&nbsp&nbsp</span>
             <button onclick="lower48View()">Lower 48</button>
+            <button onclick="full52View()">Full 52</button>
             <button onclick="alaskaView()">AK</button>
             <button onclick="hawaiiView()">HI</button>
             <button onclick="puertoRicoView()">PR</button>
@@ -424,7 +414,7 @@
     <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">
       <div class="tooltip">
         <img src="images/chat1.png" class="icon-img" width="25" height="25">
-        <span id="tooltip-1" class="tooltiptext">Chat</span>
+        <span id="tooltip-1" class="tooltiptext">Blurb</span>
       </div>
     </button>
     <br>
@@ -512,7 +502,7 @@
               <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
               <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
             </div>
-            <div>&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-size:0.7em; color:#888;">Drag me!</span></div>
+            <div><span style="font-size:0.7em; color:transparent;">.</span></div>
             <div style="padding:3px;">
               <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
               <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
@@ -554,7 +544,16 @@
       <span id="m-var" style="font-size:18px;"></span>
     </div>
   </div>
+  <div id="tour">
+    <div id="tour-window" class="tour">
+      <div id="tour-text">
 
+
+      </div>
+
+
+    </div>
+  </div>
   <script>
   setUpAll()
 

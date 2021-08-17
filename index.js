@@ -65,22 +65,28 @@ const updateVariable = () => {
 // Updates the selected concept
 // The concept is a grouping of variables around a specific idea. some examples of concepts are race, age, urbanity, etc.
 // When updating the conecpt, we must also update the list of variables within that concept
-const updateConcept = () => {
+const updateConcept = async() => {
+  let concept = SETTINGS['Concept']
   startLoadingIcon(2);
-  let concept = SETTINGS['Concept'];
-  if (!(concept in LORAX)) loadDataFromCSV(concept)   // if concept has not previously been loaded, then retrieve it
-  getVariableListByConcept(concept)                   // get list of variables that pertain to each concept
-  setTimeout(function(){                        // should use async/await here but I am bad at those
-    createVariableDropdownSelect(VLbC[concept])       // set new list of variables as dropdown menu option for user to select
-  }, 2000);
-  setTimeout(function(){                        // should use async/await here but I am bad at those
-    update()
-  }, 3000);
+  if (!(concept in LORAX)) await loadDataFromCSV(concept)   // if concept has not previously been loaded, then retrieve it
+  await getVariableListByConcept(concept)                   // get list of variables that pertain to each concept
+  await createVariableDropdownSelect(VLbC[concept])       // set new list of variables as dropdown menu option for user to select
+  update()
+}
+
+const updateRealm = () => {
+  let realm = SETTINGS['Realm'];
+  let op = getRealmOptions(realm)
+  let st = getRealmSelectString(op)
+  setRealmSelect(st)
+  clearVariableSelect()
 }
 
 ////==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
 ///==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
 //==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
+
+
 
 LORAX = {}
 

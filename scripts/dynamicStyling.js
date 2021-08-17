@@ -97,12 +97,12 @@ const closeLens = () => {
 
 // Update the formatting of the two lower left sidebar buttons
 const updateTack = () => {
-  if (tack) $('#iconbtn-10').css('border','solid 5px #bebebe').css('margin','0px')
+  if (tack) $('#iconbtn-10').css('border','solid 5px #32cc32').css('margin','0px')
   else $('#iconbtn-10').css('border','solid 2px #bebebe').css('margin','3px')
   tack =! tack;
 }
 const updateAcc = () => {
-  if (acc) $('#iconbtn-11').css('border','solid 5px #bebebe').css('margin','0px')
+  if (acc) $('#iconbtn-11').css('border','solid 5px #32cc32').css('margin','0px')
   else $('#iconbtn-11').css('border','solid 2px #bebebe').css('margin','3px')
   acc =! acc;
 }

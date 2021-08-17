@@ -11,7 +11,10 @@ const formatNumber = num => {
 }
 
 // Format float to *string* percentage, with one decimal place
-const formatPercent = number => `${(100*number).toFixed(1)}%`;
+const formatPercent = number => {
+  number = Math.max(Math.min(number, 1), 0)
+  return `${(100*number).toFixed(1)}%`;
+}
 
 // Round and format float to include commas (e.g. 9888777 => 9,888,777)
 const numberWithCommas = num => Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -25,7 +28,7 @@ const abbreviateNumber = num => {
   let suffix = SI_SYMBOL[tier];   // get suffix and determine scale
   let scale = Math.pow(10, tier * 3);
   let scaled = num / scale;   // scale the number
-  let decimal = (scaled <= 10) ? 1 : 0;
+  let decimal = (customRound(scaled, 2) < 10) ? 1 : 0;
   return scaled.toFixed(decimal) + suffix;   // format number and add suffix
 }
 

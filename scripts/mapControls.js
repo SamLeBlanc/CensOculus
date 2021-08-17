@@ -60,8 +60,10 @@ const getCenter = () => {
   else return {lat:-104.800644, lng: 38.846127}
 }
 
-// Pre-set buttons to fly to different map views
+// Pre-set buttons t
+const full52View = () => map.fitBounds([[-169,17],[-61,71]]);
 const lower48View = () => map.fitBounds([[-138,24],[-66,50]]);
 const alaskaView = () => map.fitBounds([[-189,48],[-124,73]]);
 const hawaiiView = () => map.fitBounds([[-164,16],[-150,25]]);
 const puertoRicoView = () => map.fitBounds([[-68.2,17.3],[-65.1,19]]);
+const blackBeltView = () => map.fitBounds([[-94.82,25.0],[-74.21,37.12]]);

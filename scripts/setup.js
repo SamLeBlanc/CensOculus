@@ -11,6 +11,7 @@ const setUpAll = () => {
   dragSetup(); // allow some divs to be dragged
   legendSetup(); // position the legend in the proper location
   geoControlsSetup(); // position the geo-locate and search bar
+  realmSetup();
 }
 
 // Required for custom color choice on swatch click choice
@@ -58,7 +59,7 @@ const legendSetup = () => {
   let h = parseInt($('#legend').css("height").slice(0,-2))
   $('#drag-1').css('top', `${window.innerHeight - h - 45}px`);
   let w = parseInt($('#legend').css("width").slice(0,-2));
-  let w_ = Math.min(window.innerWidth - w - 80, 390);
+  let w_ = Math.max(window.innerWidth - w - 320, 390);
   $('#drag-1').css('left', `${w_}px`);
 }
 const geoControlsSetup = () => {

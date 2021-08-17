@@ -5,16 +5,20 @@
 // Data is loaded in the custom structure called LORAX, where is remains split by concept
 // Actually quite an smart solution for managing such an enormous data set
 // I have tried many options but this seems to be the most effective
-const loadDataFromCSV = concept => {
-  d3.csv(`data/2010/${concept}.csv`).then(data => {
-    let keys = Object.keys(data[0]);
-    data.forEach(d => {
-      keys.forEach(k => {
-        if (k != 'GEOID10' && k != 'SIZE') d[k] = +d[k];
-      })
+const loadDataFromCSV = async (concept) => {
+  try {
+    await d3.csv(`data/2010/${concept}.csv`).then(data => {
+      let keys = Object.keys(data[0]);
+      data.forEach(d => {
+        keys.forEach(k => {
+          if (k != 'GEOID10' && k != 'SIZE') d[k] = +d[k];
+        })
+      });
+      LORAX[concept] = data.filter( () => true );
     });
-    LORAX[concept] = data.filter( () => true );
-  });
+  } catch(error) {
+    console.log(`loadDataFromCSV${error}`);
+  }
 }
 
 // Loads in the urls for all of the state, county, and municipal flags
@@ -27,15 +31,22 @@ const loadFlagData = () => {
 
 // Loads in the list of all variables and concepts
 // Then sorts are returns all variables in the given concept
-const getVariableListByConcept = concept => {
-  d3.csv(`data/2010/Variables_10.csv`).then(data => {
-    D = data.filter(d => d["Group"] == concept)
-  }).then(() => {
-    VLbC[concept] = [];
-    D.forEach(d => {
-      VLbC[concept].push(d.Name)
+const getVariableListByConcept = async(concept) => {
+  try {
+    await d3.csv(`data/2010/Variables_10.csv`)
+    .then(data => { D = data.filter(d => d["Group"] == concept) })
+    .then(() => {
+      VLbC[concept] = [];
+      D.forEach(d => {
+        VLbC[concept].push(d.Name)
+      })
     })
-  })
+  } catch(error) {
+    console.log(`getVariableListByConcept${error}`);
+  }
+
+
+
 }
 
 // Creates more readable variable names by removing certain repeated and uniformative phrases
