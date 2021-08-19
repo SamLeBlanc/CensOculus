@@ -12,12 +12,16 @@ const main = () => {
 // Called (just about) every time the map is changed in any way
 // This is the main workhorse of the entire project
 const update = () => {
-  collectSettings();        // collects inital settings
-  updateGeo();              // updates geography size (state, county, zip code, etc.)
-  updateVariable();         // updates variable (data category) within the current concept
-  updatePaint();            // updates layer paint (colors, opacity, etc.)
-  updateFlagMode();         // updates if flag is mode is activated
-  endLoadingIcon(2);        // ends secondary loading icon when map is ready
+  try {
+    collectSettings();        // collects inital settings
+    updateGeo();              // updates geography size (state, county, zip code, etc.)
+    updateVariable();         // updates variable (data category) within the current concept
+    updatePaint();            // updates layer paint (colors, opacity, etc.)
+    updateFlagMode();         // updates if flag is mode is activated
+    endLoadingIcon(2);        // ends secondary loading icon when map is ready
+  } catch (error) {
+    console.log(`update() failed - ${error}`)
+  }
 }
 
 
@@ -103,3 +107,5 @@ let endTime = 0;
 let hoveredId = null;
 let heldDistricts = {};
 let taggedDistricts = {};
+
+let savedTitleColor = null;

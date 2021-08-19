@@ -65,10 +65,15 @@
   <div id="title">
     <span>CensOculus</span>
     <span style="color: white; font-size: 16px; -webkit-text-stroke: 0px white;">Beta</span>
-    <div id="author" style="font-weight: 900; font-size:20px; margin-top: -10px; -webkit-text-stroke: 0px white;">
-      <a href="https://github.com/SamLeBlanc/" target="_blank" style="color: white; text-decoration: none;">&nbspSam LeBlanc&nbsp&nbsp</a>
-      <a href="https://github.com/SamLeBlanc/Census-Mapper"><img src="images/github.png" width="25" height="25" style="position: relative; top:5px;"></a>
-      <span style="color: white; font-size: 0.8em">&nbsp&nbsp*Still using 2010 data*</span>
+    <div id="author" style="font-weight: 900; font-size:24px; margin-top: -5px; -webkit-text-stroke: 0px white;">
+      <a id="author-name" href="https://github.com/SamLeBlanc/" target="_blank" style=" transition: 0.3s;color: white; text-decoration: none;">&nbspSam LeBlanc&nbsp&nbsp</a>
+      <a href="https://github.com/SamLeBlanc/Census-Mapper">
+      <img src="images/github.png" width="25" height="25" style="position: relative; top:5px;"></a>&nbsp&nbsp
+      <a id="author-tour" href="javascript:takeTour(1)" style="font-weight: 800; color: white; cursor: pointer; text-decoration: none;">
+        <span id="-author-tour" style="transition: 0.3s; font-size:0.85em">Take the Tour!</span>
+      </a>
+
+      </div>
     </div>
   </div>
   <div id="sidebars">
@@ -116,31 +121,30 @@
         <div>
           <span class="sidebar-title">Welcome!</span>
         </div>
-        <div style="padding-top:8px;"></div>
         <span>
-          CensOculus is a dynamic and interactive data visualization of the
-          <a href="https://en.wikipedia.org/wiki/United_States_census" target="_blank">United States Census</a>.
+          <span style="font-size:1.1em;"><b>CensOculus</b></span> is a dynamic and interactive data visualization of the
+          <a href="https://en.wikipedia.org/wiki/United_States_census" target="_blank" style="font-weight:bold;">United States Census</a>.
           Users can explore the map for fun, or customize it to fit virtually any need. The possibilties are endless!
         </span>
         <div style="padding:5px"></div>
         <span>
           If this is your first time here, please take the
-          <a href="javascript:takeTour()">tour!</a>
+          <a href="javascript:takeTour(1)" style="font-weight:bold;">tour!</a>
         </span>
         <div style="padding:5px"></div>
         <span>
           Constructed using
-          <a href="https://www.mapbox.com/mapbox-gljs" target="_blank">Mapbox GL JS</a>,
+          <a href="https://www.mapbox.com/mapbox-gljs" target="_blank" style="font-weight:bold;">Mapbox GL JS</a>,
           this map demonstrates the potential of the
           <a href="https://www.mapbox.com/" target="_blank">Mapbox</a>
-          suite by providing a powerful and versatile visualization tool.
+          suite while providing a versatile visualization tool.
           Mapbox has an exceptional framework complete with hundreds of
           <a href="https://docs.mapbox.com/mapbox-gl-js/example/" target="_blank">examples</a>
           to get started.
         </span>
         <div style="padding:5px"></div>
         <span>
-          CensOculus was created by Sam LeBlanc.
+          CensOculus was created by <b>Sam LeBlanc</b>.
           The code is available on
           <a href="https://github.com/SamLeBlanc/Census-Mapper" target="_blank">Github</a>.
           CensOculus is my first front-end project, and my first major project with Mapbox, so please be nice. Thank you for stopping by!
@@ -157,130 +161,143 @@
           </div>
           <div style="padding:5px;"></div>
           <div>
-            <span class="settings-subtitle">Data Selection</span>
-            <div style="padding:4px;"></div>
-            <span>Year&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-            <select id="year-select-" onchange="collectSettings(); update();">
-              <option value="2010">2010</option>
-            </select>
-            <div style="padding:5px 0px;">
-              <span>Geography&nbsp</span>
-              <select id="geo-select-" onchange="updateGeo(); update();">
-                <option value="nation">Nation</option>
-                <option value="state" selected>State</option>
-                <option value="county">County</option>
-                <option value="csub">County Subdivision</option>
-                <option value="place">Place</option>
-                <option value="tract">Tract</option>
-                <option value="group">Group</option>
-                <option value="metroSA">M(et)(ic)ro Stat Area</option>
-                <option value="urban">Urban Area</option>
-                <option value="zip">Zip Code</option>
-                <option value="uschool">Unified School Dist</option>
+            <div id="data-selection">
+              <span class="settings-subtitle">Data Selection</span>
+              <div id="-year" style="padding:8px 0px 5px 0px;">
+                <span>Year&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                <select id="year-select-" onchange="collectSettings(); update();">
+                  <option value="00" disabled>2000</option>
+                  <option value="10">2010</option>
+                  <option value="20" disabled>2020</option>
+                </select>
+              </div>
+              <div id="-geography" style="padding:5px 0px;">
+                <span>Geography&nbsp</span>
+                <select id="geo-select-" onchange="updateGeo(); update();">
+                  <option value="nation">Nation</option>
+                  <option value="state" selected>State</option>
+                  <option value="county">County</option>
+                  <option value="csub">County Subdivision</option>
+                  <option value="place">Place</option>
+                  <option value="tract">Tract</option>
+                  <option value="group">Group</option>
+                  <option value="metroSA">M(et)(ic)ro Stat Area</option>
+                  <option value="urban">Urban Area</option>
+                  <option value="zip">Zip Code</option>
+                  <option value="uschool">Unified School Dist</option>
+                </select>
+              </div>
+              <div id="-realm" style="padding:5px 0px;">
+                <span>Realm</span>
+                <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                <select id="realm-select-" style="width:153px;" onclick="collectSettings(); updateRealm();">
+                  <option value="Total" selected>Total Population</option>
+                  <option value="Race">Race</option>
+                  <option value="Ethnicity">Ethnicity</option>
+                  <option value="Urban">Urban/Rural</option>
+                  <option value="Housing">Housing</option>
+                  <option value="Age" disabled>Age</option>
+                  <option value="Sex" disabled>Sex</option>
+                </select>
+              </div>
+              <div id="-concept" style="padding:5px 0px;">
+                <span>Concept&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                <select id="concept-select-" style="width:280px;" onchange="collectSettings(); updateConcept();">
+                  <option value="P1">Total Population</option>
+                </select>
+              </div>
+              <div id="-variable" style="padding:5px 0px;">
+                <span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                <select id="variable-select-0" style="width:280px;" onchange="collectSettings(); update();"></select>
+              </div>
+            </div>
+            <div id="colors-select" style="padding-top:10px;">
+              <span class="settings-subtitle">Colors</span>
+              <div "-tile-opacity">
+                <span>Tile Opacity&nbsp</span>
+                <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
+                <span id="to-label">0.5</span>
+              </div>
+              <div "-scheme" style="padding-top:15px;">
+                <span>Scheme&nbsp</span>
+                <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
+                  <option value="Viridis">Viridis</option>
+                  <option value="Red">Red</option>
+                  <option value="Blue">Blue</option>
+                  <option value="Green">Green</option>
+                  <option value="Purple">Purple</option>
+                  <option value="Black">Black</option>
+                  <option value="Rainbow">Rainbow</option>
+                  <option value="Viridis Light">Viridis Light</option>
+                  <option value="Greyscale">Greyscale</option>
+                  <option value="Heat">Heat</option>
+                  <option value="Magma">Magma</option>
+                  <option value="Brown-Teal">Brown-Teal</option>
+                  <option value="Blue-Red">Blue-Red</option>
+                  <option value="Green II">Green II</option>
+                  <option value="Purple II">Purple II</option>
+                  <option value="Ocean">Ocean</option>
+                  <option value="Valentine">Valentine</option>
+                  <option value="Forest">Forest</option>
+                  <option value="Burnt Toast">Toast</option>
+                  <option value="Cividis">Cividis</option>
+                  <option value="Plasma">Plasma</option>
+                  <option value="Warm">Warm</option>
+                  <option value="Cool">Cool</option>
+                  <option value="Barney">Barney</option>
+                  <option value="Watermelon">Watermelon</option>
+                </select>
+                <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
+                <span>&nbsp&nbsp&nbspScale&nbsp</span>
+                <select id="scale-select" onchange="collectSettings(); update()">
+                  <option value="Linear" >Linear</option>
+                  <option value="Quantile" >Quantile</option>
+                </select>
+              </div>
+            </div>
+            <div id="-modes" style="padding-top:15px;">
+              <span class="settings-subtitle">Modes&nbsp&nbsp&nbsp</span>
+              <span>Flag&nbsp</span>
+              <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlagMode()">
+              <span>&nbsp&nbspWiki&nbsp</span>
+              <input type="checkbox" id="wiki-mode" name="wiki-mode" onclick="collectSettings()">
+            </div>
+            <div id="-3d" style="padding-top:10px;">
+              <span class="settings-subtitle">3D&nbsp</span>
+              <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updatePaint()">
+              <span>&nbsp&nbspHeight&nbsp&nbsp&nbsp</span>
+              <input id="height" type="range" min="10" max="3000000" step="5000" value="100000" oninput="collectSettings(); updatePaint()" style="top: 7px;position: relative;">
+            </div>
+            <div id="-num-format" style="padding-top:15px;">
+              <span class="settings-subtitle">Number Format&nbsp&nbsp&nbsp</span>
+              <select id="numformat-select">
+                <option value="short">Short</option>
+                <option value="comma" selected>Commas</option>
               </select>
             </div>
-            <div style="padding:5px 0px;">
-              <span>Realm</span>
-              <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-              <select id="realm-select-" style="width:153px;" onclick="collectSettings(); updateRealm();">
-                <option value="Total" selected>Total Population</option>
-                <option value="Race">Race</option>
-                <option value="Ethnicity">Ethnicity</option>
-                <option value="Urban">Urban/Rural</option>
-                <option value="Housing">Housing</option>
-                <option value="Age" disabled>Age</option>
-                <option value="Sex" disabled>Sex</option>
-              </select>
+            <div id="-map-views" style="padding-top:15px;">
+              <span class="settings-subtitle">Map Views&nbsp&nbsp&nbsp</span>
+              <button onclick="lower48View()">Lower 48</button>
+              <button onclick="full52View()">Full 52</button>
+              <button onclick="alaskaView()">AK</button>
+              <button onclick="hawaiiView()">HI</button>
+              <button onclick="puertoRicoView()">PR</button>
             </div>
-            <div id="con-con" style="padding:5px 0px;">
-              <span>Concept&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-              <select id="concept-select-" style="width:280px;" onchange="collectSettings(); updateConcept();">
-                <option value="P1">Total Population</option>
-              </select>
+            <div id="-map-controls" style="padding-top:15px;">
+              <span class="settings-subtitle">Map Controls</span>
+              <div style="padding:1px;"></div>
+              <span>Zoom&nbsp</span>
+              <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="collectSettings(); updateZoom(this.value)" style="top: 7px;position: relative;">
+              <span id="zoom-label">3.6</span>
+              <div style="padding:1px;"></div>
+              <span>Pitch&nbsp</span>
+              <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="collectSettings(); updatePitch(this.value)" style="top: 7px;position: relative;">
+              <span id="pitch-label">0</span>
+              <div style="padding:1px;"></div>
+              <span>Bearing&nbsp</span>
+              <input id="bearing-v" type="range" min="-180" max="180" step="15" value="0" oninput="collectSettings(); updateBearing(this.value)" style="top: 7px;position: relative;">
+              <span id="bearing-label">0</span>
             </div>
-            <div id="var-var" style="padding:5px 0px;">
-              <span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-              <select id="variable-select-0" style="width:280px;" onchange="collectSettings(); update();"></select>
-            </div>
-            <div style="padding:5px;"></div>
-            <span class="settings-subtitle">3D&nbsp</span>
-            <input type="checkbox" id="3d-mode" name="3d-mode" onclick="collectSettings(); updatePaint()">
-            <span>&nbsp&nbspHeight&nbsp&nbsp&nbsp</span>
-            <input id="height" type="range" min="10" max="3000000" step="5000" value="100000" oninput="collectSettings(); updatePaint()" style="top: 7px;position: relative;">
-            <div style="padding:10px;"></div>
-            <span class="settings-subtitle">Number Format&nbsp&nbsp&nbsp</span>
-            <select id="numformat-select">
-              <option value="short">Short</option>
-              <option value="comma" selected>Commas</option>
-            </select>
-            <div style="padding:10px;"></div>
-            <span class="settings-subtitle">Modes&nbsp&nbsp&nbsp</span>
-            <span>Flag&nbsp</span>
-            <input type="checkbox" id="flag-mode" name="flag-mode" onclick="collectSettings(); updateFlag()">
-            <span>&nbsp&nbspWiki&nbsp</span>
-            <input type="checkbox" id="wiki-mode" name="wiki-mode" onclick="collectSettings()">
-            <div style="padding:10px;"></div>
-            <span class="settings-subtitle">Map Views&nbsp&nbsp&nbsp</span>
-            <button onclick="lower48View()">Lower 48</button>
-            <button onclick="full52View()">Full 52</button>
-            <button onclick="alaskaView()">AK</button>
-            <button onclick="hawaiiView()">HI</button>
-            <button onclick="puertoRicoView()">PR</button>
-            <div style="padding:10px;"></div>
-            <span class="settings-subtitle">Colors</span>
-            <div style="padding:1px;"></div>
-            <span>Scheme&nbsp</span>
-            <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
-              <option value="Viridis">Viridis</option>
-              <option value="Red">Red</option>
-              <option value="Blue">Blue</option>
-              <option value="Green">Green</option>
-              <option value="Purple">Purple</option>
-              <option value="Black">Black</option>
-              <option value="Rainbow">Rainbow</option>
-              <option value="Viridis Light">Viridis Light</option>
-              <option value="Greyscale">Greyscale</option>
-              <option value="Heat">Heat</option>
-              <option value="Magma">Magma</option>
-              <option value="Brown-Teal">Brown-Teal</option>
-              <option value="Blue-Red">Blue-Red</option>
-              <option value="Green II">Green II</option>
-              <option value="Purple II">Purple II</option>
-              <option value="Ocean">Ocean</option>
-              <option value="Valentine">Valentine</option>
-              <option value="Forest">Forest</option>
-              <option value="Burnt Toast">Toast</option>
-              <option value="Cividis">Cividis</option>
-              <option value="Plasma">Plasma</option>
-              <option value="Warm">Warm</option>
-              <option value="Cool">Cool</option>
-              <option value="Barney">Barney</option>
-              <option value="Watermelon">Watermelon</option>
-            </select>
-            <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
-            <span>&nbsp&nbsp&nbspScale&nbsp</span>
-            <select id="scale-select" onchange="collectSettings(); update()">
-              <option value="Linear" >Linear</option>
-              <option value="Quantile" >Quantile</option>
-            </select>
-            <div style="padding:1px;"></div>
-            <span>Tile Opacity&nbsp</span>
-            <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
-            <span id="to-label">0.5</span>
-            <div style="padding:10px;"></div>
-            <span class="settings-subtitle">Map Controls</span>
-            <div style="padding:1px;"></div>
-            <span>Zoom&nbsp</span>
-            <input id="zoom-v" type="range" min="2" max="14" step="0.01" value="3.6" oninput="collectSettings(); updateZoom(this.value)" style="top: 7px;position: relative;">
-            <span id="zoom-label">3.6</span>
-            <div style="padding:1px;"></div>
-            <span>Pitch&nbsp</span>
-            <input id="pitch-v" type="range" min="0" max="90" step="1" value="0" oninput="collectSettings(); updatePitch(this.value)" style="top: 7px;position: relative;">
-            <span id="pitch-label">0</span>
-            <div style="padding:1px;"></div>
-            <span>Bearing&nbsp</span>
-            <input id="bearing-v" type="range" min="-180" max="180" step="15" value="0" oninput="collectSettings(); updateBearing(this.value)" style="top: 7px;position: relative;">
-            <span id="bearing-label">0</span>
           </div>
         </div>
       </div>
@@ -289,7 +306,7 @@
           <span class="sidebar-title">Land Acknowledgement</span>
         </div>
         <div class="sidebar-subtitle">
-          <i>This map was made while occupying the stolen land of the Duwamish, Salish, and Nanticoke peoples.</i>
+          <i>This map was made while occupying the stolen land of the Duwamish, Salish, and Nacotchtank peoples.</i>
         </div>
         <div style="padding-top:6px;">
           Humans have lived on the North American continent for more than 120,000 years;
@@ -344,7 +361,7 @@
       </div>
       <div id="sidebar6" class="sidebar" style="background-color: #ffcc99;" >
         <div>
-          <span class="sidebar-title">Land Acknowledgement</span>
+          <span class="sidebar-title">Filter</span>
         </div>
         <div class="sidebar-subtitle">
           <i>Hide places based on the selection criteria. Filters can only be applied from the current concept.</i>
@@ -406,7 +423,7 @@
   </div>
   <div id="loading-icons">
     <div id='loading-1' class="loader" style="border-top: 8px solid #3498db"></div>
-    <div id='loading-2' class="loader" style="border-top: 8px solid #ce9dd9"></div>
+    <div id='loading-2' class="loader" style="border-top: 8px solid #be66d1"></div>
   </div>
   <div id="sidebar-buttons">
     <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">

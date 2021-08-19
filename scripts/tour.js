@@ -5,31 +5,21 @@ let currentTourSlide = 0;
 const moveTourWithArrow = e => {
   if (e.which == 39 && currentTourSlide) {
     currentTourSlide++;
-    tour(currentTourSlide);
+    takeTour(currentTourSlide);
   }
   else if (e.which == 37 && currentTourSlide > 1) {
     currentTourSlide--;
-    tour(currentTourSlide);
+    takeTour(currentTourSlide);
   }
 }
 
 document.addEventListener('keydown', moveTourWithArrow);
 
-const takeTour = async() => {
-  closeTour()
-  closeNav(1);
+const takeTour = async(n) => {
+  closeTour();
+  closeAllNavs();
   $('#tour-window').css('left','420px').css('top','10px');
-  tour1()
-};
 
-
-
-const closeTour = () => {
-  $('#tour-window').css('left','500px').css('top','-1000px');
-  currentTourSlide = 0;
-}
-
-const tour = n => {
   if (n == 1) tour1()
   if (n == 2) tour2()
   if (n == 3) tour3()
@@ -40,7 +30,11 @@ const tour = n => {
   if (n == 8) tour8()
   if (n == 9) tour9()
   if (n == 10) tour10()
+};
 
+const closeTour = () => {
+  $('#tour-window').css('left','500px').css('top','-1000px');
+  currentTourSlide = 0;
 }
 
 const tour1 = async() => {
@@ -73,17 +67,17 @@ const tour1 = async() => {
         <div style="padding-top:8px;">
           <span class="tour-text-style">
             The current map shows the <b>population in each of the 50 states</b> (plus DC and PR) <br>
-            Try <span style="color:darkgreen">hovering</span> over a state to view its population.
+            Try <span style="color:darkgreen"><b>hovering</b></span> over a state to view its population.
           </span>
         </div>
         <div style="padding-top:8px;">
           <span class="tour-text-style">
-            Or try <span style="color:#C71585">clicking</span> on a state to learn a bit more about it!
+            Or try <span style="color:#C71585"><b>clicking</b></span> on a state to learn a bit more about it!
           </span>
         </div>
         <div style="padding-top:8px;">
           <span class="tour-text-style">
-            You can also <span style="color:#dd5f30">select multiple states</span> at once to learn about a larger area. First, click on the
+            You can also <span style="color:#dd5f30"><b>select multiple states</b></span> at once to learn about a larger area. First, click on the
             &nbsp<img src="images/plus.png" width="15" height="15" style="position: relative;">&nbsp
             button on the left. Then, select as many states as you want!
           </span>
@@ -91,8 +85,10 @@ const tour1 = async() => {
         <div>
           <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
         </div>
-        <div style="padding-top:2px;">
-          <img src="images/arrow-right.png" height="16" style="position: relative; left:543px;" onclick="tour2()">
+        <div style="padding-top:6px; position: relative; left:253px;">
+          <span style="color:#666"><i>Click or use the arrow keys to continue</i></span>
+          &nbsp&nbsp
+          <img src="images/arrow-right.png" height="16" style="position: relative; top: 3px;" onclick="tour2()">
         </div>`
 )}
 
@@ -166,9 +162,16 @@ const tour2 = async() => {
 const tour3 = async() => {
   lower48View();
   $('#tour-text').html(`<div>
-    <span style="font-size:1.4em">Example:&nbsp<b>Black Population Percentage by State</b></span>
+    <span style="font-size:1.4em">Example:&nbsp<b>Black Population Percentage by State</b></span><br>
+    <div style='font-weight:600; color:#666;'>
+      Maps can take several seconds to load, just wait for the
+      &nbsp
+      <div id='loading-3' class="loader" style="display: inline-block; position: relative; top: 4px; left: 0px; border: 5px solid #f3f3f3; border-top: 5px solid #be66d1; width: 11px; height: 11px;"></div>
+      &nbsp
+      icon to go away
+    </div>
   </div>
-  <div style="padding-top:4px;">
+  <div style="padding-top:6px;">
     <span class="tour-text-style">
       The current map (once loaded) shows the percentage of residents in each state who self identify their race as
       <span style="color:#864313"><b>Black or African American</b></span>.
@@ -217,12 +220,12 @@ const tour4 = async() => {
   <div style="padding-top:4px;">
     <span class="tour-text-style">
       It is important to realize that <span style="color:purple"><b>states are not mono-demographic</b></span>.
-      Each state is home to a complex group of peoples, cultures, and communities.
+      Each state is home to a complex mix of peoples, cultures, and communities.
       To understand the demographics of a large area, we must often consider it in smaller pieces.
       <div style="padding-top:8px;"></div>
-      By viewing <b>counties</b>, rather than states, we can now see the Southern
-      <a href="https://en.wikipedia.org/wiki/Black_Belt_in_the_American_South" target="_blank">Black Belt</a>.
-      This region of highly fertile soil was coveted by White plantation owners who bought in
+      By viewing <span style="color:darkgreen"><b>counties, rather than states</b></span>, we can now see the South's
+      <a href="https://en.wikipedia.org/wiki/Black_Belt_in_the_American_South" target="_blank" style="font-weight:700">Black Belt</a>.
+      This region of highly fertile soil was coveted by White plantation owners who bought
       <a href="https://en.wikipedia.org/wiki/Slavery_in_the_United_States" target="_blank" style="color:#8b0000; font-weight:800;">slaves by the millions</a>
       to work the cotton and tobacco fields.
     </span>
@@ -250,7 +253,7 @@ const tour5 = async() => {
   </div>
   <div style="padding-top:4px;">
     <span class="tour-text-style">
-      Smaller than counties, <b>Census Tracts</b> provide a detailed view of the Black Belt.
+      Smaller than counties, <span style="color:#6c1478"><b>Census Tracts</b></span> provide a detailed view of the Black Belt.
       Here are some of the only rural areas in the country with a Black racial majority.
       <div style="padding-top:8px;"></div>
       Demographic maps are powerful because they are also
@@ -294,16 +297,16 @@ const tour6 = async() => {
       <span style="font-size:1.0em; font-weight:600; color:#555;">Settings > Data Selection > Realm</span>
       <div style="padding-top:8px;"></div>
       The <span style="color:#dd6000; font-size:1.1em;"><b>Realm</b></span> is the most broad category of data classification.
-      With the Realm, you can select what <span style="color:#0055b3"><b>general topic</b></span> you are interested in.
+      With the Realm, you can select what <span style="color:#437bba"><b>general topic</b></span> you are interested in.
       The Realm determines what Concepts and Variables are available, so be sure to select the Realm first.
       <div style="padding-top:8px;"></div>
       Next, you can select the <span style="color:#dd6000; font-size:1.1em;"><b>Concept</b></span>.
-      These are narrower in scope than Realms, as each Concept points to a <span style="color:#0055b3"><b>specific topic</b></span>, rather than a broad one.
+      These are narrower in scope than Realms, as each Concept points to a <span style="color:#437bba"><b>specific topic</b></span>, rather than a broad one.
       <div style="padding-top:2px;"></div>
       <span style="color:#666"><i>Due to crossover topics, the same Concept may appear under multiple Realms.</i></span>
       <div style="padding-top:8px;"></div>
       Last to be selected is the <span style="color:#dd6000"; font-size:1.1em;><b>Variable</b></span>; the specific value of the Concept that
-      will be applied to the map. Variables represent the <span style="color:#0055b3"><b>actual tablulated Census values</b></span>, and their percentages.
+      will be applied to the map. Variables represent the <span style="color:#437bba"><b>actual tablulated Census values</b></span>, and their percentages.
       In all, the Census counts almost 10,000 variables!
     </span>
   </div>
@@ -319,7 +322,57 @@ const tour6 = async() => {
 
 const tour7 = async() => {
   currentTourSlide = 7;
+  $('#tour-text').html(`
+  <div>
+    <span style="font-size:1.4em">Example:&nbsp<b>% Hispanic Population in L.A. by Tract</b></span>
+  </div>
+  <div>
+    <span class="tour-text-style">
+      <div style='padding-top:5px;'>
+        Next, we see the percentage of the population with Hispanic ethnicity, mapped by Census Tract.
+        To get here, we adjusted the <b>Data Selection</b> settings with: <br>
+        <div style='padding-top:6px;'></div>
+        &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
+        <span style="color:#dd6000"><b>Realm</b></span> > Ethnicity <br>
+        <div style='padding-top:3px;'></div>
+        &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
+        <span style="color:#dd6000"><b>Concept</b></span> > Hispanic and Lation Origin <br>
+        <div style='padding-top:3px;'></div>
+        &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
+        <span style="color:#dd6000"><b>Variable</b></span> > % Hispanic and Latino <br>
+      </div>
+      <div style='padding-top:5px;'>
+        Since the options per category change depending on the other selections,
+        it is important to <b>
+        <span style="color:#2c599d">pick Realm first,</span>
+        <span style="color:#4860cf">then Concept,</span> </b>and<b>
+        <span style="color:#7973f6">finally Variable</b></span>.
+      </div>
+    </span>
+  </div>
+  </div>
+    <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
+  </div>
+  <div style="padding-top:6px;">
+    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour6()">
+    <img src="images/arrow-right.png" height="16" style="position: relative; left:510px;" onclick="tour8()">
+  </div>
+`)
+  LA_View()
+  SETTINGS["Geo"] = 'state';
+  SETTINGS["Realm"] = 'Ethnicity';
+  await updateRealm()
+  SETTINGS["Concept"] = 'P4';
+  distributeSettings();
+  await updateConcept();
+  SETTINGS["Geo"] = 'tract';
+  SETTINGS["Variable"] = 'P004003P';
+  distributeSettings();
+  update();
+}
 
+const tour8 = async() => {
+  currentTourSlide = 8;
   $('#tour-text').html(`
   <div>
     <span style="font-size:1.4em">More Tour Coming Soon</span>
@@ -333,7 +386,7 @@ const tour7 = async() => {
     <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
   </div>
   <div style="padding-top:6px;">
-    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour6()">
+    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour7()">
   </div>
 `)
 }

@@ -36,11 +36,11 @@ const getRealmSelectString = options => {
 }
 
 const setRealmSelect = str => {
-  $('#con-con').html(str)
+  $('#-concept').html(str)
 }
 
 const clearVariableSelect = () => {
-  $('#var-var').html(`<span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+  $('#-variable').html(`<span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
   <select id="variable-select-0" style="width:280px;" onchange="collectSettings(); update();">
     <option value="" disabled selected>Select a Concept ↑</option></select>`)
 }

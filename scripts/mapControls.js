@@ -67,3 +67,4 @@ const alaskaView = () => map.fitBounds([[-189,48],[-124,73]]);
 const hawaiiView = () => map.fitBounds([[-164,16],[-150,25]]);
 const puertoRicoView = () => map.fitBounds([[-68.2,17.3],[-65.1,19]]);
 const blackBeltView = () => map.fitBounds([[-94.82,25.0],[-74.21,37.12]]);
+const LA_View = () => map.fitBounds([[-119.41,33.18],[-116.87,34.74]]);

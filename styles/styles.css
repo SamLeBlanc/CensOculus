@@ -39,7 +39,6 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 #move-window { top: -500px; left: 1200px; min-width: 200px;  max-width: 280px; position: absolute; text-align: center; z-index: 6; background-color: lightgrey; font-weight: 700; padding: 5px 15px; border-radius: 10px; transition: 0.3s; }
 
 
-
 /* Settings */
 #settings { position: relative; left: 0%; z-index:10; white-space: nowrap; color:#666666; font-weight:bold; padding-bottom: 10px;}
 .settings-subtitle { font-weight:900; color:#333333; font-size:1.15em }
