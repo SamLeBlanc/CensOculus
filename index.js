@@ -1,36 +1,37 @@
 // Called only once, the first time the map is loaded
-const main = () => {
+const main = async() => {
   idleLoadingIcon();            // shows that the map is loading
   collectSettings();            // collects inital settings
-  loadDataFromCSV("P1");        // loads in dataregard total population (P1)
+  loadConceptData("P1");        // loads in data regarding total population (P1)
   loadFlagData();               // load in flag urls compiled from CRW flags
-  getVariableLabelList();       // get list of Census variable names
+  loadFullVariableList();       // get list of Census variable names
   addSources();                 // add Mapbox source
   addFillLineExtrusionLayers(); // add Mapbox layers
+  loadAlmanacData('20');
+  addNativeLandsLayer();
 }
 
 // Called (just about) every time the map is changed in any way
 // This is the main workhorse of the entire project
-const update = () => {
-  try {
-    collectSettings();        // collects inital settings
-    updateGeo();              // updates geography size (state, county, zip code, etc.)
-    updateVariable();         // updates variable (data category) within the current concept
-    updatePaint();            // updates layer paint (colors, opacity, etc.)
-    updateFlagMode();         // updates if flag is mode is activated
-    endLoadingIcon(2);        // ends secondary loading icon when map is ready
-  } catch (error) {
-    console.log(`update() failed - ${error}`)
-  }
+const update = async() => {
+  collectSettings();        // collects inital settings
+  updateGeo();              // updates geography size (state, county, zip code, etc.)
+  updateVariable();         // updates variable (data category) within the current concept
+  updatePaint();            // updates layer paint (colors, opacity, etc.)
+  updateFlagMode();         // updates if flag is mode is activated
+  endLoadingIcon(2);        // ends secondary loading icon when map is ready
 }
 
 
 // Updates the layer paint on the visible map layer
 // This includes, color, opacity, lines, extrusions, and visibility (different than opacity!)
 const updatePaint = () => {
-  let colors = COLOR_DICT[SETTINGS['Scheme']];                                        // returns array of 5 colors according to color scheme
-  colors = getCustomColors(colors);                                                   // replace colors with custom ones if selected by user
-  let fiveStep = ( SETTINGS['Scale'] == "Linear") ? colorLinear() : colorQuantile();  // returns the five-step sequence needed to paint each layer
+  let colors = COLOR_DICT[SETTINGS['Scheme']];          // returns array of 5 colors according to color scheme
+  colors = getCustomColors(colors);                     // replace colors with custom ones if selected by user
+  let scale = SETTINGS['Scale'];
+  if (scale == "Linear") fiveStep = colorLinear();      // returns the five-step sequence needed to paint each layer
+  if (scale == "Quartile") fiveStep = colorQuartile();
+  if (scale == "Log") fiveStep = colorLog();
   let fiveStep_values = Object.values(fiveStep).sort((a, b) => a - b);                // get values as an array, and sort
   fiveStep_values = fiveStepAdjustment(fiveStep_values);                              // ensure the values are in strictly increasing order
   updateLegend(fiveStep_values, colors);                                              // update legend to show proper values and colors
@@ -63,7 +64,7 @@ const updateGeo = () => {
 // Each of these individually is a variable. In all, the Census tabulates something like 8000 variables
 const updateVariable = () => {
   setFeatStates()       // set the feature state for variable. feature states for each variable are set seperately to minimize time/space limits
-  getQuantileValues()   // calculte the quantile values (QSummary) for the new variable,
+  getQuartileValues()   // calculte the quartile values (QSummary) for the new variable,
 }
 
 // Updates the selected concept
@@ -72,8 +73,8 @@ const updateVariable = () => {
 const updateConcept = async() => {
   let concept = SETTINGS['Concept']
   startLoadingIcon(2);
-  if (!(concept in LORAX)) await loadDataFromCSV(concept)   // if concept has not previously been loaded, then retrieve it
-  await getVariableListByConcept(concept)                   // get list of variables that pertain to each concept
+  if (!(concept in LORAX)) await loadConceptData(concept)   // if concept has not previously been loaded, then retrieve it
+  await loadVariablesByConcept(concept)                   // get list of variables that pertain to each concept
   await createVariableDropdownSelect(VLbC[concept])       // set new list of variables as dropdown menu option for user to select
   update()
 }
@@ -86,26 +87,18 @@ const updateRealm = async() => {
   clearVariableSelect()
 }
 
+
 ////==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
 ///==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
 //==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==//==
 
 
+const accumulateShortcut = () => {
+  let test = $('#accumulate').is(":checked");
+  $('#accumulate').prop('checked', !test);
+  collectSettings();
+  clearAllHolds()
+}
 
 LORAX = {}
-
-let VVV = false;
-
-let tack = true;
-let acc = true;
-
-let initialRun = true;
-
-let startTime = 0;
-let endTime = 0;
-
-let hoveredId = null;
-let heldDistricts = {};
-let taggedDistricts = {};
-
-let savedTitleColor = null;
+ALMANAC = {};

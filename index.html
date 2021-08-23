@@ -11,6 +11,8 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
   <script src="https://d3js.org/d3.v5.min.js"></script>
 
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
@@ -28,8 +30,6 @@
   <link rel="stylesheet" href="styles/tables.css">
   <link rel="stylesheet" href="styles/tour.css">
 
-
-
   <script type="text/javascript" src="index.js"></script>
   <script type="text/javascript" src="scripts/dataPipeline.js"></script>
   <script type="text/javascript" src="scripts/dictionaries.js"></script>
@@ -43,7 +43,7 @@
   <script type="text/javascript" src="scripts/mapControls.js"></script>
   <script type="text/javascript" src="scripts/settings.js"></script>
   <script type="text/javascript" src="scripts/title.js"></script>
-  <script type="text/javascript" src="scripts/quantiles.js"></script>
+  <script type="text/javascript" src="scripts/quartiles.js"></script>
   <script type="text/javascript" src="scripts/map.js"></script>
   <script type="text/javascript" src="scripts/loading.js"></script>
   <script type="text/javascript" src="scripts/filters.js"></script>
@@ -57,25 +57,31 @@
   <script type="text/javascript" src="scripts/tagging.js"></script>
   <script type="text/javascript" src="scripts/tour.js"></script>
   <script type="text/javascript" src="scripts/realms.js"></script>
-
+  <script type="text/javascript" src="scripts/arrowKeyFix.js"></script>
+  <script type="text/javascript" src="scripts/legend.js"></script>
+  <script type="text/javascript" src="scripts/saveMap.js"></script>
 
 </head>
 <body>
   <div id="map"></div>
   <div id="title">
     <span>CensOculus</span>
-    <span style="color: white; font-size: 16px; -webkit-text-stroke: 0px white;">Beta</span>
-    <div id="author" style="font-weight: 900; font-size:24px; margin-top: -5px; -webkit-text-stroke: 0px white;">
+    <span style="position: relative; top: 3px; color: white; font-size: 16px; -webkit-text-stroke: 0px white;">Beta</span>
+    <div id="author" style="font-weight: 900; font-size:24px; margin-top: -7px; -webkit-text-stroke: 0px white; padding-left:1px;">
       <a id="author-name" href="https://github.com/SamLeBlanc/" target="_blank" style=" transition: 0.3s;color: white; text-decoration: none;">&nbspSam LeBlanc&nbsp&nbsp</a>
       <a href="https://github.com/SamLeBlanc/Census-Mapper">
-      <img src="images/github.png" width="25" height="25" style="position: relative; top:5px;"></a>&nbsp&nbsp
-      <a id="author-tour" href="javascript:takeTour(1)" style="font-weight: 800; color: white; cursor: pointer; text-decoration: none;">
+      <img src="images/github.png" width="25" height="25" style="position: relative; top:3px;"></a>&nbsp&nbsp
+      <a id="author-tour" href="javascript:takeTour(0)" style="font-weight: 800; color: white; cursor: pointer; text-decoration: none;">
         <span id="-author-tour" style="transition: 0.3s; font-size:0.85em">Take the Tour!</span>
       </a>
-
-      </div>
     </div>
   </div>
+  <div style="position:fixed; z-index:0;">
+    <div style="padding: 10px 3px; font-size:0.8em;">
+      <div id="slider-range" style="background-color:darkgrey;" ></div>
+    </div>
+  </div>
+
   <div id="sidebars">
     <div id="right-sidebars">
       <!-- Lens -->
@@ -104,12 +110,13 @@
             <span>👤/mi<sup>2</sup></span>
           </div>
           <div style="padding: 5px; font-size:16px;">
-            <a id="wiki-link" href="" target="_blank">Wiki</a>
-            <span>&nbsp&nbsp</span>
-            <a id="flag-link" href="" target="_blank">Flag</a>
-            <span>&nbsp&nbsp</span>
-            <button onclick="clearAllHolds(); $('#move-window').css({top:-400});">Clear Holds</button>
-            <span>&nbsp&nbsp</span>
+            <div id="lens-hrefs" style="font-weight: 700;">
+              <a id="wiki-link" href="" target="_blank">Wiki</a>
+              &nbsp&nbsp
+              <a id="flag-link" href="" target="_blank">Flag</a>
+              &nbsp&nbsp
+              <button onclick="clearAllHolds(); $('#move-window').css({top:-400});">Clear Holds</button>
+            </div>
           </div>
           <div id="held-data"></div>
         </div>
@@ -129,16 +136,15 @@
         <div style="padding:5px"></div>
         <span>
           If this is your first time here, please take the
-          <a href="javascript:takeTour(1)" style="font-weight:bold;">tour!</a>
+          <a href="javascript:takeTour(0)" style="font-weight:bold;">tour!</a>
         </span>
         <div style="padding:5px"></div>
         <span>
-          Constructed using
+          Created using
           <a href="https://www.mapbox.com/mapbox-gljs" target="_blank" style="font-weight:bold;">Mapbox GL JS</a>,
-          this map demonstrates the potential of the
-          <a href="https://www.mapbox.com/" target="_blank">Mapbox</a>
-          suite while providing a versatile visualization tool.
-          Mapbox has an exceptional framework complete with hundreds of
+          CensOculus illustrates the power and versatility of the
+          <a href="https://www.mapbox.com/" target="_blank">Mapbox</a> suite.
+          Mapbox provides an exceptional framework, complete with hundreds of
           <a href="https://docs.mapbox.com/mapbox-gl-js/example/" target="_blank">examples</a>
           to get started.
         </span>
@@ -202,23 +208,18 @@
               </div>
               <div id="-concept" style="padding:5px 0px;">
                 <span>Concept&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                <select id="concept-select-" style="width:280px;" onchange="collectSettings(); updateConcept();">
+                <select id="concept-select-" style="width:270px;" onchange="collectSettings(); updateConcept();">
                   <option value="P1">Total Population</option>
                 </select>
               </div>
               <div id="-variable" style="padding:5px 0px;">
                 <span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                <select id="variable-select-0" style="width:280px;" onchange="collectSettings(); update();"></select>
+                <select id="variable-select-0" style="width:270px;" onchange="collectSettings(); update();"></select>
               </div>
             </div>
             <div id="colors-select" style="padding-top:10px;">
               <span class="settings-subtitle">Colors</span>
-              <div "-tile-opacity">
-                <span>Tile Opacity&nbsp</span>
-                <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
-                <span id="to-label">0.5</span>
-              </div>
-              <div "-scheme" style="padding-top:15px;">
+              <div "-scheme" style="padding-top:5px;">
                 <span>Scheme&nbsp</span>
                 <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
                   <option value="Viridis">Viridis</option>
@@ -251,8 +252,14 @@
                 <span>&nbsp&nbsp&nbspScale&nbsp</span>
                 <select id="scale-select" onchange="collectSettings(); update()">
                   <option value="Linear" >Linear</option>
-                  <option value="Quantile" >Quantile</option>
+                  <option value="Quartile" >Quartile</option>
+                  <option value="Log" >Log</option>
                 </select>
+              </div>
+              <div "-tile-opacity">
+                <span>Tile Opacity&nbsp</span>
+                <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
+                <span id="to-label">0.5</span>
               </div>
             </div>
             <div id="-modes" style="padding-top:15px;">
@@ -318,7 +325,7 @@
         </div>
         <div style="padding-top:8px;">
           The current map shows the territory of many of the tribes that lived here during the last millennium.
-          This data was borrowed from <a href='https://native-land.ca/'>Native-Land.ca</a>,
+          This data was borrowed from <a href='https://native-land.ca/' target="_blank">Native-Land.ca</a>,
           please visit and support their site to learn about the territory, languages and treaties of native peoples. <br>
         </div>
         <div style="padding-top:10px; font-size:20px; font-weight:bold;">
@@ -490,7 +497,7 @@
     </button>
   </div>
   <div id="flag-view">
-    <img id="flog_img" src="" style="width: auto;height: 300px;">
+    <img id="flog_img" src="" style="width: auto; height: 250px;">
   </div>
   <div id="legend-">
     <div class="draggable" id="drag-1" style="left:400px;top:0;z-index:20;">
@@ -553,7 +560,9 @@
       <span id="m-name" style="font-size:22px;">Hover over something!</span>
     </div>
     <div>
-      <span id="m-val" style="font-size:36px;">...</span>
+      <span id="m-val" style="font-size:0px;"></span>
+      &nbsp
+      <span id="m-val2" style="font-size:0px;">👤/mi<sup>2</sup></span>
     </div>
     <div>
       <span id="m-var" style="font-size:18px;"></span>

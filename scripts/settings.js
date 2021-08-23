@@ -1,10 +1,10 @@
-// // These methods pertain to the SETTINGS object, which stores all of the current CensOculus settings
-// // The SETTINGS objects allows maps to be easily saved or restored and allows for easy trasnition between maps
+//// Methods pertaining to the SETTINGS object, which stores all of the current CensOculus settings
+// The SETTINGS object allows maps to be easily saved or restored and allows for easy trasnition between map states
 
 SETTINGS = {};
 
 // This method collects the settings from the user's settings panel (and also the map object itself)
-// Then, these settings are applied to update the SETTINGS object
+// Then, these settings are used to update the SETTINGS object
 // Also, here we set the new token in the Save Map sidebar
 const collectSettings = () => {
   SETTINGS = {
@@ -27,11 +27,11 @@ const collectSettings = () => {
       "Pitch":        parseFloat(customRound(map.getPitch(),0)),
       "Bearing":      parseFloat(customRound(map.getBearing(),0)),
   };
-  $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", ")); // the sets the proper token in the Save Map sidebar
+  $('#settings-json').val(JSON.stringify(SETTINGS).replaceAll(",", ", ")); // the sets the correct token in the Save Map sidebar
 }
 
 // The opposite of collectSettings(), this takes a SETTINGS token and re-configures the map to fit
-// Also updates the token in the Save Map sidebar
+// Also, updates the token in the Save Map sidebar
 const distributeSettings = () => {
   $('#year-select-').val(SETTINGS['Year']);
   $('#geo-select-').val(SETTINGS['Geo']);
@@ -56,12 +56,20 @@ const distributeSettings = () => {
 // Distribute the Mapbox map settings from the SETTINGS object
 const distributeMapControls = () => {
   let cen = SETTINGS["Center"];
-  setTimeout(function(){
-    map.flyTo({
+  map.flyTo({
       zoom: parseFloat(SETTINGS["Zoom"]),
       pitch: parseFloat(SETTINGS["Pitch"]),
+      bearing: parseFloat(SETTINGS["Bearing"]),
       center: [cen['lng'],cen['lat']],
       essential: true
     });
-  }, 1000);
+}
+
+// Resets map settings to base state (the state on initial page load)
+const baseSettingState = () => {
+  SETTINGS = JSON.parse(`{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001", "3D":false, "Height":"100010", "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.5, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`);
+  distributeSettings();
+  distributeMapControls();
+  collectSettings();
+  update();
 }

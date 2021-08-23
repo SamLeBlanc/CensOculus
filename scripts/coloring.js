@@ -1,60 +1,75 @@
-// // These methods pertain to finding and converting *colors* that will be applied to map tiles
-// // Not to be confused with the *painting* methods where the colors are actually applied to the Mapbox layers
-// // Instead, here the colors are merely curated to later be applied to the map
-// // Also here are methods for using custom values as they apply to colors, and also updating the legend
+// // Methods for finding and converting *colors* that will be applied to Mapbox vector tiles
 
-// Reverses the order of the current color scheme
+// Not to be confused with the *painting* methods (painting.js) where the colors are actually applied to the Mapbox layers
+// Instead, here the colors are merely curated to later be applied to the map
+// Also here are methods for using custom values as they apply to colors
+
+// Reverses the color order of the current color scheme
 const reverseColorScheme = () => COLOR_DICT[SETTINGS['Scheme']] = COLOR_DICT[SETTINGS['Scheme']].reverse();
 
-// Calculates the five step color intervals needed to color the data in a linear manner
-// Returns an array of five values that anchor the colors for painting later
+// Calculates the five step color stops needed to color the tiles in a *Linear* manner
+// Returns an array of five values that anchor the colors for painting later on
 const colorLinear = () => {
+  let large = (LORAX['P1'].filter( d => d.SIZE == SETTINGS["Geo"].toUpperCase()).length > 5000) ? true : false;
   let fiveStep = {};
   if (customRanges["linearMin"] != null) {    // If the user has provided custom linear scaling use those values
-    fiveStep[0] = customRanges["linearMin"];  // Custom Min
-    fiveStep[4] = customRanges["linearMax"];  // Custom Max
+    fiveStep[0] = customRanges["linearMin"];      // Custom Min
+    fiveStep[4] = customRanges["linearMax"];      // Custom Max
   } else {                                    // else, use the deault linear scaling which goes from the Min to the Max
-    fiveStep[0] = QSummary[0];    // Default Min
-    fiveStep[4] = QSummary[1];    // Default Max
+    fiveStep[0] = large ? QSummary[10] : QSummary[1];
+    fiveStep[4] = large ? QSummary[980] : QSummary[999];
   }
-  let range = fiveStep[4] - fiveStep[0];
-  fiveStep[1] = fiveStep[0] + range*0.25;     // calculating intermediate values along a linear scale
-  fiveStep[2] = fiveStep[0] + range*0.5;
-  fiveStep[3] = fiveStep[0] + range*0.75;
+  let range = fiveStep[4] - fiveStep[0];      // Calculating intermediate values along a linear scale
+  fiveStep[1] = fiveStep[0] + range * 0.25;
+  fiveStep[2] = fiveStep[0] + range * 0.5;
+  fiveStep[3] = fiveStep[0] + range * 0.75;
   return fiveStep
 }
 
-// Same as colorLinear but instead goes off of the quantile values from the QSummary
-const colorQuantile = () => {
+// Same as colorLinear, but uses *Quartile* values instead
+const colorQuartile = () => {
+  let large = (LORAX['P1'].filter( d => d.SIZE == SETTINGS["Geo"].toUpperCase()).length > 5000) ? true : false;
   let fiveStep = {};
-  if (customRanges["quantileQ0"] != null) {     // If the user has provided a custom quantile range (default: [Min, Q1, Med, Q3, Max])
-    fiveStep[0] = customRanges["quantileQ0"];   // Custom Min
-    fiveStep[1] = customRanges["quantileQ1"];   // Custom Q1
-    fiveStep[2] = customRanges["quantileQ2"];   // Custom Q2
-    fiveStep[3] = customRanges["quantileQ3"];   // Custom Q3
-    fiveStep[4] = customRanges["quantileQ4"];   // Custom Max
-  } else {
-    fiveStep[0] = QSummary[0];      // Default Min
-    fiveStep[1] = QSummary[0.25];   // Default Q1
-    fiveStep[2] = QSummary[0.5];    // Default Median
-    fiveStep[3] = QSummary[0.75];   // Default Q3
-    fiveStep[4] = QSummary[1];      // Defualt Max
+  if (customRanges["quartileQ0"] != null) {     // If the user has provided a custom quartile stops
+    fiveStep[0] = customRanges["quartileQ0"];
+    fiveStep[1] = customRanges["quartileQ1"];
+    fiveStep[2] = customRanges["quartileQ2"];
+    fiveStep[3] = customRanges["quartileQ3"];
+    fiveStep[4] = customRanges["quartileQ4"];
+  } else {                                      // else use defaullt quartile stops (default: [Min, Q1, Med, Q3, Max])
+    fiveStep[0] = large ? QSummary[10] : QSummary[1];
+    fiveStep[1] = QSummary[250];
+    fiveStep[2] = QSummary[500];
+    fiveStep[3] = QSummary[750];
+    fiveStep[4] = large ? QSummary[980] : QSummary[999];
   }
   return fiveStep
 }
 
-// Ensure that all values in fiveStep are non-equal (which would throw an error from Mapbox styling)
+// Same as colorLinear, but uses *Logarithmic* values instead
+const colorLog = () => {
+  let q0 = QSummary[25];
+  let q4 = QSummary[999];
+  let q1 = q2 = q3 = q4_alt = 0;
+  let exponent = SETTINGS["Variable"].endsWith("P") ? 1 : 0;
+  let delta = SETTINGS["Variable"].endsWith("P") ? -0.005 : 0.005
+  while (true) {
+    exponent += delta;
+    q1 = q0 ** exponent;
+    q2 = q1 ** exponent;
+    q3 = q2 ** exponent;
+    q4_alt = q3 ** exponent;
+    if ( q4_alt > q4 ) return { 0:q0, 1:q1, 2:q2, 3:q3, 4:q4 };
+  }
+  colorQuartile()
+}
+
+// Ensure that all values in fiveStep (color stop values) are non-equal (which would throw an error from Mapbox styling)
 const fiveStepAdjustment = arr => {
   for (i=0; i < arr.length; i++){
     arr[i] += ((i-2) * .0000001);
   }
   return arr
-}
-
-// Add color based on user input from clicking the colors in legend
-const addCustomColor = i => {
-  customColors[i] = $(`#cpick-${i}`).val();
-  update();
 }
 
 // Check for any added custom colors from user, else the default color scheme will be used
@@ -63,33 +78,4 @@ const getCustomColors = colors => {
     if (element != null) colors[i] = customColors[i]
   });
   return colors
-}
-
-// Update the legend to have the appropriate colors and labels showing
-// Must have 'arr' and 'colors' from updatePaint() method
-const updateLegend = (arr, colors) => {
-  console.log(arr)
-  var colors = COLOR_DICT[SETTINGS['Scheme']]
-  $(`#leg-square-5`).css("border", `solid 5px ${customColors[5]}`)
-  $(`#leg-square-6`).css("border", `solid 5px ${customColors[6]}`)
-  for (i = 0; i < 5; i++){
-    if (colors[i].includes('#')){
-      var col = hexToRgb(colors[i])
-      colors[i] = `rgba(${col.r}, ${col.g}, ${col.b}, 1)`
-    }
-    $(`#leg-square-${i}`).css("background", colors[i])
-    if ( Math.round(arr[i], 1) <= 1.5 && SETTINGS["Variable"].endsWith("P")) n = formatPercent(arr[i]);
-    else n = abbreviateNumber(arr[i]);
-    $(`#leg-label-${i}`).text(n)
-  }
-}
-
-// Convert hex color to object with RGB color values
-const hexToRgb = hex => {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
 }

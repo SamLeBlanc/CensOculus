@@ -1,17 +1,22 @@
-// // These methods pertain to the process of hovering or holding one or more areas
+//// Methods pertaining to the process of hovering or holding one or more tiles
+
+let hoveredId = null;
+let heldDistricts = {};
+let taggedDistricts = {};
 
 // This method sets up the initial map events when the layer is loaded
 // Using Mapbox map events, a method is called when a layer is hovered over (mousemove/mouseleave) or clicked (mousedown/mouseup)
 // Fill and extrusion layers must each have theit own call (for now at least)
 const setupHoverHoldStates = geo => {
-  map.on('mousemove', EXTRUDELAYER_DICT[geo], e => onMouseMove(e) );
-  map.on('mouseleave', EXTRUDELAYER_DICT[geo], () => onMouseLeave() );
-  map.on('mousedown', EXTRUDELAYER_DICT[geo], e => onMouseDown(e) );
-  map.on('mouseup', EXTRUDELAYER_DICT[geo], e => onMouseUp(e) );
   map.on('mousemove', LAYER_DICT[geo], e => onMouseMove(e) );
   map.on('mouseleave', LAYER_DICT[geo], () => onMouseLeave() );
   map.on('mousedown', LAYER_DICT[geo], e => onMouseDown(e) );
   map.on('mouseup', LAYER_DICT[geo], e => onMouseUp(e) );
+
+  map.on('mousemove', EXTRUDELAYER_DICT[geo], e => onMouseMove(e) );
+  map.on('mouseleave', EXTRUDELAYER_DICT[geo], () => onMouseLeave() );
+  map.on('mousedown', EXTRUDELAYER_DICT[geo], e => onMouseDown(e) );
+  map.on('mouseup', EXTRUDELAYER_DICT[geo], e => onMouseUp(e) );
 }
 
 // Combo methods called when the mouse is moved
@@ -25,25 +30,18 @@ const onMouseLeave = () => {
   removeHoverState(hoveredId);
 }
 
-const accumulateShortcut = () => {
-  let test = $('#accumulate').is(":checked");
-  $('#accumulate').prop('checked', !test);
-  collectSettings();
-  clearAllHolds()
-}
-
 // For saving the location of the previous click
-let mouseDownCords;
-let mouseUpCords;
+let mouseDownCords = {x:0, y:0};
+let mouseUpCords = {x:0, y:0};
 
-// These three methods determine where the mouse was clicked (isClick) or dragged
-// Mouse drag should pan the map and not count as clicking a tile
-const onMouseDown = (e) => mouseDownCords = {x: event.pageX, y: event.pageY};
+// These three methods determine whether/where the mouse was clicked (isClick) or dragged
+// Mouse drags should move the map and not count as clicking a tile
+const onMouseDown = e => mouseDownCords = {x: event.pageX, y: event.pageY};
 const onMouseUp = e => {
   mouseUpCords = {x: event.pageX, y: event.pageY};
   if (isClick(mouseUpCords, mouseDownCords)) heldDistricts = holdDistrict(e, heldDistricts);
 }
-const isClick = (up,down) => (Math.abs(down.x - up.x) < 5 && Math.abs(down.y - up.y) < 5) ? true : false;
+const isClick = (up,down) => (Math.abs(down.x - up.x) < 5 && Math.abs(down.y - up.y) < 5) ? true : false; // check for clicks that are very close togther
 
 // Begins the process for holding a new area clicked by user
 // If there are no previously held areas, or the accumulate button is checked, the hold state will be set
@@ -58,7 +56,7 @@ const holdDistrict = (e, heldDistricts) => {
   return heldDistricts
 }
 
-// Sets the *hover* feature state for a given geoid to TRUE, returns the geoid
+// Sets the *hover* feature state for the given geoid to TRUE, returns the geoid
 const setHoverState = (e,hoveredId) => {
   let geo = SETTINGS['Geo'];
   if (e.features.length > 0) {
@@ -68,14 +66,14 @@ const setHoverState = (e,hoveredId) => {
   return hoveredId
 }
 
-// Sets the *hover* feature state for a given geoid to FALSE
+// Sets the *hover* feature state for the given geoid to FALSE
 const removeHoverState = hoveredId => {
   let geo = SETTINGS['Geo'];
   if (hoveredId) map.setFeatureState({ source: SOURCE_DICT[geo], id: hoveredId, sourceLayer:SOURCELAYER_DICT[geo]}, { hover: false });
   hoveredId = null;
 }
 
-// Sets the *hold* feature state for a given geoid to TRUE, returns heldDistricts, a list of geoids of held areas
+// Sets the *hold* feature state for the given geoid to TRUE, returns heldDistricts, a list of held areas
 const setHoldState = (e, heldDistricts) => {
   let geo = SETTINGS['Geo'];
   if (e.features.length == 0) return heldDistricts
@@ -86,8 +84,8 @@ const setHoldState = (e, heldDistricts) => {
   return heldDistricts
 }
 
-// Sets the *hold* feature state for a single geoid to FALSE, and removes the area from heldDistricts
-// Used when releasing a sinlge hold or an already held area from a group
+// Sets the *hold* feature state for a SINGLE geoid to FALSE, and removes the area from heldDistricts
+// Used when releasing a sinlge hold, or an already held area from a group
 const removeSingleHoldState = id => {
   let geo = SETTINGS["Geo"];
   delete heldDistricts[id];
@@ -110,14 +108,16 @@ const clearAllHolds = () => {
 }
 
 // Adds the data of a new held area to heldDistricts
-// Will be updated heavily in 2020 version
+// References ALMANAC for tile area and name
 const addHeldInfo = e => {
+  let geo = SETTINGS["Geo"];
   let id = e.features[0].id;
   if (!heldDistricts.hasOwnProperty(id)) {
     heldDistricts[id] = {
-      GEOID10: e.features[0].id,
-      ALAND10: e.features[0].properties.ALAND10,
-      NAME10: e.features[0].properties.NAME10
+      GEOID: id,
+      ALAND: almanacFilter('20',id,geo)[0].ALAND20,
+      NAME: almanacFilter('20',id,geo)[0].NAME20,
+      // NAME: singleName(id) // ????
     }
   } else {
     removeSingleHoldState(id)
@@ -126,8 +126,11 @@ const addHeldInfo = e => {
   return heldDistricts
 }
 
+// Filters the ALMANAC for a specific area based on year, geoid, and area size* (*important! without area size, geoids won't be unique)
+const almanacFilter = (year, geoid, size) => ALMANAC[year].filter(a => (a.GEOID20 == geoid && a.SIZE == size));
+
 // Apply changes to map features when a new area is hovered over
-// This includes, updating the style guidleines, the move table (which shows the single area value), and the potential flag url
+// This includes, updating the style guidleines, the move table (which shows the area data value), and the potential flag url
 const onHoverStart = e => {
   onHoverStart_style();
   let geoid = e.features[0].id;
@@ -135,7 +138,7 @@ const onHoverStart = e => {
   updateFlagSources(geoid);
 }
 
-// When the hover is finished, revert the style changes
+// When the hover is finished, revert the style changes to default
 const onHoverFinish = () => {
   onHoverFinish_style();
 }

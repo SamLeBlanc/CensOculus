@@ -1,18 +1,18 @@
-// Methods pertaining to the initial loading of the map on the page load
+// Methods pertaining to the initial loading of the map on first page load
 
 // Create the Mapbox map
 const initializeMap = () => {
   return new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/dark-v10', // style URL
-    center: [-104.800644, 38.846127],
+    center: [-104.80, 38.85],
     zoom: 3.6,
     pitch: 0,
     interactive: true, // true required
   });
 }
 
-// Map set up
+// Map setup
 const setupMap = map => {
   threeDContolSetup() // set up the slider values to change when map changes
   map.doubleClickZoom.disable();

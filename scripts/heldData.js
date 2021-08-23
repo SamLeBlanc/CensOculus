@@ -1,7 +1,8 @@
-// // These methods collect and format the data of the held geographies
-// Users can hold multiple dsitrcts by hitting the + button. Then, the combined data of those places is shown
+// // Methods for collecting and formating the data of the held geographies
+// Users can hold multiple districts by hitting the + button on the left.
+// Then, the combined data of those places is calculted
 
-// combo method
+// Combo
 const getHeldData = () => {
   let heldData = {};
   let H = getBaseLoraxData(SETTINGS['Geo'], SETTINGS['Concept']);

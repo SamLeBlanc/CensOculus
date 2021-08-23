@@ -7,10 +7,8 @@ const getWikiUrl = geoid => {
   let url_ = null;
   if (['nation','state','county'].includes(geo)) url_ = regularWikiUrl(geoid);
   else if (['place'].includes(geo)) url_ = placeWikiUrl(geoid);
-  if (url_) {
-    setWikiUrl(url_)
-    return url_
-  }
+  if (url_) return url_
+  else return ""
 }
 
 // Basic Wikipedia url format
@@ -21,12 +19,6 @@ const placeWikiUrl = geoid => {
   let code = geoid.substring(0,2);
   let state = CODE_TO_STATE[code];
   let state_name = STATE_TO_NAME[state];
-  let full = `${Object.values(heldDistricts)[0].NAME10}, ${state_name}`.replace(/ /g,"_");
+  let full = `${Object.values(heldDistricts)[0].NAME}, ${state_name}`.replace(/ /g,"_");
   return `https://en.wikipedia.org/wiki/${full}`
-}
-
-// Set the hyperlink to go to the wikipedia page
-const setWikiUrl = url_ => {
-  $("#wiki-link").attr("href", url_)
-  if ($('#wiki-mode').is(":checked")) window.open(url_,'_blank');
 }

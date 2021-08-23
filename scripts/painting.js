@@ -1,37 +1,39 @@
-// // These methods pertain to the *painting* of mapbox tile layers (this includes, visibility, color, opacity, and lines)
-// // That is, the actual application of the colors to the layers
-// // We are not finding the colors here, that has already been done in coloring.js
-// // instead we are just *applying* those colors
+//// Methods pertaining to the *painting* of mapbox tile layers (this includes, visibility, color, extrusion, opacity, and lines)
+// That is, the actual application of the colors to the layers
+// We are not finding the colors here, that has already been done in coloring.js
+// instead we are just *applying* those colors
 
-// // There are three types of layers that are being painted here, fills, lines, and extrusions (3D)
+//// There are three types of layers that are being painted here, fills, lines, and extrusions (3D)
 
-// Set the visibility for the requested layer
-// all three layers (line,fill,extrusion) are loaded in at the beginning, but we choose which one to see
+// Combo method, Hides all layers and sets visibility for current layer
+// all three layers (line, fill, extrusion) are loaded in earlier, but now we choose which one to see
 const showCurrentLayer = () => {
   hideAllLayers()
   setLayerVisibility()
 }
-// Sets the visibility of all layers (line,fill,extrusion) for all geos to none
+
+// Sets the visibility of all layers (line,fill,extrusion) for all geos to none (invisible) also sets nativelands to invisible
 const hideAllLayers = () => {
   Object.keys(SOURCE_DICT).forEach( geo => {
     map.setLayoutProperty(`${geo}-fills`,'visibility','none');
     map.setLayoutProperty(`${geo}-lines`,'visibility','none');
     map.setLayoutProperty(`${geo}-3d`,'visibility','none');
   });
+  map.setLayoutProperty('nativelands','visibility','none');
 }
-// Make visible only the desired layer based on the settings
+
+// Make visible only the desired layer based on the SETTINGS
 const setLayerVisibility = () => {
   let geo = SETTINGS['Geo'];
-  if (SETTINGS['3D']){ // if we are in 3D mode
+  if (SETTINGS['3D']){                                            // if we are in 3D mode
     map.setLayoutProperty(`${geo}-fills`,'visibility','none');
     map.setLayoutProperty(`${geo}-3d`,'visibility','visible');
     map.setLayoutProperty(`${geo}-lines`,'visibility','none');
     map.getPitch() < 10 ? map.flyTo({pitch: 10, essential: true}) : false;
-  } else { // normal (2D) mode
+  } else {                                                        // normal (2D) mode
     map.setLayoutProperty(`${geo}-fills`,'visibility','visible');
     map.setLayoutProperty(`${geo}-3d`,'visibility','none');
     map.setLayoutProperty(`${geo}-lines`,'visibility','visible');
-    map.flyTo({pitch: 0, essential: true});
   }
 }
 
@@ -63,7 +65,7 @@ const setLineColor = () => {
     ['boolean', ['feature-state', 'hover'], false], c2, 'black',
   ]);
 }
-// Only have line width if the area is hovered, held, or has a flag
+// Only have line width if the area is hovered, held, or has a flag (and flag mode on)
 const setLineWidth = () => {
   map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-width',
     ['case',
@@ -72,7 +74,7 @@ const setLineWidth = () => {
     ['boolean', ['feature-state', 'flag'], false], 1, 0,
   ]);
 }
-// Only have line opacity if the area is hovered, held, or has a flag
+// Only have line opacity if the area is hovered, held, or has a flag (and flag mode on)
 const setLineOpacity = () => {
   map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-opacity',
     ['case',
@@ -132,4 +134,14 @@ const setExtrusionHeight = arr => {
 // Set extrusiont opacity based on user expression (cannot be a data expression 😡 )
 const setExtrusionOpacity = () => {
   map.setPaintProperty(`${SETTINGS['Geo']}-3d`, 'fill-extrusion-opacity', SETTINGS['TileOpacity']);
+}
+
+const setNativeLandPaint = () => {
+  map.setLayoutProperty('nativelands','visibility','visible');
+  map.setPaintProperty('nativelands', 'fill-color', [
+        "rgb",
+          ["get", "r1"],
+          ["get", "r2"],
+          ["get", "r3"]
+    ]);
 }

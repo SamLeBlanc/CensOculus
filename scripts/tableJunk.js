@@ -5,8 +5,12 @@ const updateMoveTable = (e, geoid) => {
   let variable = SETTINGS['Variable'];
   let geo = SETTINGS['Geo']
   let geoidFeatureStates = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
-  $('#m-name').text(e.features[0].properties.NAME10)
+  $('#m-name').text(almanacFilter('20', geoid, geo)[0].NAME20)
+
   $('#m-val').text(formatNumber(geoidFeatureStates[variable]))
+  $('#m-val').css('font-size','36px')
+  if (variable.endsWith("D")) $('#m-val2').css(`font-size`,`24px`)
+  else $('#m-val2').css(`font-size`,`0px;`)
 
   const nickname = v => {
     if (NICKNAMES[v]) return NICKNAMES[v];
@@ -27,27 +31,25 @@ const updateMovingWindow = () => {
   }
 }
 
-function addheldTable(arr) {
-  if ($("#held-table")){
-    $("#held-table").remove();
-  }
-  var myTableDiv = document.getElementById("held-data")
-  var table = document.createElement('TABLE')
-  var tableBody = document.createElement('TBODY')
-  table.id = 'held-table'
-  table.className = 'tableC'
+const addheldTable = arr => {
+  if ($("#held-table")) $("#held-table").remove();
+  let tableDiv = document.getElementById("held-data");
+  let table = document.createElement('TABLE');
+  let tableBody = document.createElement('TBODY');
+  table.id = 'held-table';
+  table.className = 'tableC';
   table.appendChild(tableBody);
 
   for (i = 0; i < arr.length; i++) {
-    var tr = document.createElement('TR');
+    let tr = document.createElement('TR');
     for (j = 0; j < arr[i].length; j++) {
-      var td = document.createElement('TD')
+      let td = document.createElement('TD')
       td.appendChild(document.createTextNode(arr[i][j]));
       tr.appendChild(td)
     }
     tableBody.appendChild(tr);
   }
-  myTableDiv.appendChild(table)
+  tableDiv.appendChild(table)
 }
 
 const heldData2Array = heldData => {
@@ -63,35 +65,26 @@ const heldData2Array = heldData => {
 }
 
 const createVariableDropdownSelect = async(list) => {
-  const constructList = async(list) => {
+  try {
     for (qq = 0; qq < 3; qq++) {
-      let id = `variable-select-${qq}`
-      var x = document.getElementById(id);
-      var length = x.length;
-      for (i = length-1; i >= 0; i--) {
-        x.options[i] = null;
-      }
+      let div = document.getElementById(`variable-select-${qq}`);
+      for (i = div.length - 1; i >= 0; i--) div.options[i] = null;
       for (const item of list) {
-        var z = document.createElement("option");
-        z.setAttribute("value", item);
-        var tag = `${item} - ${TAG[item]}`
-        var t = document.createTextNode(tag);
-        z.appendChild(t);
-        x.appendChild(z);
-        if (!item.endsWith("001")){
-          var z = document.createElement("option");
-          z.setAttribute("value", `${item}P`);
-          var tag = `${item}P - ${TAG[item.concat("P")]}`
-          var t = document.createTextNode(tag);
-          z.appendChild(t);
-          x.appendChild(z);
-        }
+        optionShortcut(div, item, "")
+        optionShortcut(div, item, "D")
+        if (!item.endsWith("001")) optionShortcut(div, item, "P")
       }
     }
-  }
-  try {
-    await constructList(list)
   } catch(error) {
     console.log(`createVariableDropdownSelect${error}`)
   }
+}
+
+const optionShortcut = (div, item, suffix) => {
+  let z = document.createElement("option");
+  z.setAttribute("value", `${item}${suffix}`);
+  let tag = TAG[`${item}${suffix}`];
+  let t = document.createTextNode(tag);
+  z.appendChild(t);
+  div.appendChild(z);
 }

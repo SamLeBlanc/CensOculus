@@ -1,30 +1,48 @@
-// This method sets the feature state of each and every tile in the map, major workhorse energy
-// It reads the settings, then filters LORAX (the all encompassing data structure) for the proper concept and geography
-// Finally, it sets the map feature state AT THAT VARIABLE ONLY to the value from LORAX
+//// The method setFeatStates() sets the feature state of each and every tile in the map, major workhorse energy
+// Mapbox feature states are used for determining the fill and outline of all tiles
+// Method reads the settings, then filters LORAX (the all encompassing data structure) for the proper concept and geography
+// Finally, it sets the map feature state AT THAT VARIABLE ONLY to the corresponding value from LORAX
 // If a percentage is needed, it will convert
 
-// Note that the feature states are set ONE AT A TIME. this hugely saves on time and space since only the variables
-// // that will actually be mapped receive feature states. otherwise this would tkae forever to set millions of feature states. (instead only 300K at a time 🙃)
+ALMANAC_ALAND20 = {};
+let VVV = false;
+
+// Note that the feature states are set ONE AT A TIME. This hugely saves on time and space since only the variables
+// that will actually be mapped receive feature states. Otherwise, this would take forever to set millions of feature states. (instead it sets only ~300K at a time 🙃)
 
 const setFeatStates = () => {
   let geo = SETTINGS['Geo'];
   let concept = SETTINGS['Concept'];
-  if (!VVV) variable = SETTINGS['Variable'];
+  if (!VVV) variable = SETTINGS['Variable']; // VVV is the variable for View By from filter (will change later)
   else { variable = $('#variable-select-1').find(':selected').val(); VVV = false; }
+
+  // if the Density is required, filter the Almanac for neccesary data
+  ALMANAC_ALAND20 = {};
+  if(variable.endsWith("D")) ALMANAC[20].filter( d => d.SIZE == geo).forEach( d => ALMANAC_ALAND20[d.GEOID20] = d.ALAND20);
+
   data = LORAX[concept]
   .filter(d => d["SIZE"] == geo.toUpperCase() )
   .forEach(d => {
     featureObject = {};
-    featureObject[variable] = percentConversion(d,variable);
+
+    if (variable.endsWith("P")) featureObject[variable] = percentConversion(d,variable);
+    else if (variable.endsWith("D")) featureObject[variable] = densityConversion(d,variable);
+    else featureObject[variable] = d[variable];
+
     map.setFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: d.GEOID10 }, featureObject );
   })
 }
 
+// convert value to percentage based on total population in that area
 const percentConversion = (d, variable) => {
-  if (variable.endsWith("P")){
-    let v = variable.slice(0,-1);
+    let v = variable.slice(0,7);
     return (d[v] / d[`${v.slice(0,4)}001`]);
-  } else {
-    return d[variable];
-  }
+}
+
+// convert value to desnity based on land area from almanac
+const densityConversion = (d, variable) => {
+    let v = variable.slice(0,7);
+    let a = metersSq2MilesSq(ALMANAC_ALAND20[d.GEOID10]);
+    if (a) return (d[v] / a);
+    else return 0;
 }

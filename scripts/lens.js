@@ -1,5 +1,5 @@
-// // The Lens is the name for the right sidebar that opens when an area is held (via clicking on the tile)
-// // These methods pertain to the data and text held within the Lens
+//// The Lens is the name for the right sidebar that opens when an area is held (via clicking on the tile)
+// These methods pertain to the data and text held within the Lens
 
 // Combo method to update all of the features of the Lens
 const updateLens = e => {
@@ -7,7 +7,7 @@ const updateLens = e => {
   let name = getLensName(geoid);
   let area = getLensArea();
   let pop = getLensPop();
-  let den = formatDensity(pop, area);
+  let den = formatLensDensity(pop, area);
   let flag_url_ = getFlagUrl(geoid) // see flags.js
   if (geoid) wiki_url_ = getWikiUrl(geoid); // see wikis.js
   getHeldData()
@@ -15,16 +15,16 @@ const updateLens = e => {
 }
 
 // Find the geoid that the Lens will be focusing on
-// If more than one area is being held, this will only return the first geoid of
+// If more than one area is being held, this will only return the first geoid
 const getLensGeoid = () => Object.keys(heldDistricts).length >= 1 ? Object.keys(heldDistricts)[0] : null;
 
-// There are several methods pertaining to the name displayed on the Lens
-// This depends on the geography size and whether there are multiple holds or just one
+// There are several methods pertaining to the name displayed at the top of the Lens
+// This depends on the geography size and whether there are multiple holds, or just one
 const getLensName = geoid => Object.keys(heldDistricts).length > 1 ? multiName() : singleName(geoid);
 
-// Name if only a single area is being held
+// For naming if only a single area is being held
 const singleName = geoid => {
-  let n = Object.values(heldDistricts)[0].NAME10;
+  let n = Object.values(heldDistricts)[0].NAME;
   let name = fixName(n, geoid)
   return name
 }
@@ -40,7 +40,7 @@ const fixName = (n, geoid) => {
   return n
 }
 
-// Name if multiple areas are being held
+// Naming if multiple areas are being held
 const multiName = () => {
   let len = Object.keys(heldDistricts).length;
   let suffix = getLensNameSuffix();
@@ -56,7 +56,7 @@ const getLensNameSuffix = () => {
 
   let check = (['state','county','tract','group','place','uschool','csub'].includes(SETTINGS['Geo'])) ? true : false;
   if (!check) return false
-  let id_list = Object.values(heldDistricts).map(d => d.GEOID10.substring(0,5));
+  let id_list = Object.values(heldDistricts).map(d => d.GEOID.substring(0,5));
   if (sameCounty(id_list)) return countySuffix(id_list)
   if (sameState(id_list)) return stateSuffix(id_list)
   else return null
@@ -64,7 +64,7 @@ const getLensNameSuffix = () => {
 
 // Returns the summed area of one or more held areas, after converting from m^2 into mi^2
 const getLensArea = () => {
-  let metersSq = d3.sum(Object.values(heldDistricts).map(d => d.ALAND10));
+  let metersSq = d3.sum(Object.values(heldDistricts).map(d => d.ALAND));
   let milesSq = metersSq2MilesSq(metersSq)
   return milesSq;
 }
@@ -75,7 +75,7 @@ const getLensPop = () => {
   return d3.sum(
     LORAX["P1"].filter(d => {
       return Object.values(heldDistricts)
-      .map(d => d.GEOID10)
+      .map(d => d.GEOID)
       .includes(d["GEOID10"]) && d["SIZE"] == SETTINGS["Geo"].toUpperCase()
       })
     .map(d => d.P001001)
@@ -83,7 +83,7 @@ const getLensPop = () => {
 }
 
 // Using the previously calculated area and population, this method calculates and formats the density of one of more held areas
-const formatDensity = (pop,area) => {
+const formatLensDensity = (pop, area) => {
   let den = pop / area;
   if (den > 30) return numberWithCommas(customRound(den, 1))
   if (den > 2) return customRound(den, 2)
@@ -93,12 +93,22 @@ const formatDensity = (pop,area) => {
 // Set the Lens div text based on all of the previously calculated values in this section
 // Also set the flag and wiki url as well, those url methods are found in other sections
 const setLensText = (name, geoid, area, pop, den, flag_url_, wiki_url_) => {
-  $('#lens-name').text(name).css("font-weight","900")
+  $('#lens-name').text(name).css("font-weight","900");
   if (Object.keys(heldDistricts).length > 1) $('#lens-geoid').text('n/a').css('color','grey');
   else $('#lens-geoid').text(geoid).css('color','black');
-  if (area > 999) area = numberWithCommas(area)
-  $('#lens-area').text(area)
-  $('#lens-pop').text(numberWithCommas(pop))
-  $('#lens-density').text(den)
-  $('#flag-link').attr("href", flag_url_)
+  if (area > 999) area = numberWithCommas(area);
+  $('#lens-area').text(area);
+  $('#lens-pop').text(numberWithCommas(pop));
+  $('#lens-density').text(den);
+  setHrefHTML(flag_url_, wiki_url_);
+}
+
+// Sets clickability of href links
+// If there is more than one held area, the wiki and flag links will not function
+const setHrefHTML = (flag_url_, wiki_url_) => {
+  if (Object.keys(heldDistricts).length == 1){
+    $('#lens-hrefs').html(`<a id="wiki-link" href="${wiki_url_}" target="_blank">Wiki</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a id="flag-link" href="${flag_url_}" target="_blank">Flag</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button onclick="clearAllHolds(); $('#move-window').css({top:-400});">Clear Holds</button>`)
+  } else {
+    $('#lens-hrefs').html(`Wiki&nbsp&nbsp&nbsp&nbsp&nbsp&nbspFlag&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button onclick="clearAllHolds(); $('#move-window').css({top:-400});">Clear Holds</button>`)
+  }
 }

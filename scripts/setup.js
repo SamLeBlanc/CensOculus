@@ -1,5 +1,5 @@
-// Methods pertaining to the initial setup of the sidebars and such
-// Not realating to map setup function, which can be found elsewhere
+//// Methods pertaining to the initial setup of the sidebars and such
+// Not relating to Mapbox map setup function, which can be found in main()
 
 // Setup function called on first page load
 const setUpAll = () => {
@@ -12,9 +12,15 @@ const setUpAll = () => {
   legendSetup(); // position the legend in the proper location
   geoControlsSetup(); // position the geo-locate and search bar
   realmSetup();
+  // doubleSliderCSS();
 }
 
-// Required for custom color choice on swatch click choice
+// Change the CSS of jQuery double slider
+const doubleSliderCSS = () => {
+  $(document).ready( () => $(".ui-widget-header").css("background-color","green") );
+}
+
+// Required for custom color choice on legend swatch click
 const customColorSetup = () => {
   $('#cpick-0').on('change', () => addCustomColor(0) );
   $('#cpick-1').on('change', () => addCustomColor(1) );
@@ -55,13 +61,7 @@ const dragSetup = () => {
   $( () => $( "#drag-2" ).draggable() );
 }
 
-const legendSetup = () => {
-  let h = parseInt($('#legend').css("height").slice(0,-2))
-  $('#drag-1').css('top', `${window.innerHeight - h - 45}px`);
-  let w = parseInt($('#legend').css("width").slice(0,-2));
-  let w_ = Math.max(window.innerWidth - w - 320, 390);
-  $('#drag-1').css('left', `${w_}px`);
-}
+// Position the geocontrol box (Search +  GeoLocate)
 const geoControlsSetup = () => {
   $('#geo-controls').css('top',window.innerHeight-45)
   $('#geo-controls').css('left',550)

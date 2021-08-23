@@ -1,7 +1,12 @@
-// // These methods pertain to dynamic CSS styling applied to the map
-// // Using mostly jQuery, these methods move/hide/change the styling of objects around the map
+// // Methods pertaining to dynamic CSS styling applied to the map
+// Using mostly jQuery, these methods move/hide/change the styling of objects around the map
 
-// Update the cursor and format the move window when hovered over
+let tack = true;
+let acc = true;
+
+let initialRun = true;
+
+// Update the cursor and format the move window when tiles hovered over
 const onHoverStart_style = () => {
   $('#move-window').css('padding',"5px")
   map.getCanvas().style.cursor = "crosshair";
@@ -13,7 +18,7 @@ const onHoverFinish_style = () => {
   $('#move-window').css({top:-400});
 }
 
-// Update more CSS when a hold starts or ends
+// Update more CSS when a hold (or click) starts or ends
 const onHoldStart_style = () => {
   let offset = $('#sidebar0').width() + 20;
   let le = window.innerWidth - offset - $('#move-window').width() - 30;
@@ -25,7 +30,7 @@ const onHoldFinish_style = () => {
   initialRun = false;
 }
 
-// Determines if a div exists with jquery
+// Determines if a div exists with jQuery
 const divExists = name => $(`#${name}`).length ? true : false;
 
 // Close all left sidebars, nicknamed *navs*
@@ -36,7 +41,7 @@ const closeAllNavs = () => {
   highlightAllNavButtons()
 }
 
-// control the highlighting (background change) of the sidebar buttons
+// Update the highlighting (background change) of the sidebar buttons
 const unHighlightNavButtons = () => {
   Array.from({length: 10}, (_, i) => {
     if (divExists(`sidebar${i+1}`)) $(`#iconbtn-${i+1}`).css("background-color","transparent")
@@ -48,7 +53,7 @@ const highlightAllNavButtons = () => {
   })
 }
 
-// Open/close a sidebar (nav)
+// Open or close a left sidebar, nicknamed *navs*
 const openNav = n => {
   show = $(`#sidebar${n}`).css('left') == "-500px" ? true : false;
   closeAllNavs()
@@ -106,3 +111,17 @@ const updateAcc = () => {
   else $('#iconbtn-11').css('border','solid 2px #bebebe').css('margin','3px')
   acc =! acc;
 }
+
+$( function() {
+  $( "#slider-range" ).slider({
+    range: true,
+    min: 0,
+    max: 100,
+    values: [ 0, 100 ],
+    slide: function( event, ui ) {
+      $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+    }
+  });
+  $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+    " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+} );

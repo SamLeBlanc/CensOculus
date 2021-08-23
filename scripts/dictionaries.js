@@ -1,26 +1,12 @@
 // // A LARGE list of LARGE dictionaries for all sorts of things
-// // if you value your sanity, you will go no further than this....seriously...move along
-
-const CONCEPTS = [
-  'TotalULATION',
-  'URBAN AND RURAL',
-  'HISPANIC OR LATINO ORIGIN',
-  'RACE (TOTAL RACES TALLIED)',
-  'RACE',
-  'SEX BY AGE',
-  'MEDIAN AGE BY SEX',
-  'OCCUPANCY STATUS',
-  'VACANCY STATUS',
-  'POPULATION IN HOUSING UNITS BY TENURE',
-  'GROUP QUARTERS POPULATION BY TYPE'
-]
+// if you value your sanity, you will go no further than this....seriously...move along
+// will update to gist in the future, but too lazy for now.
 
 let TAG = {}
 
 let VLbC = {}
 
 const SOURCE_DICT = {
-  // 'native':'nativelands',
   'nation':'nation',
   'state':'states',
   'county':'counties',
@@ -48,7 +34,6 @@ const LENS_SUFFIX = {
 }
 
 const LAYER_DICT = {
-  //'native':'nativeland-fills',
   'nation':'nation-fills',
   'state':'state-fills',
   'county':'county-fills',
@@ -63,7 +48,6 @@ const LAYER_DICT = {
 }
 
 const LINELAYER_DICT = {
-  //'native':'nativeland-lines',
   'nation':'nation-lines',
   'state':'state-lines',
   'county':'county-lines',
@@ -78,7 +62,6 @@ const LINELAYER_DICT = {
 }
 
 const EXTRUDELAYER_DICT = {
-  //'native':'nativeland-lines',
   'nation':'nation-3d',
   'state':'state-3d',
   'county':'county-3d',
@@ -93,7 +76,6 @@ const EXTRUDELAYER_DICT = {
 }
 
 const SOURCELAYER_DICT = {
-  'native':'indigenousNA-b3bdp4',
   'nation':'nation10-6ezzk0',
   'state':'state10-3qm50z',
   'county':'counties10-86n52w',
@@ -108,7 +90,6 @@ const SOURCELAYER_DICT = {
 }
 
 const SOURCE_TILESET_ID = {
-  //'nativelands':'mapbox://samleblanc.11o9pqbw',
   'nation':'mapbox://samleblanc.61y9eb8o',
   'states':'mapbox://samleblanc.3bycdb3k',
   'counties':'mapbox://samleblanc.4ck39c64',
