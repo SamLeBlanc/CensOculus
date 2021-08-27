@@ -25,6 +25,18 @@
   transition: 0.3s;
 }
 
+.sidebar-q{
+  padding: 10px;
+  position: absolute;
+  cursor: pointer;
+  right: 0%;
+  top: 0%;
+}
+
+.sidebar-img{
+
+}
+
 #sidebar-buttons {
   position:relative; z-index:9; top: 100px; width:47px;
 }

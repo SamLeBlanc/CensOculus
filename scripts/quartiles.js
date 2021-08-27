@@ -9,7 +9,7 @@ let QSummary;
 const getQuartileValues = () => {
   QSummary = [];
   let variable = SETTINGS['Variable'];
-  let data = LORAX[SETTINGS['Concept']].filter(d => d["SIZE"] == SETTINGS['Geo'].toUpperCase() );
+  let data = queryRenderedFeatures();
   let values = spinConversions(variable, data);
   [...Array(1000).keys()].forEach(k =>
     QSummary.push(d3.quantile(values.filter( v => !Number.isNaN(v)), k/1000))
