@@ -1,8 +1,12 @@
-body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; z-index:5; overflow: hidden}
+body { margin: 0; padding: 0; overflow: hidden; font-family: 'Lato', sans-serif;   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none; }
+#map { position: fixed; top: 0; bottom: 0; width: 100%; z-index:5;}
 
 /* Heading */
-#title{ position: absolute; z-index:20; font-weight:700; font-family: 'Lato', sans-serif; margin-left: 5px; margin-top: -5px; -webkit-text-stroke: 2px grey;}
+#title{ position: fixed; z-index:20; font-weight:700; font-family: 'Lato', sans-serif; margin-left: 5px; margin-top: -5px; -webkit-text-stroke: 2px grey;}
 @media (max-height: 450px) {
   #title{font-size: 100px;}
 }
@@ -36,7 +40,7 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 }
 
 /* Move Window */
-#move-window { top: -500px; left: 1200px; min-width: 200px;  max-width: 280px; position: absolute; text-align: center; z-index: 6; background-color: lightgrey; font-weight: 700; padding: 5px 15px; border-radius: 10px; transition: 0.3s; }
+#move-window { top: -500px; left: 1200px; min-width: 200px;  max-width: 280px; position: fixed; text-align: center; z-index: 6; background-color: lightgrey; font-weight: 700; padding: 5px 15px; border-radius: 10px; transition: 0.3s; }
 
 
 /* Settings */

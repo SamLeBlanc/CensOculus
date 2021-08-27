@@ -111,12 +111,13 @@ const clearAllHolds = () => {
 // References ALMANAC for tile area and name
 const addHeldInfo = e => {
   let geo = SETTINGS["Geo"];
+  let year = SETTINGS["Year"]
   let id = e.features[0].id;
   if (!heldDistricts.hasOwnProperty(id)) {
     heldDistricts[id] = {
       GEOID: id,
-      ALAND: almanacFilter('20',id,geo)[0].ALAND20,
-      NAME: almanacFilter('20',id,geo)[0].NAME20,
+      ALAND: almanacFilter(year,id,geo)[0][`ALAND${year}`],
+      NAME: almanacFilter(year,id,geo)[0][`NAME${year}`],
       // NAME: singleName(id) // ????
     }
   } else {
@@ -127,7 +128,7 @@ const addHeldInfo = e => {
 }
 
 // Filters the ALMANAC for a specific area based on year, geoid, and area size* (*important! without area size, geoids won't be unique)
-const almanacFilter = (year, geoid, size) => ALMANAC[year].filter(a => (a.GEOID20 == geoid && a.SIZE == size));
+const almanacFilter = (year, geoid, size) => ALMANAC[year].filter(a => (a[`GEOID${year}`] == geoid && a.SIZE == size));
 
 // Apply changes to map features when a new area is hovered over
 // This includes, updating the style guidleines, the move table (which shows the area data value), and the potential flag url

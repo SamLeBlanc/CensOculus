@@ -14,7 +14,7 @@ const collectSettings = () => {
       "Concept":      $('#concept-select-').find(':selected').val(),
       "Variable":     $('#variable-select-0').find(':selected').val(),
       "3D":           $('#3d-mode').is(":checked"),
-      "Height":       $('#height').val(),
+      "Height":       Math.max(10, $('#height').val()-10),
       "Scheme":       $('#color-select').find(':selected').val(),
       "Scale":        $('#scale-select').find(':selected').val(),
       "TileOpacity":  parseFloat($('#tileopacity-v').val()),
@@ -32,7 +32,7 @@ const collectSettings = () => {
 
 // The opposite of collectSettings(), this takes a SETTINGS token and re-configures the map to fit
 // Also, updates the token in the Save Map sidebar
-const distributeSettings = () => {
+const distributeSettings = async() => {
   $('#year-select-').val(SETTINGS['Year']);
   $('#geo-select-').val(SETTINGS['Geo']);
   $('#concept-select-').val(SETTINGS['Concept']);
@@ -40,8 +40,8 @@ const distributeSettings = () => {
   $('#variable-select-0').val(SETTINGS['Variable']);
   $('#3d-mode').prop("checked", SETTINGS['3D']);
   $('#height').val(SETTINGS['Height']);
-  $('#color-select-').val(SETTINGS['Scheme']);
-  $('#scale-select-').val(SETTINGS['Scale']);
+  $('#color-select').val(SETTINGS['Scheme']);
+  $('#scale-select').val(SETTINGS['Scale']);
   $('#tileopacity-v').val(parseFloat(SETTINGS["TileOpacity"]));
   $('#numformat-select').val(SETTINGS['NumFormat']);
   $('#accumulate').prop("checked", SETTINGS['Accumulate']);

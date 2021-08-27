@@ -1,0 +1,185 @@
+#Compare Areas
+for i, feat1 in enumerate(feats_lyr1):
+    for j, feat2 in enumerate(feats_lyr2):
+        if feat1.geometry().intersects(feat2.geometry()):
+            area1 = feat1.geometry().intersection(feat2.geometry()).area()
+            area2 = feat2.geometry().area()
+            crit =area1/area2
+            if crit > 0.9:
+                selected_feats.append(feat2)
+
+#Name Active Layer
+layer = qgis.utils.iface.activeLayer()
+
+#Print Geometry of Layer:                
+for f in layer.getFeatures():
+  geom = f.geometry()
+  print (geom)
+
+#Get Layer by Name:
+layers = QgsProject.instance().mapLayersByName('LAYER_NAME')[0]
+
+#Get Features of Layer:
+feats = layer.getFeatures()
+
+#Access Attributes by Feature Name:                
+for feature in pre.getFeatures():
+    name = feature['color']
+    print(name)
+
+#Show all Features (fields?) by name
+print(layer.fields().names())
+
+# Check if a particular capability is supported:
+caps = pre.dataProvider().capabilities()
+if caps & QgsVectorDataProvider.DeleteFeatures:
+    print('The layer supports DeleteFeatures')
+
+#Add Feature (confusing see link)
+#https://docs.qgis.org/3.10/en/docs/pyqgis_developer_cookbook/vector.html#modify-features
+
+# Get Column Index by Name
+col_index = DISTRICT_LAYER.fields().indexFromName('COUNTY_GEO')
+
+#Edit Attribute
+caps = pre.dataProvider().capabilities()
+if caps & QgsVectorDataProvider.ChangeAttributeValues:
+    attrs = { col_index : value }
+    layer.dataProvider().changeAttributeValues({ row_index : attrs })
+
+# Delete Features
+caps = pres.dataProvider().capabilities()
+if caps & QgsVectorDataProvider.DeleteAttributes:
+    res = pres.dataProvider().deleteAttributes([5,6,7,8,9,10,11,12,13,14])
+    pres.updateFields()
+
+# Add Features
+from PyQt5.QtCore import QVariant
+caps = BLOCK_LAYER.dataProvider().capabilities()
+if caps & QgsVectorDataProvider.AddAttributes:
+    res = BLOCK_LAYER.dataProvider().addAttributes([QgsField("District#",QVariant.Int)])
+    BLOCK_LAYER.updateFields()
+print(BLOCK_LAYER.fields().names())
+  
+pre.startEditing()
+for i, con in enumerate(congs.getFeatures()):
+    for j, pre in enumerate(pres.getFeatures()):
+        if j == 20000:
+            break
+        if (j%1000==0):
+            print(i,j)
+        if con.geometry().intersects(pre.geometry()):
+        
+            area1 = con.geometry().intersection(pre.geometry()).area()
+            area2 = pre.geometry().area()
+            a = area1/area2
+            if a > 0.9:
+                #print('precinct:',j,'vtd',i,'area:',area1/area2)
+                attr_value={5:i}
+                res = pres.dataProvider().changeAttributeValues({ j : attr_value })
+
+caps = pre.dataProvider().capabilities()
+if caps & QgsVectorDataProvider.AddFeatures:
+    feat = QgsFeature(layer.fields())
+    feat.addFeatures(['test'])
+
+from PyQt5.QtCore import QVariant
+layer_provider=layer.dataProvider()
+layer_provider.addAttributes([QgsField("Length",QVariant.Double)])
+layer.updateFields()
+print (layer.fields().names())
+
+-------------------------------------------------------------------------
+from PyQt5.QtCore import *
+from qgis.utils import iface
+from operator import itemgetter, attrgetter
+import csv
+
+COUNTY_LAYER = QgsProject.instance().mapLayersByName('countys')[0]
+DISTRICT_LAYER = QgsProject.instance().mapLayersByName('districts')[0]
+CONGRESS_LAYER = QgsProject.instance().mapLayersByName('congs')[0]
+TRACT_LAYER = QgsProject.instance().mapLayersByName('tracts')[0]
+
+DISTRICT_LAYER.dataProvider().addAttributes([QgsField("COUNTY_GEO", QVariant.String), QgsField("CD_GEO", QVariant.String), QgsField("VTD_ID",  QVariant.String)])
+DISTRICT_LAYER.updateFields();
+
+def match(LARGE_LAYER,SMALL_LAYER,new_FIELD_NAME, LARGE_ID):
+    for i, large in enumerate(LARGE_LAYER.getFeatures()):
+        if i>=200:
+            break;
+        print(i)
+        for j, small in enumerate(SMALL_LAYER.getFeatures()):
+            if small.geometry().intersects(large.geometry()):
+                overlap_area = large.geometry().intersection(small.geometry()).area();
+                total_area = small.geometry().area();
+                percent_in_large = overlap_area / total_area;
+            # if 50% of the small is in the large...
+                if percent_in_large > 0.5:
+                    col_index = SMALL_LAYER.fields().indexFromName(new_FIELD_NAME)
+                    large_id = large[LARGE_ID]
+                    attr_value={ col_index : large_id };
+                    res = SMALL_LAYER.dataProvider().changeAttributeValues({ j : attr_value });
+
+def csv_writer(state,doc_title,data):
+    filename = state+'_'+doc_title+".csv"
+    with open(filename, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerows(data)                   
+
+def apple():
+    print('VTDs: ',DISTRICT_LAYER.featureCount())
+    for i, district in enumerate(DISTRICT_LAYER.getFeatures()):
+        if i%1000==0:
+            print(i)
+        overlapping_tracts = []
+        for j, tract in enumerate(TRACT_LAYER.getFeatures()):
+            if tract.geometry().intersects(district.geometry()):
+                overlap_area = district.geometry().intersection(tract.geometry()).area();
+                total_area = district.geometry().area();
+                percent_in_district = overlap_area / total_area;
+                overlapping_tracts.append([tract['STATE']+tract['COUNTY']+tract['TRACT'], percent_in_district])
+        overlapping_tracts = sorted(overlapping_tracts, key=itemgetter(1),reverse=True)
+        csv_writer('CA',str(district['COUNTY']+district['SRPREC']),overlapping_tracts)
+
+class District:
+    def __init__(self, name, tracts, blocks):
+        self.name = name
+        self.tracts = tracts
+        self.blocks = blocks
+
+def cube():
+    state_code = 'CA_'
+    district_and_tract_overlaps = []
+    for i, district in enumerate(DISTRICT_LAYER.getFeatures()):
+        district_id = str(district['COUNTY']+district['SRPREC']
+        
+        data=[]
+        with open(state_code + district_id+'.csv', newline='') as f:
+            reader = csv.reader(f)
+            data = list(reader)
+            
+        temp_name = str(state_code + district_id)
+        temp_name = District(district_id,data,[])
+        district_and_tract_overlaps.append(temp_name)
+    return district_and_tract_overlaps
+
+hopscotch = cube()
+for district in hopscotch:
+    print(district.name, district.tracts)
+
+match(COUNTY_LAYER,DISTRICT_LAYER,'COUNTY_GEO','GEOID')
+match(CONGRESS_LAYER,DISTRICT_LAYER,'CD_GEO','GEOID')
+apple()
+
+
+
+
+
+
+
+
+
+
+
+
+

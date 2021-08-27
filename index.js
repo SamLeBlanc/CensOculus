@@ -7,6 +7,7 @@ const main = async() => {
   loadFullVariableList();       // get list of Census variable names
   addSources();                 // add Mapbox source
   addFillLineExtrusionLayers(); // add Mapbox layers
+  loadAlmanacData('10');
   loadAlmanacData('20');
   addNativeLandsLayer();
 }
@@ -14,18 +15,26 @@ const main = async() => {
 // Called (just about) every time the map is changed in any way
 // This is the main workhorse of the entire project
 const update = async() => {
-  collectSettings();        // collects inital settings
-  updateGeo();              // updates geography size (state, county, zip code, etc.)
-  updateVariable();         // updates variable (data category) within the current concept
-  updatePaint();            // updates layer paint (colors, opacity, etc.)
-  updateFlagMode();         // updates if flag is mode is activated
-  endLoadingIcon(2);        // ends secondary loading icon when map is ready
+  let geo = SETTINGS["Geo"];
+  if (!map.getLayer(`${geo}-fills`)) return
+  try {
+    collectSettings();        // collects inital settings
+    updateGeo();              // updates geography size (state, county, zip code, etc.)
+    updateVariable();         // updates variable (data category) within the current concept
+    updatePaint();            // updates layer paint (colors, opacity, etc.)
+    updateFlagMode();         // updates if flag is mode is activated
+  } catch (error) {
+    console.log(`update() failed. ${error}`)
+    await updateMapFromToken(default_token)
+  }
+    endLoadingIcon(2);        // ends secondary loading icon when map is ready
 }
-
+ 
 
 // Updates the layer paint on the visible map layer
 // This includes, color, opacity, lines, extrusions, and visibility (different than opacity!)
-const updatePaint = () => {
+const updatePaint = async() => {
+  if (!SETTINGS["Variable"]) return
   let colors = COLOR_DICT[SETTINGS['Scheme']];          // returns array of 5 colors according to color scheme
   colors = getCustomColors(colors);                     // replace colors with custom ones if selected by user
   let scale = SETTINGS['Scale'];
@@ -62,7 +71,8 @@ const updateGeo = () => {
 // The name variable is confusing (since everything is called a variable) but basically a variable is a single data category
 // Variables collected by Census include counts of Black population, under 18s, those living in multi-generational households
 // Each of these individually is a variable. In all, the Census tabulates something like 8000 variables
-const updateVariable = () => {
+const updateVariable = async() => {
+  if (!SETTINGS["Variable"]) return
   setFeatStates()       // set the feature state for variable. feature states for each variable are set seperately to minimize time/space limits
   getQuartileValues()   // calculte the quartile values (QSummary) for the new variable,
 }
@@ -100,5 +110,19 @@ const accumulateShortcut = () => {
   clearAllHolds()
 }
 
+const nativelandStart = () => {
+  hideAllLayers();
+  setNativeLandPaint();
+  $('#drag-1').css('left', `-1000px`);
+}
+
+const nativelandEnd = () => {
+  hideAllLayers();
+  setLayerVisibility();
+  $('#drag-1').css('left', `500px`);
+}
+
 LORAX = {}
 ALMANAC = {};
+
+let default_token = `{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001", "3D":false, "Height":"100010", "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.5, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`;

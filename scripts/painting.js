@@ -84,10 +84,23 @@ const setLineOpacity = () => {
   ]);
 }
 
-// see filters.js
 const setFillOpacity = () => {
-  resetFilter()
+  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val()));
+  if ($('#opacity-mask').is(":checked")) setFillOpacityMask();
 }
+
+const setFillOpacityMask = () => {
+  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-opacity',
+    ['interpolate',
+    ['linear'], ['feature-state', SETTINGS['Variable']],
+    fiveStep[0], 0 * SETTINGS["TileOpacity"],
+    fiveStep[1], 0.25 * SETTINGS["TileOpacity"],
+    fiveStep[2], 0.5 * SETTINGS["TileOpacity"],
+    fiveStep[3], 0.75 * SETTINGS["TileOpacity"],
+    fiveStep[4], 1 * SETTINGS["TileOpacity"],
+  ]);
+}
+
 
 // Set fill-color based on values and colors from updatePaint()
 const setFillColor = (arr,colors) => {

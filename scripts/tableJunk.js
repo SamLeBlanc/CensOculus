@@ -3,10 +3,15 @@
 
 const updateMoveTable = (e, geoid) => {
   let variable = SETTINGS['Variable'];
-  let geo = SETTINGS['Geo']
+  let geo = SETTINGS['Geo'];
+  let year = SETTINGS['Year']
   let geoidFeatureStates = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
-  $('#m-name').text(almanacFilter('20', geoid, geo)[0].NAME20)
-
+  try {
+    let filtered = almanacFilter(year, geoid, geo)[0];
+    $('#m-name').text(filtered[`NAME${year}`])
+  } catch (error) {
+    console.log(`almanacFilter failure: ${year, geoid, geo}`)
+  }
   $('#m-val').text(formatNumber(geoidFeatureStates[variable]))
   $('#m-val').css('font-size','36px')
   if (variable.endsWith("D")) $('#m-val2').css(`font-size`,`24px`)
@@ -18,6 +23,7 @@ const updateMoveTable = (e, geoid) => {
     return v
   }
   $('#m-var').text(nickname(variable))
+  $('#m-var').css('font-size','18px')
   updateMovingWindow()
 }
 

@@ -67,7 +67,7 @@ const setRealmSelect = str => {
 const clearVariableSelect = () => {
   $('#-variable').html(`<span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
   <select id="variable-select-0" style="width:280px;" onchange="collectSettings(); update();">
-    <option value="" disabled selected>Select a Concept ↑</option></select>`)
+    <option value="" disabled selected>Select a Concept</option></select>`)
 }
 
 // Setup for default Realm choice in page load

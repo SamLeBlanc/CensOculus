@@ -29,7 +29,7 @@ const closeTour = () => {
 const takeTour = async(n) => {
   closeTour();
   closeAllNavs();
-  $('#tour-window').css('left','420px').css('top','10px');
+  $('#tour-window').css('left','420px').css('top','5px');
 
   // Someone please find a better way of doing this, I am brain-dead
   if (n == 0) tour0(); if (n == 1) tour1(); if (n == 2) tour2(); if (n == 3) tour3(); if (n == 4) tour4(); if (n == 5) tour5();
@@ -40,13 +40,8 @@ const takeTour = async(n) => {
 
 const tour0 = async() => {
   currentTourSlide = 0;
+  await updateMapFromToken(default_token);
   full52View();
-  SETTINGS["Geo"] = 'state';
-  SETTINGS["Realm"] = 'Total';
-  await updateRealm()
-  SETTINGS["Concept"] = 'P1';
-  distributeSettings();
-  updateConcept();
   $('#tour-text').html(
         `<div>
           <span style="font-size:1.4em; text-align:center;">Welcome to the United States of America!</span>
@@ -67,7 +62,7 @@ const tour0 = async() => {
         </div>
         <div style="padding-top:8px;">
           <span class="tour-text-style">
-            The current map shows the <span style="color:darkred;"><b>population in each of the 50 states</b></span> (+ D.C. and P.R.).
+            The current map shows the <b><span style="color:darkred;">population in each of the 50 states</span> (+ D.C. and P.R.)</b>
             <div style="padding-top:8px;"></div>
             Try <span style="color:darkgreen"><b>hovering</b></span> over a state to view its population.
           </span>
@@ -80,7 +75,7 @@ const tour0 = async() => {
         <div style="padding-top:8px;">
           <span class="tour-text-style">
             You can also <span style="color:#dd5f30"><b>select multiple states</b></span> at once to learn about a larger area. First, click on the
-            &nbsp<img src="images/plus.png" width="15" height="15" style="position: relative;">&nbsp
+            &nbsp<img src="images/plus.png" width="20" height="20" style="position: relative; top:4px;">&nbsp
             button on the left. Then, select as many states as you want!
           </span>
         </div>
@@ -98,9 +93,7 @@ const tour0 = async() => {
 const tour1 = async() => {
   currentTourSlide = 1;
   full52View();
-  clearAllHolds();
-  hideAllLayers();
-  setNativeLandPaint();
+  nativelandStart();
   $('#move-window').css('left','3000px')
   $('#tour-text').html(
       `      <div>
@@ -116,10 +109,10 @@ const tour1 = async() => {
                   Ancestral historians estimate that <span style="color:darkgreen; font-weight:900;">tens of thousands of unique groups</span> lived here during that time.
                 </div>
                 <div style="padding-top:8px;">
-                  Indigenous Americans lived predominantly in hunter-gatherer groups with loosely-defined territory that was ever changing.
+                  Indigenous Americans lived predominantly in hunter-gatherer groups with loosely-defined territory that was ever-changing.
                   The current <span style="color:darkgreen; font-weight:900;">map shows the territory of many of the tribes</span> that lived here during the last millennium.
                   This data was borrowed from <a href='https://native-land.ca/' target="_blank">Native-Land.ca</a>,
-                  please visit and support their site to learn about the territory, languages and treaties of Native peoples. <br>
+                  please visit and support their site to learn about the territory, languages, and treaties of Native peoples. <br>
                 </div>
               </span>
             <div>
@@ -134,8 +127,7 @@ const tour1 = async() => {
 
 const tour2 = async() => {
   currentTourSlide = 2;
-  hideAllLayers();
-  setNativeLandPaint();
+  nativelandStart();
   full52View();
   $('#move-window').css('left','3000px')
   $('#tour-text').html(
@@ -157,7 +149,7 @@ const tour2 = async() => {
                   Although the Census has made progress over time, it is still rife with inequities.
                   In 2010, the Census Bureau estimated that Native populations living on reservations or in Native villages were <span style="color:darkgreen; font-weight:900;">undercounted by almost 5%</span>.
                   That is <span style="color:darkgreen; font-weight:900;">more than double the undercount rate</span> of the next closest population group.
-                  Considering the shortened timeline for the 2020 Census, due to COVID-19, the <span style="color:darkgreen; font-weight:900;">undercount rate will likely be higher this time</span>.
+                  Considering the shortened timeline for the 2020 Census, due to COVID-19, the <span style="color:darkgreen; font-weight:900;">undercount rate will likely be higher this time around</span>.
                 </div>
               </span>
             <div>
@@ -172,8 +164,7 @@ const tour2 = async() => {
 
 const tour3 = async() => {
   currentTourSlide = 3;
-  hideAllLayers();
-  setLayerVisibility();
+  nativelandEnd();
   $('#tour-text').html(
       `      <div>
               <span style="font-size:1.4em; text-align:center;">Basic Map Settings</span>
@@ -183,7 +174,7 @@ const tour3 = async() => {
                 While the founding principle of the Census was a simple population count,<br> today the Census Bureau collects
                 <span style="color:#2E8B57"><b>data in dozens of categories</b></span>.<br>
                 <div style="padding-top:5px;"></div>
-                For the next decade, private buisnesses and governments alike will use this data to
+                For the next decade, private businesses and governments alike will use this data to
                 <span style="color:#483d8b"><b>place hospitals, </b></span>
                 <span style="color:#800000"><b>distribute services, </b></span>
                 <span style="color:#800080"><b>analyze the economy, </b></span>
@@ -205,7 +196,7 @@ const tour3 = async() => {
                   <div style="padding-top:6px;">
                   Or try changing the
                   <span style="color:#dd6000"><b>Geography</b></span>
-                  to view other ways of partioning the country.
+                  to view other ways of partitioning the country.
                   <div style="padding-top:1px;"></div>
                   <span style="color:#666"><i>For smaller geographies, make sure you are zoomed in enough to load the map.</i></span>
                 </span>
@@ -254,8 +245,8 @@ const tour4 = async() => {
   </div>
   <div style="padding-top:6px;">
     <span class="tour-text-style">
-      The current map (once loaded) shows the percentage of residents in each state who self identify their race as
-      <span style="color:#864313"><b>Black or African American</b></span>.
+      The current map (once loaded) shows the percentage of residents in each state who self-identify their race as
+      <span style="color:darkmagenta"><b>Black or African American</b></span>.
     </span>
   </div>
   <div style="padding-top:6px;">
@@ -307,10 +298,10 @@ const tour5 = async() => {
       <a href="https://en.wikipedia.org/wiki/Black_Belt_in_the_American_South" target="_blank" style="font-weight:800;">Black Belt</a>.
       This region of highly fertile soil was coveted by White plantation owners who bought
       <a href="https://en.wikipedia.org/wiki/Slavery_in_the_United_States" target="_blank" style="font-weight:800;">slaves by the millions</a>
-      to work the cotton and tobacco fields.
+      to work the fields. While de jure slavery ended in 1865, these areas have retained many of their demographic characteristics.
       <div style="padding-top:8px;"></div>
       Clearly, the Black Belt does not strictly adhere to state boundaries. While states have strict borders, people do not.
-      Every state has a wide range of demographics trends and cultures that cannot be fully understood from any map.
+      Each state has a wide range of demographics, cultures, and communities that cannot be fully explained by any map or data.
     </span>
   </div>
   </div>
@@ -349,7 +340,7 @@ const tour6 = async() => {
       <a href="https://en.wikipedia.org/wiki/West_Indian_Americans" target="_blank" style="font-weight:800;">Caribbean immigration</a>, and much more.
       <div style="padding-top:8px;"></div>
       By changing the <span style="color:#dd6000"><b>Geography</b></span>, new insights can be made about the data that would have been otherwise impossible.
-      There area many different geography options to choose from under:&nbsp
+      There are many different geography options to choose from under:&nbsp
       <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
       <span style="font-size:1.0em; font-weight:600; color:#555;">Settings > Data Selection > Geography</span>
     </span>
@@ -377,7 +368,7 @@ const tour7 = async() => {
       <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
       <span style="font-size:1.0em; font-weight:600; color:#555;">Settings > Data Selection > Realm</span>
       <div style="padding-top:8px;"></div>
-      The <span style="color:#dd6000; font-size:1.1em;"><b>Realm</b></span> is the most broad category of data classification.
+      The <span style="color:#dd6000; font-size:1.1em;"><b>Realm</b></span> is the broadest category of data classification.
       With the Realm, you can select what <span style="color:#22208c"><b>general topic</b></span> you are interested in.
       The Realm determines what Concepts and Variables are available, so be sure to select the Realm first.
       <div style="padding-top:8px;"></div>
@@ -387,7 +378,7 @@ const tour7 = async() => {
       <span style="color:#666"><i>Due to crossover topics, the same Concept may appear under multiple Realms.</i></span>
       <div style="padding-top:8px;"></div>
       Last to be selected is the <span style="color:#dd6000"; font-size:1.1em;><b>Variable</b></span>; the specific value of the Concept that
-      will be applied to the map. Variables represent the <span style="color:#22208c"><b>actual tablulated Census values</b></span>, and their percentages.
+      will be applied to the map. Variables represent the <span style="color:#22208c"><b>actual tabulated Census values</b></span> and their percentages.
       In all, the Census counts almost 10,000 variables!
     </span>
   </div>
@@ -418,7 +409,7 @@ const tour8 = async() => {
         <span style="color:#dd6000"><b>Realm</b></span> <b>> Ethnicity</b> <br>
         <div style='padding-top:3px;'></div>
         &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
-        <span style="color:#dd6000"><b>Concept</b></span> <b>> Hispanic and Lation Origin</b> <br>
+        <span style="color:#dd6000"><b>Concept</b></span> <b>> Hispanic and Latino Origin</b> <br>
         <div style='padding-top:3px;'></div>
         &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
         <span style="color:#dd6000"><b>Variable</b></span> <b>> % Hispanic and Latino</b> <br>
@@ -466,10 +457,9 @@ const tour9 = async() => {
   </div>
   <div>
     <span class="tour-text-style">
-      As you may have noticed in the
-      <img src="images/gear.png" width="20" height="20" style="position: relative; top:3px;">
-      <b>Settings</b> panel, there are many more options to consider.
-      Underneath <b>Data Selection</b>, are the settings for <span style="color:purple"><b>Color</b></span>.
+      To change the look and feel of the map, try opening the&nbsp
+      <img src="images/colors.png" width="20" height="20" style="position: relative; top:4px;">
+      <b>Colors</b> sidebar.
       <div style="padding-top:8px;">
         Under <span style="color:darkred"><b>Scheme</b></span>, you can change the color scheme for the tiles on the map. <br>
         There are many different choices to explore, including color blind safe options. <br>
@@ -481,13 +471,14 @@ const tour9 = async() => {
         The <span style="color:darkblue"><b>Scale</b></span> is another useful feature for understanding the data.
         By default, the color stops are implemented <span style="color:teal"><b>Linearly</b></span>,
         meaning each color stop is equally spaced along the range of the data.
-        The Scale can also be set to <span style="color:teal"><b>Quartile</b></span>, where the color stops are placed
-        at the data quartiles, or <span style="color:teal"><b>Log</b></span>, where the stops are placed logarithmicly.
+        Or try <span style="color:teal"><b>Quartile</b></span> scaling, where the color stops are placed
+        at the data quartiles (Minimum, 1st Q, Median, 3rd Q, Maximum).
+        The Scale can be set to <span style="color:teal"><b>Log</b></span>, where the stops are placed logarithmically.
       <div>
       <div style="padding-top:8px;">
-        Careful use of the <b>Linear</b> and <b>Quartile</b> scales can be helpful
-        in a similar manner to changing the <b>Geography</b>;
-        providing a new perspective for the same data.
+        Careful use of the <span style="color:darkblue"><b>Scale</b></span> setting can be helpful
+        in a similar manner as changing the <b>Geography</b>;
+        it provides a new perspective for the same set of data.
       </div>
     </span>
   </div>
@@ -505,11 +496,16 @@ const tour10 = async() => {
   currentTourSlide = 10;
   $('#tour-text').html(`
   <div>
-    <span style="font-size:1.4em; text-align:center;">More Tour Coming Soon</span>
+    <span style="font-size:1.4em; text-align:center;">Save the Map</span>
   </div>
   <div>
     <span class="tour-text-style">
-
+      Maps can be saved by copying the token in the
+      <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
+      <b>Save Map</b> sidebar. The token contains the information needed to recreate the map, including the settings for data, color, map position, and more.
+		<div style="padding-top:8px"></div>
+To open a saved map, paste a token in the <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
+      <b>Save Map</b> sidebar, and click <b>Go</b>.
     </span>
   </div>
   </div>
@@ -521,6 +517,7 @@ const tour10 = async() => {
   </div>
 `)
 }
+
 
 const tour11 = async() => {
   currentTourSlide = 11;

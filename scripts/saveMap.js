@@ -16,16 +16,41 @@ const copyButton = () => {
 
 // Parses user token and attempts to recreate the map
 // If an error occurs, the token will be rejected and the map will not change (hopefully...)
-const goButton = () => {
+const goButton = async() => {
   let token = $('#settings-json').val();
   try {
-    SETTINGS = JSON.parse(token);
-    distributeSettings();
-    distributeMapControls();
-    collectSettings();
-    update();
+    await updateMapFromToken(token)
     $('#save-message').text('Successful!');
   } catch (error) {
-    $('#save-message').text('Something went wrong...');
+    await updateMapFromToken(default_token);
+      $('#save-message').text('Something went wrong...');
   }
 }
+
+const updateMapFromToken = async(token) => {
+  SETTINGS = JSON.parse(token);
+  distributeMapControls();
+  let temp_concept = SETTINGS["Concept"];
+  let temp_variable = SETTINGS["Variable"];
+  await updateRealm()
+  await updatePaint();
+  distributeSettings();
+  SETTINGS["Concept"] = temp_concept;
+  await updateConcept()
+  distributeSettings();
+  SETTINGS["Variable"] = temp_variable;
+  await updateVariable();
+  distributeSettings();
+  update();
+}
+
+// SETTINGS["Geo"] = 'state';
+// SETTINGS["Realm"] = 'Race';
+// await updateRealm()
+// SETTINGS["Concept"] = 'P6';
+// distributeSettings();
+// await updateConcept();
+// SETTINGS["Variable"] = 'P006003P';
+// distributeSettings();
+// update();
+// lower48View();

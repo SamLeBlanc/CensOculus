@@ -63,6 +63,6 @@ const dragSetup = () => {
 
 // Position the geocontrol box (Search +  GeoLocate)
 const geoControlsSetup = () => {
-  $('#geo-controls').css('top',window.innerHeight-45)
+  $('#geo-controls').css('top',0)
   $('#geo-controls').css('left',550)
 }

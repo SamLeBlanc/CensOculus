@@ -3,10 +3,10 @@
 // Setup initial position of the legend
 const legendSetup = () => {
   let h = parseInt($('#legend').css("height").slice(0,-2));
-  $('#drag-1').css('top', `${window.innerHeight - h - 65}px`);
+  $('#drag-1').css('top', `${window.innerHeight - h - 35}px`);
   let w = parseInt($('#legend').css("width").slice(0,-2));
   let w_ = Math.max(window.innerWidth - w - 320, 390);
-  $('#drag-1').css('left', `0px`);
+  $('#drag-1').css('left', `500px`);
 }
 
 // Update the legend to have the appropriate colors and labels showing

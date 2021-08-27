@@ -4,7 +4,7 @@
 // Finally, it sets the map feature state AT THAT VARIABLE ONLY to the corresponding value from LORAX
 // If a percentage is needed, it will convert
 
-ALMANAC_ALAND20 = {};
+ALMANAC_ALAND = {};
 let VVV = false;
 
 // Note that the feature states are set ONE AT A TIME. This hugely saves on time and space since only the variables
@@ -13,12 +13,19 @@ let VVV = false;
 const setFeatStates = () => {
   let geo = SETTINGS['Geo'];
   let concept = SETTINGS['Concept'];
+  let year = SETTINGS["Year"];
+
+  if(!LORAX[concept]) return false;
+
   if (!VVV) variable = SETTINGS['Variable']; // VVV is the variable for View By from filter (will change later)
   else { variable = $('#variable-select-1').find(':selected').val(); VVV = false; }
 
   // if the Density is required, filter the Almanac for neccesary data
-  ALMANAC_ALAND20 = {};
-  if(variable.endsWith("D")) ALMANAC[20].filter( d => d.SIZE == geo).forEach( d => ALMANAC_ALAND20[d.GEOID20] = d.ALAND20);
+  ALMANAC_ALAND = {};
+
+  if (variable) {
+    if(variable.endsWith("D")) ALMANAC[year].filter( d => d.SIZE == geo).forEach( d => ALMANAC_ALAND[d.GEOID10] = d.ALAND10);
+  }
 
   data = LORAX[concept]
   .filter(d => d["SIZE"] == geo.toUpperCase() )
@@ -41,8 +48,9 @@ const percentConversion = (d, variable) => {
 
 // convert value to desnity based on land area from almanac
 const densityConversion = (d, variable) => {
+    let year = SETTINGS["Year"];
     let v = variable.slice(0,7);
-    let a = metersSq2MilesSq(ALMANAC_ALAND20[d.GEOID10]);
+    let a = metersSq2MilesSq(ALMANAC_ALAND[d[`GEOID${year}`]]);
     if (a) return (d[v] / a);
     else return 0;
 }

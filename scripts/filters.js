@@ -21,7 +21,7 @@ const applyFilter = () => {
 
 // Reset the filter
 const resetFilter = () => {
-  map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val())); // reset tile opacity to the same value for all tiles
+  setFillOpacity(); // reset tile opacity to the same value for all tiles
   $('#to-label').text($('#tileopacity-v').val()); // needed? not sure
   $('#filter-value').val('')
 }

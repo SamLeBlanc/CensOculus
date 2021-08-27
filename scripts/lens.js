@@ -10,6 +10,7 @@ const updateLens = e => {
   let den = formatLensDensity(pop, area);
   let flag_url_ = getFlagUrl(geoid) // see flags.js
   if (geoid) wiki_url_ = getWikiUrl(geoid); // see wikis.js
+  if (wiki_url_ && $('#wiki-mode').is(":checked")) window.open(wiki_url_, '_blank').focus();
   getHeldData()
   setLensText(name, geoid, area, pop, den, flag_url_, wiki_url_)
 }

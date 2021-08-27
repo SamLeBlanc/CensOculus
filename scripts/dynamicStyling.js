@@ -56,6 +56,7 @@ const highlightAllNavButtons = () => {
 // Open or close a left sidebar, nicknamed *navs*
 const openNav = n => {
   show = $(`#sidebar${n}`).css('left') == "-500px" ? true : false;
+  (n == 3) ? nativelandStart() : nativelandEnd();
   closeAllNavs()
   highlightAllNavButtons()
   tall = $(`#sidebar${n}`).height() >= window.innerHeight-140 ? true : false;
