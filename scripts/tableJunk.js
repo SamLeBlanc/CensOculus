@@ -72,7 +72,7 @@ const heldData2Array = heldData => {
 
 const createVariableDropdownSelect = async(list) => {
   try {
-    for (qq = 0; qq < 3; qq++) {
+    for (qq = 0; qq < 1; qq++) {
       let div = document.getElementById(`variable-select-${qq}`);
       for (i = div.length - 1; i >= 0; i--) div.options[i] = null;
       for (const item of list) {

@@ -23,13 +23,14 @@ const update = async() => {
     updateVariable();         // updates variable (data category) within the current concept
     updatePaint();            // updates layer paint (colors, opacity, etc.)
     updateFlagMode();         // updates if flag is mode is activated
+    legendSetup();
   } catch (error) {
     console.log(`update() failed. ${error}`)
     await updateMapFromToken(default_token)
   }
     endLoadingIcon(2);        // ends secondary loading icon when map is ready
 }
- 
+
 
 // Updates the layer paint on the visible map layer
 // This includes, color, opacity, lines, extrusions, and visibility (different than opacity!)

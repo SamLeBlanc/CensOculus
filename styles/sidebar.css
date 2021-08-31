@@ -26,6 +26,7 @@
 }
 
 .sidebar-q{
+  z-index:15;
   padding: 10px;
   position: absolute;
   cursor: pointer;

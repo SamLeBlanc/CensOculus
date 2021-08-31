@@ -10,13 +10,22 @@ const queryRenderedFeatures = () => {
         tile_ids.push(element.id)
       }
     });
-    let data = LORAX[SETTINGS['Concept']].filter(d => d["SIZE"] == SETTINGS['Geo'].toUpperCase() ).filter(d => tile_ids.includes(d["GEOID10"]));
+    let data =
+    LORAX[SETTINGS['Concept']]
+    .filter(d => d["SIZE"] == SETTINGS['Geo'].toUpperCase() )
+    .filter(d => tile_ids.includes(d["GEOID10"]))
+    .filter(d => {
+      let ids = readFilteredIds();
+      return ids.length > 0 ? ids.includes(d["GEOID10"]) : true }
+    )
     if (data.length > 0) return data
   }
   return LORAX[SETTINGS["Concept"]].filter( d => d.SIZE == SETTINGS["Geo"].toUpperCase());
 }
 
 const rePaint = e => {
+  startLoadingIcon(1);
 	getQuartileValues();
 	updatePaint();
+  endLoadingIcon(1);
 }

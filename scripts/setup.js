@@ -9,9 +9,11 @@ const setUpAll = () => {
   customColorSetup(); // allow custom colors to be picked from legend
   reTitleLens(); // allow Lens to be re-titled with double click
   dragSetup(); // allow some divs to be dragged
-  legendSetup(); // position the legend in the proper location
+  // legendSetup(); // position the legend in the proper location
   geoControlsSetup(); // position the geo-locate and search bar
   realmSetup();
+  setLegendPadding();
+  resetFilterSelects();
   // doubleSliderCSS();
 }
 
@@ -65,4 +67,18 @@ const dragSetup = () => {
 const geoControlsSetup = () => {
   $('#geo-controls').css('top',0)
   $('#geo-controls').css('left',550)
+}
+
+const setLegendPadding = () => {
+  if (navigator.userAgent.search("Firefox") > -1){
+    $('#LL1').css('padding-top','0px');
+    $('#LL2').css('padding-top','6px');
+  }
+}
+
+const resetFilterSelects = () => {
+  element = document.getElementById('state-filter-select');
+  element.value = '0';
+  element = document.getElementById('county-filter-select');
+  element.value = '0';
 }

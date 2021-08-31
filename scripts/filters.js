@@ -20,8 +20,48 @@ const applyFilter = () => {
 }
 
 // Reset the filter
-const resetFilter = () => {
-  setFillOpacity(); // reset tile opacity to the same value for all tiles
-  $('#to-label').text($('#tileopacity-v').val()); // needed? not sure
-  $('#filter-value').val('')
+// const resetFilter = () => {
+//   setFillOpacity(); // reset tile opacity to the same value for all tiles
+//   $('#to-label').text($('#tileopacity-v').val()); // needed? not sure
+//   $('#filter-value').val('')
+// }
+
+const clearFilter = () => {
+  map.setFilter(`${SETTINGS["Geo"]}-fills`, null);
+}
+
+const readFilteredIds = () => GEOID_FILTER.slice(2)
+let GEOID_FILTER = ['in', `GEOID${SETTINGS["Year"]}`]
+
+const filterByGeoid = geoid => {
+  let year = SETTINGS["Year"];
+  GEOID_FILTER = ['in', `GEOID${year}`];
+  let ids = findFilteredIds(geoid)
+  GEOID_FILTER = GEOID_FILTER.concat(ids)
+  map.setFilter(`${SETTINGS["Geo"]}-fills`, GEOID_FILTER);
+  createCountyFilterSelect(geoid)
+}
+
+const findFilteredIds = geoid => {
+  let year = SETTINGS["Year"];
+  return LORAX["P1"]
+    .filter( d => d[`SIZE`] == SETTINGS["Geo"].toUpperCase())
+    .filter( d => d[`GEOID${year}`].startsWith(geoid))
+    .map( d => d[`GEOID${year}`])
+}
+
+const createCountyFilterSelect = geoid => {
+  let year = SETTINGS["Year"];
+  let str = "<option value='' selected disabled >Select a State</option>";
+  if (geoid.length == 2){
+    str = `<option value='' selected disabled >Select a County</option>`
+    ALMANAC[10]
+     .filter( d => d['SIZE'] == 'county')
+     .filter( d => d[`GEOID${year}`].startsWith(geoid.substring(0, 2) ))
+     .filter( d => d[`GEOID${year}`] != (geoid.substring(0, 2) ))
+     .map( d => [d[`GEOID${year}`], d[`NAME${year}`]])
+     .sort( (a, b) => a[1] > b[1] ? 1 : -1 )
+     .forEach( d => str = str.concat(`<option value="${d[0]}" >${d[1]}</option>`));
+  $('#county-filter-select').html(str)
+  }
 }

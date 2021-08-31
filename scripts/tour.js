@@ -29,7 +29,7 @@ const closeTour = () => {
 const takeTour = async(n) => {
   closeTour();
   closeAllNavs();
-  $('#tour-window').css('left','420px').css('top','5px');
+  $('#tour-window').css('left','437px').css('top','5px');
 
   // Someone please find a better way of doing this, I am brain-dead
   if (n == 0) tour0(); if (n == 1) tour1(); if (n == 2) tour2(); if (n == 3) tour3(); if (n == 4) tour4(); if (n == 5) tour5();
@@ -167,7 +167,7 @@ const tour3 = async() => {
   nativelandEnd();
   $('#tour-text').html(
       `      <div>
-              <span style="font-size:1.4em; text-align:center;">Basic Map Settings</span>
+              <span style="font-size:1.4em; text-align:center;">Basic Data Settings</span>
             </div>
             <div style="padding-top:4px;">
               <span class="tour-text-style">
@@ -182,8 +182,10 @@ const tour3 = async() => {
               </span>
               <div style="padding-top:4px;">
                 To view data other than population, click the
-                <span style="font-size:1.1em; color:#22222"><b>
-                <img src="images/gear.png" width="24" height="24" style="position: relative; top:5px;"> Settings
+                <span style="cursor:pointer;" onclick="openNav(3);">
+                  <span style="font-size:1.1em; color:#22222"><b>
+                  <img src="images/gear.png" width="24" height="24" style="position: relative; top:5px;"> Data Settings
+                </span>
                 </b></span>button on the left.
               </div>
               <div style="padding-top:2px;">
@@ -301,7 +303,7 @@ const tour5 = async() => {
       to work the fields. While de jure slavery ended in 1865, these areas have retained many of their demographic characteristics.
       <div style="padding-top:8px;"></div>
       Clearly, the Black Belt does not strictly adhere to state boundaries. While states have strict borders, people do not.
-      Each state has a wide range of demographics, cultures, and communities that cannot be fully explained by any map or data.
+      Each state has a wide range of demographic and cultural characteristics that cannot be fully explained by any map or data.
     </span>
   </div>
   </div>
@@ -342,7 +344,7 @@ const tour6 = async() => {
       By changing the <span style="color:#dd6000"><b>Geography</b></span>, new insights can be made about the data that would have been otherwise impossible.
       There are many different geography options to choose from under:&nbsp
       <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
-      <span style="font-size:1.0em; font-weight:600; color:#555;">Settings > Data Selection > Geography</span>
+      <span style="font-size:1.0em; font-weight:600; color:#555;">Data Settings > Geography</span>
     </span>
   </div>
   </div>
@@ -356,6 +358,7 @@ const tour6 = async() => {
 }
 
 const tour7 = async() => {
+  await updateMapFromToken(default_token);
   currentTourSlide = 7;
   $('#tour-text').html(`
   <div>
@@ -366,7 +369,7 @@ const tour7 = async() => {
       So far, we have changed the geography of the map, <b>but not the data itself</b>.<br>
       To map something other than race, go to
       <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
-      <span style="font-size:1.0em; font-weight:600; color:#555;">Settings > Data Selection > Realm</span>
+      <span style="font-size:1.0em; font-weight:600; color:#555;">Data Settings > Realm</span>
       <div style="padding-top:8px;"></div>
       The <span style="color:#dd6000; font-size:1.1em;"><b>Realm</b></span> is the broadest category of data classification.
       With the Realm, you can select what <span style="color:#22208c"><b>general topic</b></span> you are interested in.
@@ -403,7 +406,7 @@ const tour8 = async() => {
       <div style='padding-top:5px;'>
         Here is another example, arrived at by using the <b>Data Selection</b> options.
         This map shows the <span style="color: darkmagenta; font-weight:800;">percentage of the population with Hispanic ethnicity</span>, mapped by Census Tract.
-        To get here, we adjusted the <b>Data Selection</b> settings with: <br>
+        To get here, we adjusted the <b>Data Settings</b> with: <br>
         <div style='padding-top:6px;'></div>
         &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
         <span style="color:#dd6000"><b>Realm</b></span> <b>> Ethnicity</b> <br>
@@ -423,8 +426,11 @@ const tour8 = async() => {
       </div>
       <div style='padding-top:6px;'>
         Try using the <b>Data Selection</b> options in the
-        <img src="images/gear.png" width="20" height="20" style="position: relative; top:3px;">
-        <b>Settings</b> panel to create a map of your own. There are millions of unique maps to be made, so get cracking!
+        <span style="cursor:pointer;" onclick="openNav(3);">
+          <img src="images/gear.png" width="20" height="20" style="position: relative; top:3px;">
+          <b>Data Settings</b>
+        </span>
+        panel to create a map of your own. There are millions of unique maps to be made, so get cracking!
       </div>
     </span>
   </div>
@@ -453,13 +459,15 @@ const tour9 = async() => {
   currentTourSlide = 9;
   $('#tour-text').html(`
   <div>
-    <span style="font-size:1.4em; text-align:center;">Color Settings</span>
+    <span style="font-size:1.4em; text-align:center;">Using the Color Settings </span>
   </div>
   <div>
     <span class="tour-text-style">
-      To change the look and feel of the map, try opening the&nbsp
-      <img src="images/colors.png" width="20" height="20" style="position: relative; top:4px;">
-      <b>Colors</b> sidebar.
+      To change the look or feel of the map, try opening the&nbsp
+      <span style="cursor:pointer;" onclick="openNav(4);">
+        <img src="images/colors.png" width="20" height="20" style="position: relative; top:4px;">
+        <b>Colors</b> sidebar.
+      </span>
       <div style="padding-top:8px;">
         Under <span style="color:darkred"><b>Scheme</b></span>, you can change the color scheme for the tiles on the map. <br>
         There are many different choices to explore, including color blind safe options. <br>
@@ -471,14 +479,23 @@ const tour9 = async() => {
         The <span style="color:darkblue"><b>Scale</b></span> is another useful feature for understanding the data.
         By default, the color stops are implemented <span style="color:teal"><b>Linearly</b></span>,
         meaning each color stop is equally spaced along the range of the data.
-        Or try <span style="color:teal"><b>Quartile</b></span> scaling, where the color stops are placed
+        With <span style="color:teal"><b>Quartile</b></span> scaling, the color stops are placed
         at the data quartiles (Minimum, 1st Q, Median, 3rd Q, Maximum).
         The Scale can be set to <span style="color:teal"><b>Log</b></span>, where the stops are placed logarithmically.
       <div>
       <div style="padding-top:8px;">
         Careful use of the <span style="color:darkblue"><b>Scale</b></span> setting can be helpful
         in a similar manner as changing the <b>Geography</b>;
-        it provides a new perspective for the same set of data.
+        by providing new perspective for the same set of data.
+      </div>
+      <div style="padding-top:8px;">
+        Within the
+        <span style="cursor:pointer;" onclick="openNav(4);">
+          <img src="images/colors.png" width="20" height="20" style="position: relative; top:4px;">
+          <b>Colors</b>
+        </span>
+        sidebar are more options for customizing the tile opacity, border width, and more.
+        Try these out to make a map that is all your own!
       </div>
     </span>
   </div>
@@ -496,16 +513,22 @@ const tour10 = async() => {
   currentTourSlide = 10;
   $('#tour-text').html(`
   <div>
-    <span style="font-size:1.4em; text-align:center;">Save the Map</span>
+    <span style="font-size:1.4em; text-align:center;">Save Your Map for Later</span>
   </div>
   <div>
     <span class="tour-text-style">
       Maps can be saved by copying the token in the
-      <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
-      <b>Save Map</b> sidebar. The token contains the information needed to recreate the map, including the settings for data, color, map position, and more.
+      <span style="cursor:pointer;" onclick="openNav(7);">
+        <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
+        <b>Save Map</b> sidebar
+      </span>. The token contains the information needed to recreate the map, including the settings for data, color, map position, and more.
 		<div style="padding-top:8px"></div>
-To open a saved map, paste a token in the <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
-      <b>Save Map</b> sidebar, and click <b>Go</b>.
+      To open a saved map, paste a token in the
+      <span style="cursor:pointer;" onclick="openNav(7);">
+        <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
+        <b>Save Map</b> sidebar
+        </span>
+        , and click <b>Go</b>.
     </span>
   </div>
   </div>
@@ -523,6 +546,45 @@ const tour11 = async() => {
   currentTourSlide = 11;
   $('#tour-text').html(`
   <div>
+    <span style="font-size:1.4em; text-align:center;">Filter Out Unwanted Tiles</span>
+  </div>
+  <div style="padding-top:4px;">
+    <span class="tour-text-style">
+      Adjust the
+      <span style="cursor:pointer;" onclick="openNav(6);">
+        <img src="images/filter.png" width="20" height="20" style="position: relative; top:4px;">
+        <b>Filter</b>
+      </span>
+       settings to hide tiles based on geography or data value.
+      <div style="padding-top:6px;">
+      Geographies can be filtered by state or county, using the dropdown menus. <br>
+      <span style="color:#666; font-style:italic;">
+        Only works for geographies that strictly adhere to state/county boundaries.
+        E.g. you cannot filter for all zip codes in a state, since zip codes can cross state lines.
+      </span>
+      </div>
+      <div style="padding-top:4px;">
+        Alternatively, you can use the text box to filter for tiles with GEOID starting with the entered value.
+        <span style="color:#666; font-style:italic;">
+          For example, change viewing geography to zip codes and then entre '9' in the text box.
+          Then, you will only see zip codes starting with '9'.
+        </span>
+      </div>
+    </span>
+  </div>
+  </div>
+    <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
+  </div>
+  <div style="padding-top:6px;">
+    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour10()">
+  </div>
+`)
+}
+
+const tour12 = async() => {
+  currentTourSlide = 12;
+  $('#tour-text').html(`
+  <div>
     <span style="font-size:1.4em; text-align:center;">More Tour Coming Soon</span>
   </div>
   <div style="padding-top:4px;">
@@ -534,7 +596,7 @@ const tour11 = async() => {
     <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
   </div>
   <div style="padding-top:6px;">
-    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour10()">
+    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour11()">
   </div>
 `)
 }

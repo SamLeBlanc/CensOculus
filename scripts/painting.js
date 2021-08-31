@@ -86,6 +86,7 @@ const setLineOpacity = () => {
 
 const setFillOpacity = () => {
   map.setPaintProperty(`${SETTINGS['Geo']}-fills`, 'fill-opacity', parseFloat($('#tileopacity-v').val()));
+  $('#to-label').text($('#tileopacity-v').val()); // needed? not sure
   if ($('#opacity-mask').is(":checked")) setFillOpacityMask();
 }
 

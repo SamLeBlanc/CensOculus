@@ -48,15 +48,16 @@ const unHighlightNavButtons = () => {
   })
 }
 const highlightAllNavButtons = () => {
+  unHighlightNavButtons()
   Array.from({length: 10}, (_, i) => {
-    if (divExists(`sidebar${i+1}`)) $(`#iconbtn-${i+1}`).css("background-color",$(`#sidebar${i+1}`).css('background-color'));
+    //if (divExists(`sidebar${i+1}`)) $(`#iconbtn-${i+1}`).css("background-color",$(`#sidebar${i+1}`).css('background-color'));
   })
 }
 
 // Open or close a left sidebar, nicknamed *navs*
 const openNav = n => {
   show = $(`#sidebar${n}`).css('left') == "-500px" ? true : false;
-  (n == 3) ? nativelandStart() : nativelandEnd();
+  (n == 2) ? nativelandStart() : nativelandEnd();
   closeAllNavs()
   highlightAllNavButtons()
   tall = $(`#sidebar${n}`).height() >= window.innerHeight-140 ? true : false;
@@ -104,12 +105,12 @@ const closeLens = () => {
 // Update the formatting of the two lower left sidebar buttons
 const updateTack = () => {
   if (tack) $('#iconbtn-10').css('border','solid 5px #32cc32').css('margin','0px')
-  else $('#iconbtn-10').css('border','solid 2px #bebebe').css('margin','3px')
+  else $('#iconbtn-10').css('border','solid 2px transparent').css('margin','3px')
   tack =! tack;
 }
 const updateAcc = () => {
   if (acc) $('#iconbtn-11').css('border','solid 5px #32cc32').css('margin','0px')
-  else $('#iconbtn-11').css('border','solid 2px #bebebe').css('margin','3px')
+  else $('#iconbtn-11').css('border','solid 2px transparent').css('margin','3px')
   acc =! acc;
 }
 

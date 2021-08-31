@@ -54,3 +54,11 @@ const densityConversion = (d, variable) => {
     if (a) return (d[v] / a);
     else return 0;
 }
+
+const neccesaryConversion = d => {
+  let variable = SETTINGS["Variable"];
+  if (variable.endsWith("P")) percentConversion(d, variable)
+  else if (variable.endsWith("D")) densityConversion(d, variable)
+  else return d[variable]
+
+}
