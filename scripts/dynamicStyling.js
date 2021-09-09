@@ -100,6 +100,9 @@ const updateAcc = () => {
   if (acc) $('#iconbtn-11').css('border','solid 5px #32cc32').css('margin','0px')
   else $('#iconbtn-11').css('border','solid 2px transparent').css('margin','3px')
   acc = !acc;
+
+const updateFull = () => {
+  console.log('full on')
 }
 
 

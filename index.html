@@ -57,14 +57,15 @@
   <script type="text/javascript" src="scripts/tagging.js"></script>
   <script type="text/javascript" src="scripts/tour.js"></script>
   <script type="text/javascript" src="scripts/realms.js"></script>
-  <script type="text/javascript" src="scripts/arrowKeyFix.js"></script>
+  <script type="text/javascript" src="scripts/browserDefaults.js"></script>
   <script type="text/javascript" src="scripts/legend.js"></script>
   <script type="text/javascript" src="scripts/saveMap.js"></script>
   <script type="text/javascript" src="scripts/featureQuerying.js"></script>
-
+  <script type="text/javascript" src="scripts/fullscreen.js"></script>
 </head>
 <body>
   <div id="map"></div>
+  <div id="blocker" style="position:fixed; z-index:1000; top:0; left:0; margin: -100px; height: 4000px; width:4000px; background-color:transparent"></div>
   <div id="title">
     <span>CensOculus</span>
     <span style="position: relative; top: 3px; color: white; font-size: 16px; -webkit-text-stroke: 0px white;">Beta</span>
@@ -153,7 +154,7 @@
           <span>
             CensOculus was created by <b>Sam LeBlanc</b>.
             The code is available on
-            <a href="https://github.com/SamLeBlanc/Census-Mapper" target="_blank">Github</a>.
+            <a href="https://github.com/SamLeBlanc/Census-Mapper" style="font-weight:bold;" target="_blank">Github</a>.
             CensOculus is my first front-end project, and my first major project with Mapbox, so please be nice. Thank you for stopping by!
           </span>
           <div style="padding:2px;"></div>
@@ -162,6 +163,10 @@
           <div>
             <span class="sidebar-title">Land Acknowledgement</span>
           </div>
+          <div class="sidebar-q">
+            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="window.open('https://americanindian.si.edu/nk360/informational/land-acknowledgement', '_blank').focus();">
+          </div>
+
           <div class="sidebar-subtitle">
             <i>This map was made while occupying the stolen land of the Duwamish, Salish, and Nacotchtank peoples.</i>
           </div>
@@ -201,67 +206,100 @@
               <span class="sidebar-title">Data Settings</span>
             </div>
             <div class="sidebar-subtitle">
-              <i>Customize the mapped data with the options below!</i>
+              <i>Select what data to map with the options below!</i>
             </div>
-            <div style="padding:5px;"></div>
-            <div>
-              <div id="data-selection" style="color:#333">
-                <div id="-year" style="padding:8px 0px 5px 0px;">
-                  <span>Year&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                  <select id="year-select-" onchange="collectSettings(); update();">
-                    <option value="00" disabled>2000</option>
-                    <option value="10">2010</option>
-                    <option value="20" disabled>2020</option>
-                  </select>
-                </div>
-                <div id="-geography" style="padding:5px 0px;">
-                  <span>Geography&nbsp&nbsp&nbsp</span>
-                  <select id="geo-select-" onchange="updateGeo(); update();">
-                    <option value="nation">Nation</option>
-                    <option value="state" selected>State</option>
-                    <option value="county">County</option>
-                    <option value="csub">County Subdivision</option>
-                    <option value="place">Place</option>
-                    <option value="tract">Tract</option>
-                    <option value="group">Group</option>
-                    <option value="metroSA">M(et)(ic)ro Stat Area</option>
-                    <option value="urban">Urban Area</option>
-                    <option value="zip">Zip Code</option>
-                    <option value="uschool">Unified School Dist</option>
-                  </select>
-                </div>
-                <div id="-realm" style="padding:5px 0px;">
-                  <span>Realm</span>
-                  <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                  <select id="realm-select-" style="width:153px;" onclick="collectSettings(); updateRealm();">
-                    <option value="Total" selected>Total Population</option>
-                    <option value="Race">Race</option>
-                    <option value="Ethnicity">Ethnicity</option>
-                    <option value="Urban">Urban/Rural</option>
-                    <option value="Housing">Housing</option>
-                    <option value="Age" disabled>Age</option>
-                    <option value="Sex" disabled>Sex</option>
-                  </select>
-                </div>
-                <div id="-concept" style="padding:5px 0px;">
-                  <span>Concept&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                  <select id="concept-select-" style="width:250px;" onchange="collectSettings(); updateConcept();">
-                    <option value="" disabled>Select a Concept</option>
-                    <option value="P1" selected>Total Population</option>
-                  </select>
-                </div>
-                <div id="-variable" style="padding:5px 0px;">
-                  <span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                  <select id="variable-select-0" style="width:250px;" onchange="collectSettings(); update();"></select>
-                </div>
-              </div>
-
+            <div style="color:#333">
+              <table>
+                <tr>
+                  <td>
+                    <span>Year</span>
+                  </td>
+                  <td>
+                    <div id="-year" style="padding:8px 0px 5px 0px;">
+                      <select id="year-select-" onchange="collectSettings(); update();">
+                        <option value="00" disabled>2000</option>
+                        <option value="10">2010</option>
+                        <option value="20" disabled>2020</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>Geography&nbsp&nbsp&nbsp</span>
+                  </td>
+                  <td>
+                    <div id="-geography" style="padding:5px 0px;">
+                      <select id="geo-select-" onchange="startLoadingIcon(1); updateGeo(); update();">
+                        <option value="nation">Nation</option>
+                        <option value="state" selected>State</option>
+                        <option value="county">County</option>
+                        <option value="csub">County Subdivision</option>
+                        <option value="place">Place</option>
+                        <option value="tract">Tract</option>
+                        <option value="group">Group</option>
+                        <option value="cbsa">M(et)(ic)ro Stat Area</option>
+                        <option value="urban">Urban Area</option>
+                        <option value="zip">Zip Code</option>
+                        <option value="uschool">Unified School Dist</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>Realm</span>
+                  </td>
+                  <td>
+                    <div id="-realm" style="padding:5px 0px;">
+                      <select id="realm-select-" style="width:153px;" onclick="updateRealm();">
+                        <option value="Total" selected>Total Population</option>
+                        <option value="Race">Race</option>
+                        <option value="Ethnicity">Ethnicity</option>
+                        <option value="Rurality">Urban/Rural</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Age" >Age</option>
+                        <option value="Sex" >Sex</option>
+                        <option value="Families">Families</option>
+                        <option value="Group Quarters" >Group Quarters</option>
+                        <option value="Other" >Other</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>Concept</span>
+                  </td>
+                  <td>
+                    <div id="-concept" style="padding:5px 0px;">
+                      <select id="concept-select-" style="width:250px;" onchange="collectSettings(); updateConcept();">
+                        <option value="" disabled>Select a Concept</option>
+                        <option value="P1" selected>Total Population</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>Variable</span>
+                  </td>
+                  <td>
+                    <div id="-variable" style="padding:5px 0px;">
+                      <select id="variable-select-0" style="width:250px;" onchange="collectSettings(); update();"></select>
+                    </div>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
         <div id="sidebar4" class="sidebar" style="background-color: #DDA7C8;" >
           <div>
             <span class="sidebar-title">Color Settings</span>
+          </div>
+          <div class="sidebar-q">
+            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="takeTour(9)">
           </div>
           <div class="sidebar-subtitle" style="font-size:0.98em;">
             <i>Change the look of the map with these style settings</i>
@@ -274,7 +312,7 @@
                 <option value="Quartile" >Quartile</option>
                 <option value="Log" >Log</option>
               </select>
-              <span style="font-size:0.65em;"><i>&nbspLog and Quartile can be slow with many tiles</i></span>
+              <span style="font-size:0.65em;"><i>&nbspChanging can be slow with many tiles</i></span>
             </div>
             <div id="colors-select" style="padding-top:8px;">
               <div "-scheme">
@@ -308,25 +346,30 @@
                 </select>
                 <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
               </div>
-              <br>
+              <div style="padding-top:8px"></div>
               <div "-tile-opacity" style="padding-top: 1px;">
                 <span>Tile Opacity&nbsp</span>
-                <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
+                <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.75" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
                 <span id="to-label">0.5</span>
               </div>
               <div style="padding-top: 8px;">
                 <span>Opacity Mask&nbsp&nbsp</span>
                 <input type="checkbox" id="opacity-mask" name="opacity-mask" onclick="updatePaint();">
               </div>
+              <div style="padding-top: 8px;">
+                <span>Line Width&nbsp</span>
+                <input id="linewidth-v" type="range" min="0" max="10" step=".1" value="0" oninput="collectSettings(); setLineWidth();" style="top: 7px;position: relative;">
+                <span id="lw-label">0</span>
+              </div>
             </div>
           </div>
         </div>
         <div id="sidebar5" class="sidebar" style="background-color: #F8B5BE;" >
           <div>
-            <span class="sidebar-title">Advanced Settings</span>
+            <span class="sidebar-title">Experimental Settings</span>
           </div>
           <div class="sidebar-q">
-            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="takeTour(0)">
+            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="takeTour(12)">
           </div>
           <div id="-modes" style="padding-top:15px;">
             <span class="settings-subtitle">Modes&nbsp&nbsp&nbsp</span>
@@ -371,115 +414,176 @@
             <input id="bearing-v" type="range" min="-180" max="180" step="15" value="0" oninput="collectSettings(); updateBearing(this.value)" style="top: 7px;position: relative;">
             <span id="bearing-label">0</span>
           </div>
+          <div id="-bbox-border" style="padding-top:15px;">
+            <span class="settings-subtitle">Hide Cursor Box</span>
+            <input type="checkbox" checked id="bbox-border" name="bbox-border" onclick="drawBBox()">
+            &nbsp&nbsp
+            <span style="color:#666; font-size:0.8em;"><b><i>Change box size with [ and ]</i></b></span>
+          </div>
+
+
+
         </div>
         <div id="sidebar6" class="sidebar" style="background-color: #FFCC99;" >
           <div>
-            <span class="sidebar-title">Filter WIP</span>
+            <span class="sidebar-title">Filter</span>
           </div>
           <div class="sidebar-subtitle">
             <i>Hide tiles based on the selection criteria below.</i>
           </div>
           <div class="sidebar-q">
-            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="takeTour(0)">
+            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="takeTour(11)">
           </div>
           <div style="padding:2px;"></div>
           <div>
             <div><span class="settings-subtitle">By Geography&nbsp&nbsp</span></div>
-            <div style="padding-top:6px;">
-              <div>
-                <table>
-                  <tr>
-                    <td>
-                      <span>State&nbsp&nbsp</span>
-                    </td>
-                    <td>
-                      <select id="state-filter-select" style="width:205px;" onchange="filterByGeoid(this.value)">
-                        <option value="0" selected disabled>Select a State</option>
-                        <option value="01" >Alabama</option>
-                        <option value="02" >Alaska</option>
-                        <option value="04" >Arizona</option>
-                        <option value="05" >Arkansas</option>
-                        <option value="06" >California</option>
-                        <option value="08" >Colorado</option>
-                        <option value="09" >Connecticut</option>
-                        <option value="10" >Delaware</option>
-                        <option value="11" >District of Columbia</option>
-                        <option value="12" >Florida</option>
-                        <option value="13" >Georgia</option>
-                        <option value="15" >Hawaii</option>
-                        <option value="16" >Idaho</option>
-                        <option value="17" >Illinois</option>
-                        <option value="18" >Indiana</option>
-                        <option value="19" >Iowa</option>
-                        <option value="20" >Kansas</option>
-                        <option value="21" >Kentucky</option>
-                        <option value="22" >Louisiana</option>
-                        <option value="23" >Maine</option>
-                        <option value="24" >Maryland</option>
-                        <option value="25" >Massachusetts</option>
-                        <option value="26" >Michigan</option>
-                        <option value="27" >Minnesota</option>
-                        <option value="28" >Mississippi</option>
-                        <option value="29" >Missouri</option>
-                        <option value="30" >Montana</option>
-                        <option value="31" >Nebraska</option>
-                        <option value="32" >Nevada</option>
-                        <option value="33" >New Hampshire</option>
-                        <option value="34" >New Jersey</option>
-                        <option value="35" >New Mexico</option>
-                        <option value="36" >New York</option>
-                        <option value="37" >North Carolina</option>
-                        <option value="38" >North Dakota</option>
-                        <option value="39" >Ohio</option>
-                        <option value="40" >Oklahoma</option>
-                        <option value="41" >Oregon</option>
-                        <option value="42" >Pennsylvania</option>
-                        <option value="72" >Puerto Rico</option>
-                        <option value="44" >Rhode Island</option>
-                        <option value="45" >South Carolina</option>
-                        <option value="46" >South Dakota</option>
-                        <option value="47" >Tennessee</option>
-                        <option value="48" >Texas</option>
-                        <option value="49" >Utah</option>
-                        <option value="50" >Vermont</option>
-                        <option value="51" >Virginia</option>
-                        <option value="78" >Virgin Islands</option>
-                        <option value="53" >Washington</option>
-                        <option value="54" >West Virginia</option>
-                        <option value="55" >Wisconsin</option>
-                        <option value="56" >Wyoming</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span>County&nbsp&nbsp</span>
-                    </td>
-                    <td>
-                      <select id="county-filter-select" style="width:205px;" onchange="filterByGeoid(this.value)">
-                        <option disabled selected value="0" >Select a State</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span>GeoID&nbsp&nbsp</span>
-                    </td>
-                    <td>
-                      <input type="text" id="filter-custom" name="filter-custom" size="19" onkeyup="filterByGeoid($('#filter-custom').val()); resetFilterSelects();"> &nbsp&nbsp
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <button onclick="resetFilterSelects(); $('#filter-custom').val(''); clearFilter();">Reset Filter</button>
-                    </td>
-                    <td>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+            <div style="padding-top:6px;"></div>
+            <div>
+              <table>
+                <tr>
+                  <td>
+                    <span>View By&nbsp&nbsp</span>
+                  </td>
+                  <td>
+                    <select id="geo-select-1" onchange="SETTINGS['Geo'] = this.value; distributeSettings(); update();">
+                      <option value="nation">Nation</option>
+                      <option value="state" selected>State</option>
+                      <option value="county">County</option>
+                      <option value="csub">County Subdivision</option>
+                      <option value="place">Place</option>
+                      <option value="tract">Tract</option>
+                      <option value="group">Group</option>
+                      <option value="cbsa">M(et)(ic)ro Stat Area</option>
+                      <option value="urban">Urban Area</option>
+                      <option value="zip">Zip Code</option>
+                      <option value="uschool">Unified School Dist</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>State&nbsp&nbsp</span>
+                  </td>
+                  <td>
+                    <select id="state-filter-select" style="width:205px;" onchange="filterByGeoid(this.value)">
+                      <option value="0" selected disabled>Select a State</option>
+                      <option value="01" >Alabama</option>
+                      <option value="02" >Alaska</option>
+                      <option value="04" >Arizona</option>
+                      <option value="05" >Arkansas</option>
+                      <option value="06" >California</option>
+                      <option value="08" >Colorado</option>
+                      <option value="09" >Connecticut</option>
+                      <option value="10" >Delaware</option>
+                      <option value="11" >District of Columbia</option>
+                      <option value="12" >Florida</option>
+                      <option value="13" >Georgia</option>
+                      <option value="15" >Hawaii</option>
+                      <option value="16" >Idaho</option>
+                      <option value="17" >Illinois</option>
+                      <option value="18" >Indiana</option>
+                      <option value="19" >Iowa</option>
+                      <option value="20" >Kansas</option>
+                      <option value="21" >Kentucky</option>
+                      <option value="22" >Louisiana</option>
+                      <option value="23" >Maine</option>
+                      <option value="24" >Maryland</option>
+                      <option value="25" >Massachusetts</option>
+                      <option value="26" >Michigan</option>
+                      <option value="27" >Minnesota</option>
+                      <option value="28" >Mississippi</option>
+                      <option value="29" >Missouri</option>
+                      <option value="30" >Montana</option>
+                      <option value="31" >Nebraska</option>
+                      <option value="32" >Nevada</option>
+                      <option value="33" >New Hampshire</option>
+                      <option value="34" >New Jersey</option>
+                      <option value="35" >New Mexico</option>
+                      <option value="36" >New York</option>
+                      <option value="37" >North Carolina</option>
+                      <option value="38" >North Dakota</option>
+                      <option value="39" >Ohio</option>
+                      <option value="40" >Oklahoma</option>
+                      <option value="41" >Oregon</option>
+                      <option value="42" >Pennsylvania</option>
+                      <option value="72" >Puerto Rico</option>
+                      <option value="44" >Rhode Island</option>
+                      <option value="45" >South Carolina</option>
+                      <option value="46" >South Dakota</option>
+                      <option value="47" >Tennessee</option>
+                      <option value="48" >Texas</option>
+                      <option value="49" >Utah</option>
+                      <option value="50" >Vermont</option>
+                      <option value="51" >Virginia</option>
+                      <option value="78" >Virgin Islands</option>
+                      <option value="53" >Washington</option>
+                      <option value="54" >West Virginia</option>
+                      <option value="55" >Wisconsin</option>
+                      <option value="56" >Wyoming</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>County&nbsp&nbsp</span>
+                  </td>
+                  <td>
+                    <select id="county-filter-select" style="width:205px;" onchange="filterByGeoid(this.value)">
+                      <option disabled selected value="0" >Select a State</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>GEOID&nbsp&nbsp</span>
+                  </td>
+                  <td>
+                    <input type="text" id="filter-custom" name="filter-custom" placeholder="Start typing GEOID here" size="13" onkeyup="filterByGeoid($('#filter-custom').val()); resetFilterSelects();">
+                    <button onclick="filterReset()">Reset</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
 
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div style="padding-top:10px;">
+              <div><span class="settings-subtitle">By Value&nbsp&nbsp</span></div>
+              <div style="padding-top:3px;">
+                <div>
+                  <table>
+                    <tr>
+                      <td>
+                        <span>Variable&nbsp&nbsp</span>
+                      </td>
+                      <td>
+                        <select id="variable-select-1" style="width:269px;" onchange="SETTINGS['Variable']=this.value; distributeSettings(); update();"></select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span>Value</span>
+                      </td>
+                      <td>
+                        <select id="value-sign" style="width:100px;">
+                          <option value="<" >less than</option>
+                          <option value=">" >more than</option>
+                          <option value="a" >around</option>
+                        </select>
+                        <input type="text" id="value-value" name="value-value" placeholder="" size="4">
+                        <button type="submit" onclick="filterByValue($('#variable-select-1').val(),$('#value-value').val(),$('#value-sign').val())">Go</button>
+                        <button onclick="filterReset()">Reset</button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+            </div>
           </div>
           <div style="padding:5px;"></div>
         </div>
@@ -514,246 +618,211 @@
             <span id="tag-text"></span>
           </div>
         </div>
-
-
-
-      </div>
-      <div>
-        <div id="accumulate-button">
-          <input type="checkbox" id="accumulate" name="accumulate">
-        </div>
       </div>
     </div>
-    <div id="loading-icons">
-      <div id='loading-1' class="loader" style="border-top: 8px solid #3498db"></div>
-      <div id='loading-2' class="loader" style="border-top: 8px solid #be66d1"></div>
+    <div>
+      <div id="accumulate-button" style="position: fixed; top:-1000px; left:-1000px;">
+        <input type="checkbox" id="accumulate" name="accumulate">
+      </div>
     </div>
-    <div id="sidebar-buttons">
-      <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">
+  </div>
+  <div id="loading-icons">
+    <div id='loading-1' class="loader" style="border-top: 8px solid #3498db"></div>
+    <div id='loading-2' class="loader" style="border-top: 8px solid #be66d1"></div>
+  </div>
+  <div id="sidebar-buttons">
+    <button id="iconbtn-1" class="iconbtn" onclick="openNav(1)">
+      <div class="tooltip">
+        <img src="images/chat.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-1" class="tooltiptext">Blurb</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-2" class="iconbtn" onclick="openNav(2)">
+      <div class="tooltip">
+        <img src="images/land.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-2" class="tooltiptext">Land Acknowledgement</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-3" class="iconbtn" onclick="openNav(3)">
+      <div class="tooltip">
+        <img src="images/gear.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-3" class="tooltiptext">Data Settings</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-4" class="iconbtn" onclick="openNav(4)">
+      <div class="tooltip">
+        <img src="images/colors.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-4" class="tooltiptext">Colors</span>
+      </div>
+    </button>
+    <br>
+    <button id="iconbtn-5" class="iconbtn" onclick="openNav(5)">
+      <div class="tooltip">
+        <img src="images/advanced.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-5" class="tooltiptext">Experimental</span>
+      </div>
+    </button>
+    <button id="iconbtn-6" class="iconbtn" onclick="openNav(6)">
+      <div class="tooltip">
+        <img src="images/filter.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-6" class="tooltiptext">Filter</span>
+      </div>
+    </button>
+    <button id="iconbtn-7" class="iconbtn" onclick="openNav(7)">
+      <div class="tooltip">
+        <img src="images/save.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-7" class="tooltiptext">Save Map</span>
+      </div>
+    </button>
+    <button id="iconbtn-8" class="iconbtn" onclick="openNav(8)">
+      <div class="tooltip">
+        <img src="images/tag.png" class="icon-img" width="25" height="25">
+        <span id="tooltip-8" class="tooltiptext">Tags</span>
+      </div>
+    </button>
+    <div style="padding:15px;"></div>
+    <div>
+      <button id="iconbtn-10" class="iconbtn" onclick="updateTack()" style="margin:3px; border: solid 2px transparent; ">
         <div class="tooltip">
-          <img src="images/chat.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-1" class="tooltiptext">Blurb</span>
+          <img src="images/pin.png" width="25" height="25" style="position: relative; top:4px; padding: 2px;">
+          <span id="iconbtn-10" class="tooltiptext">Pin Window</span>
         </div>
       </button>
-      <br>
-      <button id="iconbtn-2" class="iconbtn" onclick="openNav(2)">
+    </div>
+    <div style="position:relative; top:-5px;">
+      <button id="iconbtn-11" class="iconbtn" onclick="accumulateShortcut(); updateAcc();" style="margin:3px; border: solid 2px transparent; ">
         <div class="tooltip">
-          <img src="images/land.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-2" class="tooltiptext">Land Acknowledgement</span>
-        </div>
-      </button>
-      <br>
-      <button id="iconbtn-3" class="iconbtn" onclick="openNav(3)">
-        <div class="tooltip">
-          <img src="images/gear.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-3" class="tooltiptext">Data Settings</span>
-        </div>
-      </button>
-      <br>
-      <button id="iconbtn-4" class="iconbtn" onclick="openNav(4)">
-        <div class="tooltip">
-          <img src="images/colors.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-4" class="tooltiptext">Colors</span>
-        </div>
-      </button>
-      <br>
-      <button id="iconbtn-5" class="iconbtn" onclick="openNav(5)">
-        <div class="tooltip">
-          <img src="images/advanced.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-5" class="tooltiptext">Advanced</span>
-        </div>
-      </button>
-      <button id="iconbtn-6" class="iconbtn" onclick="openNav(6)">
-        <div class="tooltip">
-          <img src="images/filter.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-6" class="tooltiptext">Filter</span>
-        </div>
-      </button>
-      <button id="iconbtn-7" class="iconbtn" onclick="openNav(7)">
-        <div class="tooltip">
-          <img src="images/save.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-7" class="tooltiptext">Save Map</span>
-        </div>
-      </button>
-      <button id="iconbtn-8" class="iconbtn" onclick="openNav(8)">
-        <div class="tooltip">
-          <img src="images/tag.png" class="icon-img" width="25" height="25">
-          <span id="tooltip-8" class="tooltiptext">Tags</span>
-        </div>
-      </button>
-      <div style="padding:15px;"></div>
-      <div>
-        <button id="iconbtn-10" class="iconbtn" onclick="updateTack()" style="margin:3px; border: solid 2px transparent; ">
           <div class="tooltip">
-            <img src="images/pin.png" width="25" height="25" style="position: relative; top:4px; padding: 2px;">
-            <span id="iconbtn-10" class="tooltiptext">Pin Window</span>
+            <img src="images/plus.png" width="25" height="25" style="position: relative; top:4px">
+            <span id="iconbtn-11" class="tooltiptext">Accumulate</span>
           </div>
-        </button>
-      </div>
-      <div style="position:relative; top:-5px;">
-        <button id="iconbtn-11" class="iconbtn" onclick="accumulateShortcut(); updateAcc();" style="margin:3px; border: solid 2px transparent; ">
+        </div>
+      </button>
+    </div>
+    <div style="position:relative; top:-10px;">
+      <button id="iconbtn-12" class="iconbtn" onclick="updateFull()" style="margin:3px; border: solid 2px transparent; ">
+        <div class="tooltip">
           <div class="tooltip">
-            <div class="tooltip">
-              <img src="images/plus.png" width="25" height="25" style="position: relative; top:4px">
-              <span id="iconbtn-11" class="tooltiptext">Accumulate</span>
+            <img src="images/full.png" width="25" height="25" style="position: relative; top:3px; left:1px;">
+            <span id="iconbtn-12" class="tooltiptext">Full Screen</span>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+  <div id="flag-view">
+    <img id="flag_img" src="" style="width: auto; height: 250px;">
+  </div>
+  <div id="legend-">
+    <div class="draggable" id="drag-1" style="left:-1000px;top:0;z-index:20;">
+      <div class="box">
+        <div id="legend">
+          <div id="sqaures">
+            <div style="padding:3px;">
+              <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
+              <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
+              <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
+              <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
+              <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="padding:3px;">
+              <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
+              <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
+            </div>
+            <div style="position:relative; height: 25px; width: 1px; left: 20px;"></div>
+            <div>
+              <div style="padding:3px;">
+                <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
+                <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
+              </div>
+              <div style="padding:3px;">
+                <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
+                <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
+                <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
+              </div>
             </div>
           </div>
-        </button>
-      </div>
-    </div>
-    <div id="flag-view">
-      <img id="flog_img" src="" style="width: auto; height: 250px;">
-    </div>
-    <div id="legend-">
-      <div class="draggable" id="drag-1" style="left:-1000px;top:0;z-index:20;">
-        <div class="box">
-          <div id="legend">
-            <div id="sqaures">
-              <div style="padding:3px;">
-                <div id='cwrap-0' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-0"></div>
-                <div id="leg-square-0" class="legend-square" style="background:transparent;"></div>
-              </div>
-              <div style="padding:3px;">
-                <div id='cwrap-1' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-1"></div>
-                <div id="leg-square-1" class="legend-square" style="background:transparent;"></div>
-              </div>
-              <div style="padding:3px;">
-                <div id='cwrap-2' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-2"></div>
-                <div id="leg-square-2" class="legend-square" style="background:transparent;"></div>
-              </div>
-              <div style="padding:3px;">
-                <div id='cwrap-3' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-3"></div>
-                <div id="leg-square-3" class="legend-square" style="background:transparent;"></div>
-              </div>
-              <div style="padding:3px;">
-                <div id='cwrap-4' class="color-picker-wrapper"><input type="color" value="transparent" id="cpick-4"></div>
-                <div id="leg-square-4" class="legend-square" style="background:transparent;"></div>
-              </div>
-              <div style="position:relative; height: 25px; width: 1px; left: 20px;"></div>
+          <div id="labels" style="padding-top:7px; position:absolute; top:0px; left:60px;">
+            <div ondblclick="getCustomRange();">
+              <div style="padding-top: 4.5px;"></div>
+              <div class="legend-label" ><span id='leg-label-0'></span>&nbsp</div>
+              <div style="padding-top: 4.5px;"></div>
+              <div class="legend-label" ><span id='leg-label-1'></span>&nbsp</div>
+              <div style="padding-top: 4.5px;"></div>
+              <div class="legend-label" ><span id='leg-label-2'></span>&nbsp</div>
+              <div style="padding-top: 4.5px;"></div>
+              <div class="legend-label" ><span id='leg-label-3'></span>&nbsp</div>
+              <div style="padding-top: 4.5px;"></div>
+              <div class="legend-label" ><span id='leg-label-4'></span>&nbsp</div>
+              <div style="padding-top: 4.5px;"></div>
+            </div>
+            <div style="position:relative; height: 25px;">
               <div>
-                <div style="padding:3px;">
-                  <div id='cwrap-6' class="color-picker-wrapper"><input type="color" value="#32cc32" id="cpick-6"></div>
-                  <div id="leg-square-6" class="legend-square-outline" style="border:solid 5px #32cc32;"></div>
-                </div>
-                <div style="padding:3px;">
-                  <div id='cwrap-5' class="color-picker-wrapper"><input type="color" value="#e72cdc" id="cpick-5"></div>
-                  <!-- <div id="leg-square-5" class="legend-square" style="background:#e72cdc"></div> -->
-                  <div id="leg-square-5" class="legend-square-outline" style="border: solid 5px #e72cdc"></div>
-                </div>
+                <img src="images/recycle.png" width="20" height="20" style="position: relative; left: -5px; cursor: pointer;" onclick="rePaint();">
               </div>
             </div>
-            <div id="labels" style="padding-top:7px; position:absolute; top:0px; left:60px;">
-              <div ondblclick="getCustomRange();">
-                <div style="padding-top: 4.5px;"></div>
-                <div class="legend-label" ><span id='leg-label-0'></span>&nbsp</div>
-                <div style="padding-top: 4.5px;"></div>
-                <div class="legend-label" ><span id='leg-label-1'></span>&nbsp</div>
-                <div style="padding-top: 4.5px;"></div>
-                <div class="legend-label" ><span id='leg-label-2'></span>&nbsp</div>
-                <div style="padding-top: 4.5px;"></div>
-                <div class="legend-label" ><span id='leg-label-3'></span>&nbsp</div>
-                <div style="padding-top: 4.5px;"></div>
-                <div class="legend-label" ><span id='leg-label-4'></span>&nbsp</div>
-                <div style="padding-top: 4.5px;"></div>
-              </div>
-              <div style="position:relative; height: 25px;">
-                <div>
-                  <img src="images/recycle.png" width="20" height="20" style="position: relative; left: -5px; cursor: pointer;" onclick="rePaint();">
-                </div>
-              </div>
 
-              <div>
-                <div id="LL1" style="padding-top: 5px;"></div>
-                <div class="legend-label"><span id='leg-label-6' >Hover</span></div>
-                <div id="LL2" style="padding-top: 7px;"></div>
-                <div class="legend-label" ><span id='leg-label-5' >Held</span></div>
-              </div>
+            <div>
+              <div id="LL1" style="padding-top: 5px;"></div>
+              <div class="legend-label"><span id='leg-label-6' >Hover</span></div>
+              <div id="LL2" style="padding-top: 7px;"></div>
+              <div class="legend-label" ><span id='leg-label-5' >Held</span></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="geo-controls">
-      <div id="geolocate" class="geolocate"></div>
-      <div id="geocoder" class="geocoder"></div>
+  </div>
+  <div id="geo-controls">
+    <div id="geolocate" class="geolocate"></div>
+    <div id="geocoder" class="geocoder"></div>
+  </div>
+  <div id="move-window">
+    <div>
+      <span id="m-name" style="font-size:22px;">Hover over something!</span>
     </div>
-    <div id="move-window">
-      <div>
-        <span id="m-name" style="font-size:22px;">Hover over something!</span>
-      </div>
-      <div>
-        <span id="m-val" style="font-size:0px;"></span>
-        &nbsp
-        <span id="m-val2" style="font-size:0px;">👤/mi<sup>2</sup></span>
-      </div>
-      <div>
-        <span id="m-var" style="font-size:0px;"></span>
-      </div>
+    <div>
+      <span id="m-val" style="font-size:0px;"></span>
+      &nbsp
+      <span id="m-val2" style="font-size:0px;">👤/mi<sup>2</sup></span>
     </div>
-    <div id="tour">
-      <div id="tour-window" class="tour">
-        <div id="tour-text">
-          <div>
-            <span style="font-size:1.4em; text-align:center;">Welcome to the United States of America!</span>
-          </div>
-          <div>
-            <span style="font-size:1.0em; font-weight:600; color:#666;">Home of baseball, apple pie, and 22% of the world's incarcerated population.</span>
-          </div>
-          <div style="padding-top:7px;">
-            <span class="tour-text-style">
-              Every ten years, the United States conducts a Census to count its population.<br>
-              In 2020, the U.S. population was <span style="font-size:1.25em; color:darkblue">331,449,281</span> people <span style="color:#666">(~4% of the world total)</span>
-            </span>
-          </div>
-          <div style="padding-top:8px;">
-            <span class="tour-text-style">
-              <span style="color:#551a8b; font-size: 1.1em"><b>CensOculus</b></span> is a tool for visualizing these Census results, let's see how it works!
-            </span>
-          </div>
-          <div style="padding-top:8px;">
-            <span class="tour-text-style">
-              The current map shows the <b><span style="color:darkred;">population in each of the 50 states</span> (+ D.C. and P.R.)</b>
-              <div style="padding-top:8px;"></div>
-              Try <span style="color:darkgreen"><b>hovering</b></span> over a state to view its population.
-            </span>
-          </div>
-          <div style="padding-top:8px;">
-            <span class="tour-text-style">
-              Or try <span style="color:#C71585"><b>clicking</b></span> on a state to learn a bit more about it!
-            </span>
-          </div>
-          <div style="padding-top:8px;">
-            <span class="tour-text-style">
-              You can also <span style="color:#dd5f30"><b>select multiple states</b></span> at once to learn about a larger area. First, click on the
-              &nbsp<img src="images/plus.png" width="20" height="20" style="position: relative; top:4px;">&nbsp
-              button on the left. Then, select as many states as you want!
-            </span>
-          </div>
-          <div>
-            <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
-          </div>
-          <div style="padding-top:6px; position: relative; left:253px;">
-            <span style="color:#666"><i>Click, or use the arrow keys to continue</i></span>
-            &nbsp&nbsp
-            <img src="images/arrow-right.png" height="16" style="position: relative; top: 3px;" onclick="tour1()">
-          </div>
-        </div>
-
+    <div>
+      <span id="m-var" style="font-size:0px;"></span>
+    </div>
+  </div>
+  <div id="tour">
+    <div id="tour-window" class="tour">
+      <div id="tour-text">
 
       </div>
+
+
     </div>
-    <script>
-    setUpAll()
+  </div>
+  <script>
+  setUpAll()
 
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtbGVibGFuYyIsImEiOiJja2hneXNrOXUxOWdyMnF0OWgxdWRma3VsIn0.NClhc-lMIVbihpDxZ12YuQ';
 
-    let map = initializeMap()
-    setupMap(map)
+  let map = initializeMap()
+  setupMap(map)
 
-    map.on('load', function () {
-      main()
-    });
+  map.on('load', function () {
+    main()
+  });
 
-    </script>
-  </body>
-  </html>
+  </script>
+</body>
+</html>
