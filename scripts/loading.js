@@ -6,8 +6,14 @@ let endTime = 0;
 // For moving loading icon in and out of view
 // Argument i is to allow for multiple loading icons
 // Currently there are 2, one for loading data and the other for loading a map
-const startLoadingIcon = i => $(`#loading-${i}`).css('left',`${$('#title').width() -29}px`);
-const endLoadingIcon = i => $(`#loading-${i}`).css('left','-500px');
+const startLoadingIcon = i => {
+  $(`#loading-${i}`).css('left',`${$('#title').width() -29}px`);
+  $('#blocker').css('left','-100px')
+}
+const endLoadingIcon = i => {
+  $('#blocker').css('left','5000px')
+  $(`#loading-${i}`).css('left','-500px');
+}
 
 // Mapbox event to show loading icon when map is loading
 // Idle event is fired when map is DONE idling, thus it turns off the loading icon

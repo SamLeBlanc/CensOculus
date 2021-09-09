@@ -1,5 +1,6 @@
 // Called only once, the first time the map is loaded
 const main = async() => {
+  startLoadingIcon(1);
   idleLoadingIcon();            // shows that the map is loading
   collectSettings();            // collects inital settings
   loadConceptData("P1");        // loads in data regarding total population (P1)
@@ -17,18 +18,16 @@ const main = async() => {
 const update = async() => {
   let geo = SETTINGS["Geo"];
   if (!map.getLayer(`${geo}-fills`)) return
-  try {
-    collectSettings();        // collects inital settings
-    updateGeo();              // updates geography size (state, county, zip code, etc.)
-    updateVariable();         // updates variable (data category) within the current concept
-    updatePaint();            // updates layer paint (colors, opacity, etc.)
-    updateFlagMode();         // updates if flag is mode is activated
-    legendSetup();
-  } catch (error) {
-    console.log(`update() failed. ${error}`)
-    await updateMapFromToken(default_token)
-  }
-    endLoadingIcon(2);        // ends secondary loading icon when map is ready
+  startLoadingIcon(1);
+  collectSettings();        // collects inital settings
+  updateGeo();              // updates geography size (state, county, zip code, etc.)
+  updateVariable();         // updates variable (data category) within the current concept
+  updatePaint();            // updates layer paint (colors, opacity, etc.)
+  updateFlagMode();         // updates if flag is mode is activated
+  legendSetup();
+  distributeSettings();
+  endLoadingIcon(2);        // ends secondary loading icon when map is ready
+  endLoadingIcon(1);
 }
 
 
@@ -36,19 +35,25 @@ const update = async() => {
 // This includes, color, opacity, lines, extrusions, and visibility (different than opacity!)
 const updatePaint = async() => {
   if (!SETTINGS["Variable"]) return
+  startLoadingIcon(1);
   let colors = COLOR_DICT[SETTINGS['Scheme']];          // returns array of 5 colors according to color scheme
   colors = getCustomColors(colors);                     // replace colors with custom ones if selected by user
   let scale = SETTINGS['Scale'];
   if (scale == "Linear") fiveStep = colorLinear();      // returns the five-step sequence needed to paint each layer
   if (scale == "Quartile") fiveStep = colorQuartile();
   if (scale == "Log") fiveStep = colorLog();
+  // if (QSummary[1000] > QSummary[250]*200) {
+  //   console.log("sparse");
+  //   fiveStep = colorLog();
+  // }
   let fiveStep_values = Object.values(fiveStep).sort((a, b) => a - b);                // get values as an array, and sort
   fiveStep_values = fiveStepAdjustment(fiveStep_values);                              // ensure the values are in strictly increasing order
   updateLegend(fiveStep_values, colors);                                              // update legend to show proper values and colors
   setLinePaint();                                                                     // set Mapbox paint with data-driven styling
   setFillPaint(fiveStep_values, colors);                                              // set Mapbox paint with data-driven styling
   setExtrusionPaint(fiveStep_values, colors);                                         // set Mapbox paint with data-driven styling
-  setLayerVisibility();                                                               // ensure proper layer visibility
+  setLayerVisibility();
+  endLoadingIcon(1);                                                               // ensure proper layer visibility
 }
 
 
@@ -57,7 +62,8 @@ const updatePaint = async() => {
 //    metro/micro statistical areas, urban areas, zip codes, and unified school districts
 
 let hoversCreated = [];                 // used to identift id the geography has previously been loaded in
-const updateGeo = () => {
+const updateGeo = async() => {
+  startLoadingIcon(1);
   hideAllLayers();                      // hides all layers, as only one can be seen at a time
   clearAllHolds();                      // remove any held areas, thus holding a state is not equal to holding all counties in that state
   let geo = SETTINGS['Geo'];
@@ -66,6 +72,8 @@ const updateGeo = () => {
     setupHoverHoldStates(geo);          // then setup hover and hold feature states
     hoversCreated.push(geo);
   }
+  filterReset()
+  endLoadingIcon(1);
 }
 
 // Updates the selected variable (data category)
@@ -74,16 +82,19 @@ const updateGeo = () => {
 // Each of these individually is a variable. In all, the Census tabulates something like 8000 variables
 const updateVariable = async() => {
   if (!SETTINGS["Variable"]) return
+  startLoadingIcon(1);
   setFeatStates()       // set the feature state for variable. feature states for each variable are set seperately to minimize time/space limits
   getQuartileValues()   // calculte the quartile values (QSummary) for the new variable,
+  createLandAlmanac()
+  endLoadingIcon(1);
 }
 
 // Updates the selected concept
 // The concept is a grouping of variables around a specific idea. some examples of concepts are race, age, urbanity, etc.
 // When updating the conecpt, we must also update the list of variables within that concept
 const updateConcept = async() => {
-  let concept = SETTINGS['Concept']
   startLoadingIcon(2);
+  let concept = SETTINGS['Concept']
   if (!(concept in LORAX)) await loadConceptData(concept)   // if concept has not previously been loaded, then retrieve it
   await loadVariablesByConcept(concept)                   // get list of variables that pertain to each concept
   await createVariableDropdownSelect(VLbC[concept])       // set new list of variables as dropdown menu option for user to select
@@ -91,11 +102,13 @@ const updateConcept = async() => {
 }
 
 const updateRealm = async() => {
-  let realm = SETTINGS['Realm'];
-  let op = getRealmOptions(realm)
+  startLoadingIcon(1);
+  let realm = $('#realm-select-').val()
+  let op = await getRealmOptions(realm)
   let st = getRealmSelectString(op)
   setRealmSelect(st)
   clearVariableSelect()
+  endLoadingIcon(1);
 }
 
 
@@ -125,5 +138,7 @@ const nativelandEnd = () => {
 
 LORAX = {}
 ALMANAC = {};
+let mouse_pos = {x:0, y:0}
+let bboxSize = 10;
 
-let default_token = `{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001", "3D":false, "Height":"100010", "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.5, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`;
+let default_token = `{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001", "3D":false, "Height":"100010", "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.7, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`;

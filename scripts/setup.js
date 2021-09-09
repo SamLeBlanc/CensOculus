@@ -13,7 +13,7 @@ const setUpAll = () => {
   geoControlsSetup(); // position the geo-locate and search bar
   realmSetup();
   setLegendPadding();
-  resetFilterSelects();
+  gistGet()
   // doubleSliderCSS();
 }
 
@@ -74,11 +74,4 @@ const setLegendPadding = () => {
     $('#LL1').css('padding-top','0px');
     $('#LL2').css('padding-top','6px');
   }
-}
-
-const resetFilterSelects = () => {
-  element = document.getElementById('state-filter-select');
-  element.value = '0';
-  element = document.getElementById('county-filter-select');
-  element.value = '0';
 }

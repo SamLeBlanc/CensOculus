@@ -9,6 +9,7 @@ const customRound = (num,d) => Math.round((num + Number.EPSILON) * 10**(d-1)) / 
 // Needs updating with Log scale
 const formatNumber = num => {
   if (SETTINGS['Variable'].endsWith("P")) return formatPercent(num);
+  if (SETTINGS['Variable'].endsWith("D")) return formatDensity(num);
   return (SETTINGS['NumFormat'] == 'short') ? abbreviateNumber(num) : numberWithCommas(num);
 }
 

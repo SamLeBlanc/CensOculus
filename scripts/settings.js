@@ -35,9 +35,11 @@ const collectSettings = () => {
 const distributeSettings = async() => {
   $('#year-select-').val(SETTINGS['Year']);
   $('#geo-select-').val(SETTINGS['Geo']);
+  $('#geo-select-1').val(SETTINGS['Geo']);
   $('#concept-select-').val(SETTINGS['Concept']);
   $('#realm-select-').val(SETTINGS['Realm']);
   $('#variable-select-0').val(SETTINGS['Variable']);
+  $('#variable-select-1').val(SETTINGS['Variable']);
   $('#3d-mode').prop("checked", SETTINGS['3D']);
   $('#height').val(SETTINGS['Height']);
   $('#color-select').val(SETTINGS['Scheme']);

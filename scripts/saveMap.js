@@ -33,13 +33,13 @@ const updateMapFromToken = async(token) => {
   let temp_concept = SETTINGS["Concept"];
   let temp_variable = SETTINGS["Variable"];
   await updateRealm()
-  await updatePaint();
   distributeSettings();
   SETTINGS["Concept"] = temp_concept;
   await updateConcept()
   distributeSettings();
   SETTINGS["Variable"] = temp_variable;
   await updateVariable();
+  await updatePaint();
   distributeSettings();
   update();
 }
