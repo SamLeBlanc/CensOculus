@@ -9,7 +9,7 @@
 // I have tried many options, but this seems to be the most effective
 const loadConceptData = async (concept) => {
   try {
-    await d3.csv(`data/2010/${concept}.csv`).then(data => {
+    await d3.csv(`data/2010/${SETTINGS["Year"]}_${concept}.csv`).then(data => {
       let keys = Object.keys(data[0]);
       data.forEach(d => {
         keys.forEach(k => {

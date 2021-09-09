@@ -40,8 +40,6 @@ const takeTour = async(n) => {
 
 const tour0 = async() => {
   currentTourSlide = 0;
-  await updateMapFromToken(default_token);
-  full52View();
   $('#tour-text').html(
         `<div>
           <span style="font-size:1.4em; text-align:center;">Welcome to the United States of America!</span>
@@ -64,19 +62,14 @@ const tour0 = async() => {
           <span class="tour-text-style">
             The current map shows the <b><span style="color:darkred;">population in each of the 50 states</span> (+ D.C. and P.R.)</b>
             <div style="padding-top:8px;"></div>
-            Try <span style="color:darkgreen"><b>hovering</b></span> over a state to view its population.
+            <span style="color:darkgreen"><b>Hover</b></span> over a state to view its population, or <span style="color:#C71585"><b>click</b></span> on one to learn a bit more!
           </span>
         </div>
         <div style="padding-top:8px;">
           <span class="tour-text-style">
-            Or try <span style="color:#C71585"><b>clicking</b></span> on a state to learn a bit more about it!
-          </span>
-        </div>
-        <div style="padding-top:8px;">
-          <span class="tour-text-style">
-            You can also <span style="color:#dd5f30"><b>select multiple states</b></span> at once to learn about a larger area. First, click on the
+            You can also <span style="color:#dd5f30"><b>select multiple states</b></span> at once to learn about a larger area. For this, click on the
             &nbsp<img src="images/plus.png" width="20" height="20" style="position: relative; top:4px;">&nbsp
-            button on the left. Then, select as many states as you want!
+            button on the left, then select as many states as you want!
           </span>
         </div>
         <div>
@@ -88,6 +81,8 @@ const tour0 = async() => {
           <img src="images/arrow-right.png" height="16" style="position: relative; top: 3px;" onclick="tour1()">
         </div>`
 )
+  await updateMapFromToken(default_token);
+  full52View();
 }
 
 const tour1 = async() => {
@@ -100,7 +95,7 @@ const tour1 = async() => {
               <span style="font-size:1.4em; text-align:center;">Land Acknowledgement</span>
             </div>
             <div style='padding-top: 2px; font-weight:600; color:#666;'>
-              <i>This map was made while occupying the stolen land of the Duwamish, Coast Salish, and Nacotchtank peoples.</i>
+              <i>This map was made while occupying the stolen land of the Duwamish, Coast Salish, Nacotchtank, and others of the mid-Atlantic and Pacific Northwest.</i>
             </div>
               <span class="tour-text-style">
                 <div style="padding-top:6px;">
@@ -135,13 +130,13 @@ const tour2 = async() => {
               <span style="font-size:1.4em; text-align:center;">Land Acknowledgement</span>
             </div>
             <div style='padding-top: 2px; font-weight:600; color:#666;'>
-              <i>This map was made while occupying the stolen land of the Duwamish, Coast Salish, and Nacotchtank peoples.</i>
+            <i>This map was made while occupying the stolen land of the Duwamish, Coast Salish, Nacotchtank, and others of the mid-Atlantic and Pacific Northwest.</i>
             </div>
               <span class="tour-text-style">
                 <div style="padding-top:6px;">
                   The United States and its decennial census have existed for less than 250 years,
                   about <span style="color:darkgreen; font-weight:900;">0.2%</span>
-                   (or <span style="color:darkgreen; font-weight:900;">1/400<sup>th</sup></span> of the time that humans have lived here.
+                   (or <span style="color:darkgreen; font-weight:900;">1/400<sup>th</sup></span>) of the time that humans have lived here.
                   To properly understand the context of the Census, it must be remembered that the United States
                   was built (very recently!) on <span style="color:darkgreen; font-weight:900;">stolen land with stolen lives and resources</span>.
                 </div>
@@ -149,7 +144,7 @@ const tour2 = async() => {
                   Although the Census has made progress over time, it is still rife with inequities.
                   In 2010, the Census Bureau estimated that Native populations living on reservations or in Native villages were <span style="color:darkgreen; font-weight:900;">undercounted by almost 5%</span>.
                   That is <span style="color:darkgreen; font-weight:900;">more than double the undercount rate</span> of the next closest population group.
-                  Considering the shortened timeline for the 2020 Census, due to COVID-19, the <span style="color:darkgreen; font-weight:900;">undercount rate will likely be higher this time around</span>.
+                  Considering the shortened timeline for the 2020 Census, due to COVID-19, the <span style="color:darkgreen; font-weight:900;">undercount rate will likely be far higher this time around</span>.
                 </div>
               </span>
             <div>
@@ -184,14 +179,13 @@ const tour3 = async() => {
                 To view data other than population, click the
                 <span style="cursor:pointer;" onclick="openNav(3);">
                   <span style="font-size:1.1em; color:#22222"><b>
-                  <img src="images/gear.png" width="24" height="24" style="position: relative; top:5px;"> Data Settings
+                  <img src="images/gear.png" width="24" height="24" style="position: relative; top:5px;"> Data
                 </span>
-                </b></span>button on the left.
+                </b></span>button on the left. Inside the sidebar there are controls to change what data gets applied to the map.
+
               </div>
-              <div style="padding-top:2px;">
+              <div style="padding-top:6px;">
                 <span class="tour-text-style">
-                  Under <b>Data Selection</b>, you'll find controls to change what data is being mapped.
-                  <div style="padding-top:6px;"></div>
                   You can adjust the
                   <span style="color:#dd6000"><b>Year</b></span>
                   to see the results from previous censuses (2000, 2010).
@@ -342,9 +336,9 @@ const tour6 = async() => {
       <a href="https://en.wikipedia.org/wiki/West_Indian_Americans" target="_blank" style="font-weight:800;">Caribbean immigration</a>, and much more.
       <div style="padding-top:8px;"></div>
       By changing the <span style="color:#dd6000"><b>Geography</b></span>, new insights can be made about the data that would have been otherwise impossible.
-      There are many different geography options to choose from under:&nbsp
-      <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
-      <span style="font-size:1.0em; font-weight:600; color:#555;">Data Settings > Geography</span>
+      There are many different geography options to choose from under&nbsp
+      <img src="images/gear.png" width="20" height="20" style="position: relative; top:4px;">
+      <span style="font-size:1.0em; font-weight:600; color:#555;">Data > Geography</span>
     </span>
   </div>
   </div>
@@ -358,7 +352,7 @@ const tour6 = async() => {
 }
 
 const tour7 = async() => {
-  await updateMapFromToken(default_token);
+  await updateMapFromToken(`{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001D", "3D":false, "Height":100000, "Scheme":"Viridis", "Scale":"Log", "TileOpacity":0.7, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`);
   currentTourSlide = 7;
   $('#tour-text').html(`
   <div>
@@ -367,9 +361,9 @@ const tour7 = async() => {
   <div style="padding-top:4px;">
     <span class="tour-text-style">
       So far, we have changed the geography of the map, <b>but not the data itself</b>.<br>
-      To map something other than race, go to
-      <img src="images/gear.png" width="15" height="15" style="position: relative; top:2px;">
-      <span style="font-size:1.0em; font-weight:600; color:#555;">Data Settings > Realm</span>
+      Settings to change the mapped data can be found in the
+      <img src="images/gear.png" width="20" height="20" style="position: relative; top:4px;">
+      <b>Data</b> sidebar.
       <div style="padding-top:8px;"></div>
       The <span style="color:#dd6000; font-size:1.1em;"><b>Realm</b></span> is the broadest category of data classification.
       With the Realm, you can select what <span style="color:#22208c"><b>general topic</b></span> you are interested in.
@@ -383,6 +377,8 @@ const tour7 = async() => {
       Last to be selected is the <span style="color:#dd6000"; font-size:1.1em;><b>Variable</b></span>; the specific value of the Concept that
       will be applied to the map. Variables represent the <span style="color:#22208c"><b>actual tabulated Census values</b></span> and their percentages.
       In all, the Census counts almost 10,000 variables!
+      <div style="padding-top:8px;"></div>
+      <span style="color:#666"><i>Current Map: population density by state, colored with a Logarithmic scale.</i></span>
     </span>
   </div>
   </div>
@@ -404,10 +400,15 @@ const tour8 = async() => {
   <div>
     <span class="tour-text-style">
       <div style='padding-top:5px;'>
-        Here is another example, arrived at by using the <b>Data Selection</b> options.
+        Here is another example, arrived at using the options in the
+        <img src="images/gear.png" width="20" height="20" style="position: relative; top:4px;">&nbsp
+        <b>Data</b> sidebar.
         This map shows the <span style="color: darkmagenta; font-weight:800;">percentage of the population with Hispanic ethnicity</span>, mapped by Census Tract.
         To get here, we adjusted the <b>Data Settings</b> with: <br>
         <div style='padding-top:6px;'></div>
+        &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
+        <span style="color:#dd6000"><b>Geography</b></span> <b>> Tract</b> <br>
+        <div style='padding-top:3px;'></div>
         &nbsp&nbsp&nbsp&nbsp&nbsp•&nbsp&nbsp
         <span style="color:#dd6000"><b>Realm</b></span> <b>> Ethnicity</b> <br>
         <div style='padding-top:3px;'></div>
@@ -425,12 +426,12 @@ const tour8 = async() => {
         <span style="color:#365f92">finally Variable</b></span>.
       </div>
       <div style='padding-top:6px;'>
-        Try using the <b>Data Selection</b> options in the
+        Try using the options in the
         <span style="cursor:pointer;" onclick="openNav(3);">
           <img src="images/gear.png" width="20" height="20" style="position: relative; top:3px;">
-          <b>Data Settings</b>
+          <b>Data</b>
         </span>
-        panel to create a map of your own. There are millions of unique maps to be made, so get cracking!
+        sidebar to create a map of your own. There are millions of unique maps to be made, so get crackin'!
       </div>
     </span>
   </div>
@@ -486,7 +487,7 @@ const tour9 = async() => {
       <div style="padding-top:8px;">
         Careful use of the <span style="color:darkblue"><b>Scale</b></span> setting can be helpful
         in a similar manner as changing the <b>Geography</b>;
-        by providing new perspective for the same set of data.
+        by providing new perspective for the same set of data. Beware that the scale can take a moment to load with small geographies, so be patient!
       </div>
       <div style="padding-top:8px;">
         Within the
@@ -520,15 +521,15 @@ const tour10 = async() => {
       Maps can be saved by copying the token in the
       <span style="cursor:pointer;" onclick="openNav(7);">
         <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
-        <b>Save Map</b> sidebar
-      </span>. The token contains the information needed to recreate the map, including the settings for data, color, map position, and more.
+        <b>Save Map</b> sidebar.
+      </span>The token contains the information needed to recreate the map, including the settings for data, color, map position, and more.
+      <span style="color:purple;"><b>Be sure to keep your token in a safe place!</b></span>
 		<div style="padding-top:8px"></div>
       To open a saved map, paste a token in the
       <span style="cursor:pointer;" onclick="openNav(7);">
         <img src="images/save.png" class="icon-img" width="20" height="20" style="position: relative; top:3px;">
-        <b>Save Map</b> sidebar
-        </span>
-        , and click <b>Go</b>.
+        <b>Save Map</b> sidebar,
+        </span>and click <b>Go</b>.
     </span>
   </div>
   </div>
@@ -541,12 +542,11 @@ const tour10 = async() => {
 `)
 }
 
-
 const tour11 = async() => {
   currentTourSlide = 11;
   $('#tour-text').html(`
   <div>
-    <span style="font-size:1.4em; text-align:center;">Filter Out Unwanted Tiles</span>
+    <span style="font-size:1.4em; text-align:center;">Apply a Filter</span>
   </div>
   <div style="padding-top:4px;">
     <span class="tour-text-style">
@@ -557,18 +557,14 @@ const tour11 = async() => {
       </span>
        settings to hide tiles based on geography or data value.
       <div style="padding-top:6px;">
-      Geographies can be filtered by state or county, using the dropdown menus. <br>
+      <b>Tiles can be <span style="color:#dd6000">filtered by state and county</span>*, using the dropdown menus.</b> <br>
       <span style="color:#666; font-style:italic;">
-        Only works for geographies that strictly adhere to state/county boundaries.
+        *Only works for geographies that strictly adhere to state/county boundaries.
         E.g. you cannot filter for all zip codes in a state, since zip codes can cross state lines.
       </span>
       </div>
       <div style="padding-top:4px;">
-        Alternatively, you can use the text box to filter for tiles with GEOID starting with the entered value.
-        <span style="color:#666; font-style:italic;">
-          For example, change viewing geography to zip codes and then entre '9' in the text box.
-          Then, you will only see zip codes starting with '9'.
-        </span>
+        <b>Or use the text box to filter tiles whose <span style="color:#dd6000">GEOID starts with the entered value.</span></b>
       </div>
     </span>
   </div>
@@ -576,13 +572,43 @@ const tour11 = async() => {
     <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
   </div>
   <div style="padding-top:6px;">
-    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour10()">
+  <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour10()">
+  <img src="images/arrow-right.png" height="16" style="position: relative; left:510px;" onclick="tour12()">
   </div>
 `)
 }
 
 const tour12 = async() => {
   currentTourSlide = 12;
+  $('#tour-text').html(`
+  <div>
+    <span style="font-size:1.4em; text-align:center;">Other Miscellaneous Settings</span>
+  </div>
+  <div>
+    <span class="tour-text-style">
+    Clicking the
+    <span style="cursor:pointer" onclick="openNav(5)">
+    <img src="images/advanced.png" width="20" height="20" style="position: relative; top:4px;"> <b>Experimental</b>
+    </span>
+    button will open yet another settings panel. This one is home to all the options and fun stuff that don't have a home anywhere else.
+    <div style="padding-top: 8px"></div>
+    Be sure to try out <span style="color:darkred"><b>Flag Mode</b></span> for states, counties, and places! 🏳️‍🌈🏴‍☠️🏴󠁵󠁳󠁴󠁸󠁿
+    </span>
+  </div>
+  </div>
+    <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
+  </div>
+  <div style="padding-top:6px;">
+    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour11()">
+    <img src="images/arrow-right.png" height="16" style="position: relative; left:510px;" onclick="tour13()">
+  </div>
+`)
+}
+
+
+
+const tour13 = async() => {
+  currentTourSlide = 13;
   $('#tour-text').html(`
   <div>
     <span style="font-size:1.4em; text-align:center;">More Tour Coming Soon</span>
@@ -596,7 +622,7 @@ const tour12 = async() => {
     <img src="images/x.png" width="20" height="20" style="position: absolute; top:12px; left:560px;" onclick="closeTour();">
   </div>
   <div style="padding-top:6px;">
-    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour11()">
+    <img src="images/arrow-left.png" height="16" style="position: relative;" onclick="tour12()">
   </div>
 `)
 }

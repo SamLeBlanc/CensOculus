@@ -44,7 +44,7 @@ input[type="color"] { opacity: 0; display: block; width: 26px; height: 12px; bor
 
 
 /* Settings */
-#settings { position: relative; left: 0%; z-index:10; white-space: nowrap; color:#666666; font-weight:bold; padding-bottom: 10px;}
+#settings { position: relative; left: 0%; z-index:10; white-space: nowrap; color:#666666; font-weight:bold; }
 .settings-subtitle { font-weight:900; color:#333333; font-size:1.15em }
 
 /* Selections */

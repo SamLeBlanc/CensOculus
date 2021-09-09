@@ -56,6 +56,7 @@ const setExtrusionPaint = (arr, colors) => {
 
 // Line color is unique for hover or held areas, otherwise it is black
 const setLineColor = () => {
+
   // get the custom colors if they exist
   let c1 = customColors[5] ? customColors[5] : "#e72cdc";
   let c2 = customColors[6] ? customColors[6] : "#32cc32";
@@ -67,11 +68,13 @@ const setLineColor = () => {
 }
 // Only have line width if the area is hovered, held, or has a flag (and flag mode on)
 const setLineWidth = () => {
+  let width = parseFloat($('#linewidth-v').val());
+  $('#lw-label').text($('#linewidth-v').val());
   map.setPaintProperty(`${SETTINGS['Geo']}-lines`,'line-width',
     ['case',
     ['boolean', ['feature-state', 'hold'], false], 6,
     ['boolean', ['feature-state', 'hover'], false], 4,
-    ['boolean', ['feature-state', 'flag'], false], 1, 0,
+    ['boolean', ['feature-state', 'flag'], false], 1, width,
   ]);
 }
 // Only have line opacity if the area is hovered, held, or has a flag (and flag mode on)
@@ -80,7 +83,7 @@ const setLineOpacity = () => {
     ['case',
     ['boolean', ['feature-state', 'hold'], false], 1,
     ['boolean', ['feature-state', 'hover'], false], 1,
-    ['boolean', ['feature-state', 'flag'], false], 1, 0.05,
+    ['boolean', ['feature-state', 'flag'], false], 1, 1,
   ]);
 }
 

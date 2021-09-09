@@ -15,7 +15,7 @@ const addSources = () => {
 
 // Combo: For each source, add the fill, line and extrusion layer
 const addFillLineExtrusionLayers = () => {
-  Object.keys(LAYER_DICT).forEach(geo => {
+  Object.keys(SOURCE_DICT).forEach(geo => {
     addFillLayer(geo)
     addExtrusionLayer(geo)
     addLineLayer(geo)
@@ -24,7 +24,7 @@ const addFillLineExtrusionLayers = () => {
 // Initially set all visibility to none AND have zero opacity (these are seperate and important)
 const addLineLayer = geo => {
   map.addLayer({
-    'id': LINELAYER_DICT[geo],
+    'id': `${geo}-lines`,
     'type': 'line',
     'source': SOURCE_DICT[geo],
     'source-layer': SOURCELAYER_DICT[geo],
@@ -34,7 +34,7 @@ const addLineLayer = geo => {
 }
 const addFillLayer = geo => {
   map.addLayer({
-    'id': LAYER_DICT[geo],
+    'id': `${geo}-fills`,
     'type': 'fill',
     'source': SOURCE_DICT[geo],
     'source-layer': SOURCELAYER_DICT[geo],
@@ -44,7 +44,7 @@ const addFillLayer = geo => {
 }
 const addExtrusionLayer = geo => {
   map.addLayer({
-    'id': EXTRUDELAYER_DICT[geo],
+    'id': `${geo}-3d`,
     'type': 'fill-extrusion',
     'source': SOURCE_DICT[geo],
     'source-layer': SOURCELAYER_DICT[geo],

@@ -8,16 +8,40 @@ let taggedDistricts = {};
 // Using Mapbox map events, a method is called when a layer is hovered over (mousemove/mouseleave) or clicked (mousedown/mouseup)
 // Fill and extrusion layers must each have theit own call (for now at least)
 const setupHoverHoldStates = geo => {
-  map.on('mousemove', LAYER_DICT[geo], e => onMouseMove(e) );
-  map.on('mouseleave', LAYER_DICT[geo], () => onMouseLeave() );
-  map.on('mousedown', LAYER_DICT[geo], e => onMouseDown(e) );
-  map.on('mouseup', LAYER_DICT[geo], e => onMouseUp(e) );
+  map.on('mousemove', `${geo}-fills`, e => onMouseMove(e) );
+  map.on('mouseleave', `${geo}-fills`, () => onMouseLeave() );
+  map.on('mousedown', `${geo}-fills`, e => onMouseDown(e) );
+  map.on('mouseup', `${geo}-fills`, e => onMouseUp(e) );
 
-  map.on('mousemove', EXTRUDELAYER_DICT[geo], e => onMouseMove(e) );
-  map.on('mouseleave', EXTRUDELAYER_DICT[geo], () => onMouseLeave() );
-  map.on('mousedown', EXTRUDELAYER_DICT[geo], e => onMouseDown(e) );
-  map.on('mouseup', EXTRUDELAYER_DICT[geo], e => onMouseUp(e) );
+  map.on('mousemove', `${geo}-3d`, e => onMouseMove(e) );
+  map.on('mouseleave', `${geo}-3d`, () => onMouseLeave() );
+  map.on('mousedown', `${geo}-3d`, e => onMouseDown(e) );
+  map.on('mouseup', `${geo}-3d`, e => onMouseUp(e) );
 }
+
+document.addEventListener("mousemove", () => {
+  updateFull();
+  mouse_pos = {x: event.pageX, y: event.pageY};
+  if ($('#bbox').length) $('#bbox').css('left',`${mouse_pos.x - bboxSize/2 - 3}px`).css('top',`${mouse_pos.y - bboxSize/2 - 3}px`)
+});
+
+$(document).keypress(function(e) {
+  if(e.key == '[' || e.key == ']') {
+    if (e.key == '[') bboxSize = Math.max(0,bboxSize-10)
+    if (e.key == ']') bboxSize = Math.min(400,bboxSize+10)
+    drawBBox()
+  }
+});
+
+console.log('bbox')
+const drawBBox = () => {
+  if ($('#bbox').length) $("#bbox").remove();
+  $(`<div id="bbox" style="position: fixed; z-index: 6; pointer-events: none; left:${mouse_pos.x - bboxSize/2 - 3}px; top:${mouse_pos.y - bboxSize/2 - 3}px; height: ${bboxSize}px; width: ${bboxSize}px; border: #222 dotted 3px;"></div>`).appendTo('body');
+  if($('#bbox-border').is(":checked")){
+    setTimeout(function(){ $("#bbox").remove(); }, 1000);
+  }
+}
+
 
 // Combo methods called when the mouse is moved
 const onMouseMove = e => {
@@ -77,7 +101,8 @@ const removeHoverState = hoveredId => {
 const setHoldState = (e, heldDistricts) => {
   let geo = SETTINGS['Geo'];
   if (e.features.length == 0) return heldDistricts
-  heldDistricts = addHeldInfo(e)
+  // heldDistricts = addHeldInfo(e)
+  heldDistricts = addMultiHoldInfo(e)
   Object.keys(heldDistricts).forEach(h => {
     map.setFeatureState({ source: SOURCE_DICT[geo], id: h, sourceLayer:SOURCELAYER_DICT[geo]}, { hold: true });
   });
@@ -109,19 +134,43 @@ const clearAllHolds = () => {
 
 // Adds the data of a new held area to heldDistricts
 // References ALMANAC for tile area and name
-const addHeldInfo = e => {
+// const addHeldInfo = e => {
+//   let geo = SETTINGS["Geo"];
+//   let year = SETTINGS["Year"]
+//   let id = e.features[0].id;
+//   if (!heldDistricts.hasOwnProperty(id)) {
+//     heldDistricts[id] = {
+//       GEOID: id,
+//       ALAND: almanacFilter(year,id,geo)[0][`ALAND${year}`],
+//       NAME: almanacFilter(year,id,geo)[0][`NAME${year}`],
+//     }
+//   } else {
+//     removeSingleHoldState(id)
+//   }
+//   if (Object.keys(heldDistricts).length == 0) clearAllHolds()
+//   return heldDistricts
+// }
+
+const addMultiHoldInfo = e => {
+  const bbox = [[e.point.x - bboxSize/2, e.point.y - bboxSize/2],[e.point.x + bboxSize/2, e.point.y + bboxSize/2]];
+  const selectedFeatures = map.queryRenderedFeatures(bbox, { layers: [`${SETTINGS["Geo"]}-fills`] });
+  const ids = selectedFeatures.map( (feature) => feature.properties.GEOID10 );
+  let uniqueIds = [];
+  $.each(ids, function(i, el){
+      if($.inArray(el, uniqueIds) === -1) uniqueIds.push(el);
+  });
+
   let geo = SETTINGS["Geo"];
   let year = SETTINGS["Year"]
-  let id = e.features[0].id;
-  if (!heldDistricts.hasOwnProperty(id)) {
-    heldDistricts[id] = {
-      GEOID: id,
-      ALAND: almanacFilter(year,id,geo)[0][`ALAND${year}`],
-      NAME: almanacFilter(year,id,geo)[0][`NAME${year}`],
-      // NAME: singleName(id) // ????
-    }
-  } else {
-    removeSingleHoldState(id)
+  if (uniqueIds.length == 1 && heldDistricts.hasOwnProperty(uniqueIds[0])) removeSingleHoldState(uniqueIds[0]);
+  else {
+    uniqueIds.forEach( i => {
+      heldDistricts[i] = {
+        GEOID: i,
+        ALAND: almanacFilter(year,i,geo)[0][`ALAND${year}`],
+        NAME: almanacFilter(year,i,geo)[0][`NAME${year}`],
+      }
+    });
   }
   if (Object.keys(heldDistricts).length == 0) clearAllHolds()
   return heldDistricts

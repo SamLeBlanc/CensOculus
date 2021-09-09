@@ -9,7 +9,7 @@ let QSummary;
 const getQuartileValues = () => {
   QSummary = [];
   let variable = SETTINGS['Variable'];
-  let data = queryRenderedFeatures();
+  let data = queryRenderedFeat();
   let values = spinConversions(variable, data);
   [...Array(1000).keys()].forEach(k =>
     QSummary.push(d3.quantile(values.filter( v => !Number.isNaN(v)), k/1000))
@@ -20,12 +20,8 @@ const getQuartileValues = () => {
 }
 
 const spinConversions = (variable, data) => {
-  if (variable.endsWith('P')) {
-    v = data.map(d => percentConversion(d, variable));
-  } else if (variable.endsWith('D')){
-    v = data.map(d => densityConversion(d, variable));
-  } else {
-    v = data.map(d => d[variable]);
-  }
+  if (variable.endsWith('P')) v = data.map(d => percentConversion(d, variable));
+  else if (variable.endsWith('D')) v = data.map(d => densityConversion(d, variable));
+  else v = data.map(d => d[variable]);
   return v.sort((a, b) => a - b);
 }

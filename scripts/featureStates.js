@@ -5,38 +5,22 @@
 // If a percentage is needed, it will convert
 
 ALMANAC_ALAND = {};
-let VVV = false;
 
 // Note that the feature states are set ONE AT A TIME. This hugely saves on time and space since only the variables
 // that will actually be mapped receive feature states. Otherwise, this would take forever to set millions of feature states. (instead it sets only ~300K at a time 🙃)
 
 const setFeatStates = () => {
-  let geo = SETTINGS['Geo'];
-  let concept = SETTINGS['Concept'];
-  let year = SETTINGS["Year"];
-
-  if(!LORAX[concept]) return false;
-
-  if (!VVV) variable = SETTINGS['Variable']; // VVV is the variable for View By from filter (will change later)
-  else { variable = $('#variable-select-1').find(':selected').val(); VVV = false; }
-
-  // if the Density is required, filter the Almanac for neccesary data
-  ALMANAC_ALAND = {};
-
-  if (variable) {
-    if(variable.endsWith("D")) ALMANAC[year].filter( d => d.SIZE == geo).forEach( d => ALMANAC_ALAND[d.GEOID10] = d.ALAND10);
-  }
-
-  data = LORAX[concept]
-  .filter(d => d["SIZE"] == geo.toUpperCase() )
+  if(!LORAX[SETTINGS['Concept']]) return false;
+  data = LORAX[SETTINGS['Concept']]
+  .filter(d => d["SIZE"] == SETTINGS['Geo'].toUpperCase() )
   .forEach(d => {
     featureObject = {};
-
-    if (variable.endsWith("P")) featureObject[variable] = percentConversion(d,variable);
-    else if (variable.endsWith("D")) featureObject[variable] = densityConversion(d,variable);
-    else featureObject[variable] = d[variable];
-
-    map.setFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: d.GEOID10 }, featureObject );
+    featureObject[SETTINGS['Variable']] = neccesaryConversion(d, SETTINGS['Variable'])
+    map.setFeatureState({
+      source: SOURCE_DICT[SETTINGS['Geo']],
+      sourceLayer: SOURCELAYER_DICT[SETTINGS['Geo']],
+      id: d.GEOID10 },
+      featureObject );
   })
 }
 
@@ -55,10 +39,16 @@ const densityConversion = (d, variable) => {
     else return 0;
 }
 
-const neccesaryConversion = d => {
-  let variable = SETTINGS["Variable"];
-  if (variable.endsWith("P")) percentConversion(d, variable)
-  else if (variable.endsWith("D")) densityConversion(d, variable)
+const neccesaryConversion = (d, variable) => {
+  if (variable.endsWith("P")) return percentConversion(d, variable)
+  else if (variable.endsWith("D")) return densityConversion(d, variable)
   else return d[variable]
+}
 
+const createLandAlmanac = () => {
+  if (ALMANAC[SETTINGS["Year"]]) {
+    ALMANAC[SETTINGS["Year"]]
+    .filter( d => d.SIZE == SETTINGS["Geo"])
+    .forEach( d => ALMANAC_ALAND[d[`GEOID${SETTINGS["Year"]}`]] = d[`ALAND${SETTINGS["Year"]}`]);
+  }
 }

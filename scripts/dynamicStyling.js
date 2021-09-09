@@ -8,13 +8,13 @@ let initialRun = true;
 
 // Update the cursor and format the move window when tiles hovered over
 const onHoverStart_style = () => {
-  $('#move-window').css('padding',"5px")
+  $('#move-window').css('padding',"5px");
   map.getCanvas().style.cursor = "crosshair";
 }
 const onHoverFinish_style = () => {
   $('#move-window').css('padding',"0px");
   map.getCanvas().style.cursor = "";
-  $("#flog_img").attr("src","");
+  $("#flag_img").attr("src","");
   $('#move-window').css({top:-400});
 }
 
@@ -72,13 +72,6 @@ const openNav = n => {
     .css('height',window.innerHeight-140)
     .css('overflow-y',"scroll");
   }
-  if (mobile){
-    $(`#sidebar${n}`).width(window.innerWidth - 20);
-    $(`#sidebar${n}`)
-    .css('transition','0s')
-    .css('border-radius',0)
-    .css('top', 50);
-  }
 }
 const closeNav = n => {
   $(`#sidebar${n}`).css('left',-500)
@@ -88,15 +81,10 @@ const closeNav = n => {
 const openLens = () => {
   if ($('#sidebar0').css('left') != `${window.innerWidth + 200}px` && Object.keys(heldDistricts).length == 0){
     closeLens()
-  } else if (window.innerWidth < 450){
-    $('#sidebar0').width(window.innerWidth - 20);
-    $('#sidebar0')
-    .css('top',window.innerHeight - $('#sidebar0').height() - 30)
-    .css('left',0)
-    .css('border-radius',0);
   } else {
     $('#sidebar0').css('left', window.innerWidth - $('#sidebar0').width()-30)
   }
+  $('#move-window').css({top:-400});
 }
 const closeLens = () => {
   $('#sidebar0').css('left',window.innerWidth + 200)
@@ -106,13 +94,14 @@ const closeLens = () => {
 const updateTack = () => {
   if (tack) $('#iconbtn-10').css('border','solid 5px #32cc32').css('margin','0px')
   else $('#iconbtn-10').css('border','solid 2px transparent').css('margin','3px')
-  tack =! tack;
+  tack = !tack;
 }
 const updateAcc = () => {
   if (acc) $('#iconbtn-11').css('border','solid 5px #32cc32').css('margin','0px')
   else $('#iconbtn-11').css('border','solid 2px transparent').css('margin','3px')
-  acc =! acc;
+  acc = !acc;
 }
+
 
 $( function() {
   $( "#slider-range" ).slider({

@@ -1,38 +1,10 @@
 //// Methods pertaining to the selection of Realms and Concepts
 
 // Return the available Concepts in each Realm
-const getRealmOptions = realm => {
-  if (realm == 'Total')             options = { P1: 'Total Population' }
-
-  else if (realm == 'Urban')        options = { P2: 'Urban and Rural Population',
-                                                H2: 'Urban and Rural Housing Units' }
-
-  else if (realm == 'Race')         options = { P8: 'Race',
-                                                P6: 'Race (Total Races Tallied)',
-                                                P10:'Race for 18+ Population',
-                                                H6: 'Race of Householder',
-                                                H8: 'Race of Householder (by Total Races Tallied)' }
-
-  else if (realm == 'Ethnicity')    options = { P4: 'Hispanic or Latino Origin',
-                                                P5: 'Hispanic or Latino Origin (by Race)',
-                                                P7: 'Hispanic or Latino Origin (by Race, Total Races Tallied)',
-                                                P9: 'Not Hispanic or Latino Origin (by Race)',
-                                                H7: 'Hispanic or Latino Origin of Householder (by Race of Householder)',
-                                                H9: 'Hispanic or Latino Origin of Householder (by Race, Total Races Tallied)' }
-
-  else if (realm == 'Housing')      options = { H1: 'Total Housing Units',
-                                                H4: 'Tenure',
-                                                H22:'Allocation of Tenure',
-                                                H5: 'Vacany Status',
-                                                H21:'Allocation of Vacancy Status',
-                                                H13:'Household Size',
-                                                H10:'Total Population in Housing Units',
-                                                H11:'Total Population in Housing Units (by Tenure)',
-                                                H6: 'Race of Householder',
-                                                H8: 'Race of Householder (by Total Races Tallied)',
-                                                H7: 'Hispanic or Latino Origin of Householder (by Race of Householder)',
-                                                H9: 'Hispanic or Latino Origin of Householder (by Race, Total Races Tallied)'}
-  else options = {}
+const getRealmOptions = async(realm) => {
+ let o = await d3.csv('https://gist.githubusercontent.com/SamLeBlanc/df88070b157afc7866d2150dab8caab5/raw/c7e17d12f237c6ae0315e220796ac00f3d3579e8/2010Realms.csv')
+ if (o) return o.filter( d => d.Realm == realm)
+ else options = {}
   return options
 }
 
@@ -40,7 +12,7 @@ const getRealmOptions = realm => {
 
 //  <option value="H12">H12 - AVERAGE HOUSEHOLD SIZE OF OCCUPIED HOUSING UNITS BY TENURE</option>
 //  <option value="H14">H14 - TENURE BY RACE OF HOUSEHOLDER</option>
-//  <option value="H15">H15 - TENURE BY HISPANIC OR LATINO ORIGIN OF HOUSEHOLDER</option>
+//  <option value="H15">H15 - TENURE BY Ethnicity OF HOUSEHOLDER</option>
 //  <option value="H16">H16 - TENURE BY HOUSEHOLD SIZE</option>
 //  <option value="H17">H17 - TENURE BY AGE OF HOUSEHOLDER</option>
 //  <option value="H18">H18 - TENURE BY HOUSEHOLD TYPE BY AGE OF HOUSEHOLDER</option>
@@ -49,10 +21,12 @@ const getRealmOptions = realm => {
 
 // Create the dropdown select for Concepts based on Realm
 const getRealmSelectString = options => {
-  str = `<span>Concept&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span> <select id='concept-select-' style='width:280px;' onchange='collectSettings(); updateConcept();'>
+  str = `<select id='concept-select-' style='width:250px;' onchange='collectSettings(); updateConcept();'>
   <option value="" disabled selected>Select a Concept</option>`;
-  Object.keys(options).forEach( k => {
-    str += (` <option value='${k}'>${options[k]}</option>`);
+  console.log(options)
+  let o = options.map( d => [d.Concept, d.Name])
+  o.forEach( d => {
+    str += (` <option value='${d[0]}'>${d[1]}</option>`);
   })
   str += (` </select>`);
   return str
@@ -65,8 +39,7 @@ const setRealmSelect = str => {
 
 // Clear variable dropdown select list
 const clearVariableSelect = () => {
-  $('#-variable').html(`<span>Variable&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-  <select id="variable-select-0" style="width:280px;" onchange="collectSettings(); update();">
+  $('#-variable').html(`<select id="variable-select-0" style="width:250px;" onchange="collectSettings(); update();">
     <option value="" disabled selected>Select a Concept</option></select>`)
 }
 
