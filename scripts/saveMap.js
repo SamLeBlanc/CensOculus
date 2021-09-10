@@ -32,12 +32,14 @@ const updateMapFromToken = async(token) => {
   distributeMapControls();
   let temp_concept = SETTINGS["Concept"];
   let temp_variable = SETTINGS["Variable"];
+  let temp_realm = SETTINGS["Realm"];
+  distributeSettings();
   await updateRealm()
-  distributeSettings();
   SETTINGS["Concept"] = temp_concept;
-  await updateConcept()
   distributeSettings();
+  await updateConcept()
   SETTINGS["Variable"] = temp_variable;
+  distributeSettings();
   await updateVariable();
   await updatePaint();
   distributeSettings();

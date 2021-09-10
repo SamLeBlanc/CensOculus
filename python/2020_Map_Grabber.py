@@ -6,7 +6,7 @@ from datetime import datetime
 import requests, zipfile, io
 
 
-folder_path = f'/home/sam/Census-Mapper-Data/'
+folder_path = f'/home/sam/CensOculus-Data/'
 
 code_to_state = {
   '01':'AL' , '02':'AK' , '04':'AZ' , '05':'AR' , '06':'CA' , '08':'CO' , '09':'CT' , '10':'DE' , '11':'DC' , '12':'FL' ,

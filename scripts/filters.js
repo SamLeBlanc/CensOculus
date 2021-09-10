@@ -5,6 +5,7 @@ const readFilteredIds = () => GEOID_FILTER.slice(2);
 
 const filterReset = () => {
   map.setFilter(`${SETTINGS["Geo"]}-fills`, null);
+  map.setFilter(`${SETTINGS["Geo"]}-3d`, null);
   resetFilterSelects();
   $('#filter-custom').val('');
 }
@@ -19,6 +20,7 @@ const filterByGeoid = geoid => {
   const ids = findGeoFilteredIds(geoid)
   GEOID_FILTER = ['in', `GEOID${SETTINGS["Year"]}`].concat(ids)
   map.setFilter(`${SETTINGS["Geo"]}-fills`, GEOID_FILTER);
+  map.setFilter(`${SETTINGS["Geo"]}-3d`, GEOID_FILTER);
   createCountyFilterSelect(geoid)
 }
 
@@ -26,6 +28,7 @@ const filterByValue = (variable, value, sign) => {
   const ids = findValFilteredIds(variable, value, sign)
   VALUE_FILTER = ['in', `GEOID${SETTINGS["Year"]}`].concat(ids)
   map.setFilter(`${SETTINGS["Geo"]}-fills`, VALUE_FILTER);
+  map.setFilter(`${SETTINGS["Geo"]}-3d`, VALUE_FILTER);
 }
 
 const findValFilteredIds = (variable, value, sign) => {

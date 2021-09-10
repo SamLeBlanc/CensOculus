@@ -33,7 +33,6 @@ $(document).keypress(function(e) {
   }
 });
 
-console.log('bbox')
 const drawBBox = () => {
   if ($('#bbox').length) $("#bbox").remove();
   $(`<div id="bbox" style="position: fixed; z-index: 6; pointer-events: none; left:${mouse_pos.x - bboxSize/2 - 3}px; top:${mouse_pos.y - bboxSize/2 - 3}px; height: ${bboxSize}px; width: ${bboxSize}px; border: #222 dotted 3px;"></div>`).appendTo('body');

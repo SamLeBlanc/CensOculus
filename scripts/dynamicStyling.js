@@ -103,7 +103,7 @@ const updateAcc = () => {
 }
 
 const updateFull = () => {
-  console.log('full on')
+  let pass = true;
 }
 
 
