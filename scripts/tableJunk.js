@@ -15,7 +15,7 @@ const updateMoveTable = (e, geoid) => {
   $('#m-val').text(formatNumber(geoidFeatureStates[variable]))
   $('#m-val').css('font-size','36px')
   if (variable.endsWith("D")) $('#m-val2').css(`font-size`,`24px`)
-  else $('#m-val2').css(`font-size`,`0px;`)
+  else $('#m-val2').css(`font-size`,`0px`)
 
   const nickname = v => {
     if (NICKNAMES[v]) return NICKNAMES[v];
