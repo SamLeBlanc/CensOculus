@@ -8,10 +8,10 @@ let endTime = 0;
 // Currently there are 2, one for loading data and the other for loading a map
 const startLoadingIcon = i => {
   $(`#loading-${i}`).css('left',`${$('#title').width() -29}px`);
-  $('#blocker').css('left','-100px')
+  //$('#blocker').css('left','-100px')
 }
 const endLoadingIcon = i => {
-  $('#blocker').css('left','5000px')
+  //$('#blocker').css('left','5000px')
   $(`#loading-${i}`).css('left','-500px');
 }
 

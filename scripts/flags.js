@@ -37,9 +37,9 @@ const getFlagUrlSuffix = geoid => {
 // If only a suffix is found, return the suffix with a proper CRW prefix
 // else, use the *whole found url* (works for wiki image links)
 const craftFlagUrl = suffix => {
-  if (suffix.substring(0,5) == '/imag') return `https://www.crwflags.com/fotw${suffix}`;
-  else if (suffix)return suffix;
-  else return "images/noFlag.gif";
+  if (!suffix) return "images/noFlag.gif";
+  else if (suffix.substring(0,5) == '/imag') return `https://www.crwflags.com/fotw${suffix}`;
+  else return suffix;
 }
 
 // Update the img src to the proper url for display on map
