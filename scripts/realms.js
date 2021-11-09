@@ -21,6 +21,7 @@ const getRealmOptions = async(realm) => {
 
 // Create the dropdown select for Concepts based on Realm
 const getRealmSelectString = options => {
+  console.log('getRealmSelectString')
   str = `<select id='concept-select-' style='width:250px;' onchange='collectSettings(); updateConcept();'>
   <option value="" disabled selected>Select a Concept</option>`;
   console.log(options)
@@ -29,16 +30,19 @@ const getRealmSelectString = options => {
     str += (` <option value='${d[0]}'>${d[1]}</option>`);
   })
   str += (` </select>`);
+  hideAllLayers() /////////////////////////
   return str
 }
 
 // Set Realm dropdown selection list
 const setRealmSelect = str => {
+  console.log('setRealmSelect')
   $('#-concept').html(str)
 }
 
 // Clear variable dropdown select list
 const clearVariableSelect = () => {
+  console.log('clearVariableSelect')
   $('#-variable').html(`<select id="variable-select-0" style="width:250px;" onchange="collectSettings(); update();">
     <option value="" disabled selected>Select a Concept</option></select>`)
 }

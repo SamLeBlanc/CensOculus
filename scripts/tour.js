@@ -231,23 +231,23 @@ const tour4 = async() => {
   currentTourSlide = 4;
   $('#tour-text').html(`<div>
     <span style="font-size:1.4em; text-align:center;">Example:&nbsp<b>Black Population Percentage by State</b></span><br>
-    <div style='font-weight:600; color:#666;'>
-      Maps can take several seconds to load, just wait for the
+    <div style='font-weight:600; font-size: 0.97em; color:#666;'>
+      Maps may take a second to load, just wait for the
       &nbsp
       <div id='loading-3' class="loader" style="display: inline-block; position: relative; top: 4px; left: 0px; border: 5px solid #f3f3f3; border-top: 5px solid #be66d1; width: 11px; height: 11px;"></div>
       &nbsp
-      icon to go away
+      icon (to the left) to go away
     </div>
   </div>
   <div style="padding-top:6px;">
     <span class="tour-text-style">
       The current map (once loaded) shows the percentage of residents in each state who self-identify their race as
-      <span style="color:darkmagenta"><b>Black or African American</b></span>.
+      <span style="color:#7F58AF"><b>Black or African American</b></span>.
     </span>
   </div>
   <div style="padding-top:6px;">
     <span class="tour-text-style">
-      The <span style="color:darkred"><b>demographic effects of slavery</b></span> are still clearly visible in the South today.
+      The <span style="color:#3d88a6;"><b>demographic effects of slavery</b></span> are still clearly visible in the South today.
     </span>
   </div>
   <div style="padding-top:8px;">
@@ -539,14 +539,14 @@ const tour11 = async() => {
       </span>
        settings to hide tiles based on geography or data value.
       <div style="padding-top:6px;">
-      <b>Tiles can be <span style="color:#dd6000">filtered by state and county</span>*, using the dropdown menus.</b> <br>
+      Tiles can be <b><span style="color:#dd6000">filtered by state and county</span></b>*, using the <b>dropdown menus</b>. <br>
       <span style="color:#666; font-style:italic;">
         *Only works for geographies that strictly adhere to state/county boundaries.
         E.g. you cannot filter for all zip codes in a state, since zip codes can cross state lines.
       </span>
       </div>
       <div style="padding-top:4px;">
-        <b>Or use the text box to filter tiles whose <span style="color:#dd6000">GEOID starts with the entered value.</span></b>
+        Or use the <b>text box</b> to filter tiles whose <b><span style="color:#dd6000">GEOID starts with the entered value.</span></b>
       </div>
     </span>
   </div>
@@ -572,9 +572,9 @@ const tour12 = async() => {
     <span style="cursor:pointer" onclick="openNav(5)">
     <img src="images/advanced.png" width="20" height="20" style="position: relative; top:4px;"> <b>Experimental</b>
     </span>
-    button will open yet another settings panel. This one is home to all the options and fun stuff that don't have a home anywhere else.
-    <div style="padding-top: 8px"></div>
-    Be sure to try out <span style="color:darkred"><b>Flag Mode</b></span> for states, counties, and places! 🏳️‍🌈🏴‍☠️🏴󠁵󠁳󠁴󠁸󠁿
+    button will open yet another settings panel. This one is home to all the fun stuff that doesn't have a home anywhere else.
+    <div style="padding-top: 4px"></div>
+    Be sure to try out <span style="color:darkred"><b>Flag Mode</b></span> for states, counties, and places! 🏳️‍🌈  🏴‍☠️  🏴󠁵󠁳󠁴󠁸󠁿
     </span>
   </div>
   </div>
@@ -591,7 +591,7 @@ const tour13 = async() => {
   currentTourSlide = 13;
   $('#tour-text').html(`
   <div>
-    <span style="font-size:1.4em; text-align:center;">More Tour Coming Soon</span>
+    <span style="font-size:1.4em; text-align:center;">More Tour Coming Soon 🙃</span>
   </div>
   <div style="padding-top:4px;">
     <span class="tour-text-style">
