@@ -1,4 +1,4 @@
-# [CensOculus](https://samleblanc.github.io/CensOculus/)
+# [CensOculus](censoculus.com)
 *(still in beta until the release of 2020 Census data in ~August)*
 
 ## What is CensOculus?
@@ -16,7 +16,7 @@ Versatility. Usability. Speed. CensOculus is highly adaptive, suitable for use i
 
 ## Getting Started
 
-Visit our [Github Page](https://samleblanc.github.io/CensOculus/) or clone the repository with
+Visit our [Website](censoculus.com) or clone the repository with
 `$ git clone https://github.com/SamLeBlanc/CensOculus`
 
 ## 2020 Data
