@@ -1,4 +1,4 @@
-# [CensOculus](censoculus.com)
+# [CensOculus](www.censoculus.com)
 *(still in beta until the release of 2020 Census data in ~August)*
 
 ## What is CensOculus?
