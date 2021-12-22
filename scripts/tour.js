@@ -263,7 +263,7 @@ const tour4 = async() => {
     <img src="images/arrow-right.png" height="16" style="position: relative; left:510px;" onclick="tour5()">
   </div>
   </div>`)
-  await updateMapFromToken(`{"Year":"10", "Geo":"state", "Realm":"Race", "Concept":"P6", "Variable":"P006003P", "3D":false, "Height":100000, "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.7, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-102, "lat":38.1443799}, "Zoom":3.6165, "Pitch":0, "Bearing":0}`)
+  await updateMapFromToken(`{"Year":"10", "Geo":"state", "Realm":"Race", "Concept":"P6", "Variable":"P006003P", "3D":false, "Height":100000, "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.5, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-102, "lat":38.1443799}, "Zoom":3.6165, "Pitch":0, "Bearing":0}`)
   lower48View();
 }
 
@@ -344,7 +344,7 @@ const tour6 = async() => {
 }
 
 const tour7 = async() => {
-  await updateMapFromToken(`{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001D", "3D":false, "Height":100000, "Scheme":"Viridis", "Scale":"Quartile", "TileOpacity":0.7, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`);
+  await updateMapFromToken(`{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001D", "3D":false, "Height":100000, "Scheme":"Viridis", "Scale":"Quartile", "TileOpacity":0.5, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`);
   currentTourSlide = 7;
   $('#tour-text').html(`
   <div>
@@ -435,7 +435,7 @@ const tour8 = async() => {
     <img src="images/arrow-right.png" height="16" style="position: relative; left:510px;" onclick="tour9()">
   </div>
 `)
-  await updateMapFromToken(`{"Year":"10", "Geo":"tract", "Realm":"Ethnicity", "Concept":"P4", "Variable":"P004003P", "3D":false, "Height":100000, "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.7, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-118.14, "lat":33.9635761}, "Zoom":8.4416, "Pitch":0, "Bearing":0}`)
+  await updateMapFromToken(`{"Year":"10", "Geo":"tract", "Realm":"Ethnicity", "Concept":"P4", "Variable":"P004003P", "3D":false, "Height":100000, "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.5, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-118.14, "lat":33.9635761}, "Zoom":8.4416, "Pitch":0, "Bearing":0}`)
 }
 
 const tour9 = async() => {

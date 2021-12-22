@@ -11,6 +11,7 @@ const main = async() => {
   loadAlmanacData('10');
   loadAlmanacData('20');
   addNativeLandsLayer();
+  takeTour(0);
 }
 
 // Called (just about) every time the map is changed in any way
@@ -141,4 +142,4 @@ ALMANAC = {};
 let mouse_pos = {x:0, y:0}
 let bboxSize = 10;
 
-let default_token = `{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001", "3D":false, "Height":"100010", "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.7, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`;
+let default_token = `{"Year":"10", "Geo":"state", "Realm":"Total", "Concept":"P1", "Variable":"P001001", "3D":false, "Height":"100010", "Scheme":"Viridis", "Scale":"Linear", "TileOpacity":0.5, "NumFormat":"comma", "Accumulate":false, "FlagMode":false, "WikiMode":false, "Center":{"lng":-104.8, "lat":38.85}, "Zoom":3.6, "Pitch":0, "Bearing":0}`;
