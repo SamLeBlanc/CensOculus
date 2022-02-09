@@ -166,7 +166,7 @@
             <span class="sidebar-title">Land Acknowledgement</span>
           </div>
           <div class="sidebar-q">
-            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="window.open('https://americanindian.si.edu/nk360/informational/land-acknowledgement', '_blank').focus();">
+            <img src="images/question.png" class="sidebar-q-img" width="25" height="25" onclick="window.open('https://nativegov.org/news/a-guide-to-indigenous-land-acknowledgment/', '_blank').focus();">
           </div>
 
           <div class="sidebar-subtitle">
@@ -211,7 +211,7 @@
               <i>Select what data to map with the options below!</i>
             </div>
             <div style="color:#333">
-              <table>
+              <table class="settings-table">
                 <tr>
                   <td>
                     <span>Year</span>
@@ -306,64 +306,74 @@
           <div class="sidebar-subtitle" style="font-size:0.98em;">
             <i>Change the look of the map with these style settings</i>
           </div>
-          <div style="color: #333; font-size: 1.1em; font-weight:bold">
-
-            <div id="colors-select" style="padding-top:8px;">
-              <div "-scheme">
-                <span>Scheme&nbsp</span>
-                <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
-                  <option value="Viridis">Viridis</option>
-                  <option value="Red">Red</option>
-                  <option value="Blue">Blue</option>
-                  <option value="Green">Green</option>
-                  <option value="Purple">Purple</option>
-                  <option value="Black">Black</option>
-                  <option value="Rainbow">Rainbow</option>
-                  <option value="Viridis Light">Viridis Light</option>
-                  <option value="Greyscale">Greyscale</option>
-                  <option value="Heat">Heat</option>
-                  <option value="Magma">Magma</option>
-                  <option value="Brown-Teal">Brown-Teal</option>
-                  <option value="Blue-Red">Blue-Red</option>
-                  <option value="Green II">Green II</option>
-                  <option value="Purple II">Purple II</option>
-                  <option value="Ocean">Ocean</option>
-                  <option value="Valentine">Valentine</option>
-                  <option value="Forest">Forest</option>
-                  <option value="Burnt Toast">Toast</option>
-                  <option value="Cividis">Cividis</option>
-                  <option value="Plasma">Plasma</option>
-                  <option value="Warm">Warm</option>
-                  <option value="Cool">Cool</option>
-                  <option value="Barney">Barney</option>
-                  <option value="Watermelon">Watermelon</option>
-                </select>
-                <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
-              </div>
-              <div id="-scale" style="padding-top:8px;">
-                <span>Scale&nbsp&nbsp</span>
-                <select id="scale-select" onchange="startLoadingIcon(1); collectSettings(); update();">
-                  <option value="Linear" >Linear</option>
-                  <option value="Quartile" >Quartile</option>
-                  <option value="Log" >Log</option>
-                </select>
-                <span style="font-size:0.65em;"><i>&nbspChanging can be slow with many tiles</i></span>
-              </div>
-              <div "-tile-opacity" style="padding-top: 1px;">
-                <span>Tile Opacity&nbsp</span>
-                <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 7px;position: relative;">
-                <span id="to-label">0.5</span>
-              </div>
-              <div style="padding-top: 8px;">
-                <span>Opacity Mask&nbsp&nbsp</span>
-                <input type="checkbox" id="opacity-mask" name="opacity-mask" onclick="updatePaint();">
-              </div>
-              <div style="padding-top: 8px;">
-                <span>Line Width&nbsp</span>
-                <input id="linewidth-v" type="range" min="0" max="10" step=".1" value="0" oninput="collectSettings(); setLineWidth();" style="top: 7px;position: relative;">
-                <span id="lw-label">0</span>
-              </div>
-            </div>
+          <div>
+            <table class="color-table" style="font-weight: bold; color: #333">
+             <tr>
+               <td>Scheme</td>
+               <td>
+                 <select id="color-select" onchange="customColors=[null,null,null,null,null]; collectSettings(); update()">
+                   <option value="Viridis">Viridis</option>
+                   <option value="Red">Red</option>
+                   <option value="Blue">Blue</option>
+                   <option value="Green">Green</option>
+                   <option value="Purple">Purple</option>
+                   <option value="Black">Black</option>
+                   <option value="Rainbow">Rainbow</option>
+                   <option value="Viridis Light">Viridis Light</option>
+                   <option value="Greyscale">Greyscale</option>
+                   <option value="Heat">Heat</option>
+                   <option value="Magma">Magma</option>
+                   <option value="Brown-Teal">Brown-Teal</option>
+                   <option value="Blue-Red">Blue-Red</option>
+                   <option value="Green II">Green II</option>
+                   <option value="Purple II">Purple II</option>
+                   <option value="Ocean">Ocean</option>
+                   <option value="Valentine">Valentine</option>
+                   <option value="Forest">Forest</option>
+                   <option value="Burnt Toast">Toast</option>
+                   <option value="Cividis">Cividis</option>
+                   <option value="Plasma">Plasma</option>
+                   <option value="Warm">Warm</option>
+                   <option value="Cool">Cool</option>
+                   <option value="Barney">Barney</option>
+                   <option value="Watermelon">Watermelon</option>
+                 </select>
+                 <button style="width: 49px;" onclick="reverseColorScheme(); updatePaint();">Invert</button>
+               </td>
+             </tr>
+             <tr>
+               <td>Scale</td>
+               <td>
+                 <select id="scale-select" onchange="startLoadingIcon(1); collectSettings(); update();">
+                   <option value="Linear" >Linear</option>
+                   <option value="Quartile" >Quartile</option>
+                   <option value="Log" >Log</option>
+                 </select>
+                 <span style="font-size:0.65em;"><i>&nbspChanges can be slow with many tiles</i></span>
+               </td>
+             </tr>
+             <tr>
+               <td>Tile Opacity</td>
+               <td style="padding-bottom: 5px">
+                 <input id="tileopacity-v" type="range" min="0" max="1" step=".01" value="0.5" oninput="collectSettings(); setFillOpacity()" style="top: 2px;position: relative;">
+                 <span id="to-label">0.5</span>
+               </td>
+             </tr>
+             <tr>
+               <td>Opacity Mask</td>
+               <td>
+                  &nbsp
+                  <input type="checkbox" id="opacity-mask" name="opacity-mask" onclick="updatePaint();">
+               </td>
+             </tr>
+             <tr>
+               <td>Line Width</td>
+               <td>
+                 <input id="linewidth-v" type="range" min="0" max="10" step=".1" value="0" oninput="collectSettings(); setLineWidth();" style="top: 2px;position: relative;">
+                 <span id="lw-label">0</span>
+               </td>
+             </tr>
+            </table>
           </div>
         </div>
         <div id="sidebar5" class="sidebar" style="background-color: #F8B5BE;" >

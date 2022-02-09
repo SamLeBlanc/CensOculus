@@ -21,7 +21,7 @@ document.addEventListener('keydown', moveTourWithArrow);
 // Close tour window
 // Sets currentTourSlide to -1 in case tour needs to be restarted
 const closeTour = () => {
-  $('#tour-window').css('left','500px').css('top','-1000px');
+  $('#tour-window').css('left','410px').css('top','-1000px');
   currentTourSlide = -1;
 }
 
@@ -29,7 +29,7 @@ const closeTour = () => {
 const takeTour = async(n) => {
   closeTour();
   closeAllNavs();
-  $('#tour-window').css('left','437px').css('top','5px');
+  $('#tour-window').css('left','410px').css('top','5px');
 
   // Someone please find a better way of doing this, I am brain-dead
   if (n == 0) tour0(); if (n == 1) tour1(); if (n == 2) tour2(); if (n == 3) tour3(); if (n == 4) tour4(); if (n == 5) tour5();

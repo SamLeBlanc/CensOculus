@@ -12,3 +12,11 @@ table.tableC td { border: 1px solid black; padding: 0px 5px 0px 5px;  }
 table.tableD { border: 1px solid transparent; }
 table.tableD th { border: 1px solid transparent; }
 table.tableD td { border: 1px solid transparent; }
+
+table.color-table { border: 1px solid transparent; }
+table.color-table th { border: 1px solid transparent; }
+table.color-table td { border: 1px solid transparent; padding: 5px 0px 5px 0px; }
+
+table.settings-table { border: 1px solid transparent; }
+table.settings-table th { border: 1px solid transparent; }
+table.settings-table td { border: 1px solid transparent;}
