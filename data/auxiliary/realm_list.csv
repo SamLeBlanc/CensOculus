@@ -1,0 +1,73 @@
+Realm,Concept,Name,Priority
+Age,P13,Median Age (by Sex),1
+Age,P49,Allocation of Age,2
+Ethnicity,P4,Ethnicity,1
+Ethnicity,P5,Ethnicity (by Race),2
+Ethnicity,P7,Ethnicity (by Race Total Races Tallied),3
+Ethnicity,P9,Not Hispanic (by Race),4
+Ethnicity,H7,Ethnicity of Householder (by Race of Householder),6
+Ethnicity,H9,Ethnicity of Householder (by Race Total Races Tallied),7
+Ethnicity,P11,Ethnicity of 18+ Population,5
+Ethnicity,P15,Ethnicity of Householder (by Race of Householder),8
+Ethnicity,P47,Allocation of Ethnicity,9
+Family,P35,Families,1
+Family,P36,Population in Families (by Age),2
+Family,P37,Average Family Size (by Age),3
+Family,P38,Family Type (by Presence and Age of Own Children),4
+Family,P39,Family Type (by Presence and Age of Related Children),5
+Family,P40,Family Type and Age for Own Children Under 18 Years,6
+Family,P41,Age of Grandchildren 18- Living With A Grandparent Householder,7
+Family,P50,Allocation of Relationship,8
+Group Quarters,P42,Group Quarters Population (by Group Quarters Type),1
+Group Quarters,P43,Group Quarters Population (by Sex) (by Age) (by Group Quarters Type),2
+Group Quarters,P51,Allocation of Group Quarters Population Items,3
+Housing,H1,Total Housing Units,1
+Housing,H4,Tenure,4
+Housing,H22,Allocation of Tenure,35
+Housing,H5,Vacancy Status,5
+Housing,H21,Allocation of Vacancy Status,36
+Housing,H13,Household Size,7
+Housing,H10,Total Population in Housing Units,2
+Housing,H11,Total Population in Housing Units (by Tenure),3
+Housing,P16,Population in Housing (by Age),10
+Housing,P17,Average Household Size (by Age),11
+Housing,P18,Housing Type,8
+Housing,P19,Household Size (by Household Type) (by Presence of Own Children),12
+Housing,P20,Households (by Presence of People 18-) (by Household Type) (by Age of People 18-),13
+Housing,P21,Households (by Age of Householder By Household Type By Presence of Related Children,14
+Housing,P22,Household Type (by Age of Householder),15
+Housing,P23,Households (by Presence of People 60+) (by Household Type),16
+Housing,P24,"Households (by Presence of People 60+, Household Size, and Household Type)",17
+Housing,P25,"Households (by Presence of People 65+, Household Size, and Household Type)",18
+Housing,P26,"Households (by Presence of People 75+, Household Size, and Household Type)",19
+Housing,P27,Households (by Presence of Non-relatives),20
+Housing,P28,Household Type (by Household Size),21
+Housing,P29,Household Type (by Relationship),22
+Housing,P30,Household Type (for the Population in Households),23
+Housing,P31,Household Type (by Relationship for the Population 18-),24
+Housing,P32,Household Type (by Relationship) (by Age for the Population 18-),25
+Housing,P33,"Household Type (for the Population 18- in Households) (Excluding Householders, Spouses, and Unmarried Partners)",26
+Housing,P34,Household Type (by Relationship for the Population 65+),27
+Housing,H3,Occupancy Status,6
+Housing,H12,Average Household Size of Occupied Housing Units by Tenure,9
+Housing,H14,Tenure by Race of Householder,28
+Housing,H15,Tenure by Ethnicity of Householder,29
+Housing,H16,Tenure by Household Size,30
+Housing,H17,Tenure by Age of Householder,31
+Housing,H18,Tenure by Household Type by Age of Householder,32
+Housing,H19,"Tenure by Presence of People Under 18 Years (Excluding Householders, Spouses, and Unmarried Partners)",33
+Housing,H20,Occupied Housing Units Substituted,34
+Other,P44,Population Substituted,1
+Other,P45,Allocation of Population Items,2
+Race,P8,Race,1
+Race,P6,Race (Total Races Tallied),2
+Race,P10,Race for 18+ Population,3
+Race,H6,Race of Householder,4
+Race,H8,Race of Householder (by Total Races Tallied),5
+Race,P46,Allocation of Race,6
+Rurality,P2,Urban and Rural Population,1
+Rurality,H2,Urban and Rural Housing Units,2
+Sex,P12,Sex (by Age),1
+Sex,P14,Sex of 20- Population (by Age),2
+Sex,P48,Allocation of Sex,3
+Total,P1,Total Population,1

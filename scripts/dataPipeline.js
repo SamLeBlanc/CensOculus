@@ -1,6 +1,5 @@
-// // Methods pertaining to loading data into the browser from the /data/ folder
+// // // Methods pertaining to loading data into the browser from the /data/ folder
 // Data is uploaded via the d3 library, from CSV format
-
 
 // Loads Census counts by Concept
 // Because of large size, **files are split by concept** and thus each concept must be loaded in seperately
@@ -11,26 +10,27 @@ const loadConceptData = async (concept) => {
   try {
     await d3.csv(`data/2010/${SETTINGS["Year"]}_${concept}.csv`).then(data => {
       let keys = Object.keys(data[0]);
+      // convert all values except GEOID and SIZE to numeric type
       data.forEach(d => {
         keys.forEach(k => {
           if (k != 'GEOID10' && k != 'SIZE') d[k] = +d[k];
         })
       });
-      LORAX[concept] = data.filter( () => true );
+      LORAX[concept] = data.filter( () => true ); // idk what this does but it breaks without it?
     });
   } catch(error) {
-    console.log(`Error loading Concept data. [loadConceptData - ${error}]`);
+    console.log(`Error loading Concept ${concept} data. [loadConceptData - ${error}]`);
   }
 }
 
 // Loads in the Almanac data by year
 // The Almanac contains the geoid, name, and land area of all tiles in a given year
-// Neccesary for calculting for naming and calculating density
+// Neccesary for naming and calculating densities
 const loadAlmanacData = async(year) => {
   try {
     ALMANAC[year] = await d3.csv(`data/almanac${year}.csv`);
   } catch (error) {
-    console.log(`Error loading Almanac data. [loadAlmanacData - ${error}]`);
+    console.log(`Error loading Almanac ${year} data. [loadAlmanacData - ${error}]`);
   }
 }
 
@@ -44,11 +44,11 @@ const loadFlagData = async () => {
   }
 }
 
-// Loads in the list of all variables in a given concept
+// Loads in the list of all variables names in a given concept
 const loadVariablesByConcept = async(concept) => {
   try {
-    VLbC[concept] = await d3.csv(`data/2010/Variables_10.csv`);
-    VLbC[concept] = VLbC[concept]
+    VAR_NAMES_BY_CONCEPT[concept] = await d3.csv(`data/2010/Variables_10.csv`);
+    VAR_NAMES_BY_CONCEPT[concept] = VAR_NAMES_BY_CONCEPT[concept]
       .filter(d => d["Group"] == concept)
       .map(d => d.Name)
   } catch(error) {
@@ -56,8 +56,7 @@ const loadVariablesByConcept = async(concept) => {
   }
 }
 
-// Creates more readable variable names by removing certain repeated and uniformative phrases
-// see replaceRepeatedTags()
+// Creates more readable variable names by removing certain repeated and uniformative phrases using replaceRepeatedTags()
 const loadFullVariableList = async() => {
   try {
     full_list = await d3.csv(`data/2010/Variables_10.csv`);

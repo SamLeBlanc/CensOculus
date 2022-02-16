@@ -10,3 +10,5 @@
   font-family: sans-serif;
   border-radius:5px;
 }
+
+#drag-1{ left:-1000px; top:0; z-index:20; }

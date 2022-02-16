@@ -2,7 +2,7 @@
 
 // Return the available Concepts in each Realm
 const getRealmOptions = async(realm) => {
- let o = await d3.csv('https://gist.githubusercontent.com/SamLeBlanc/df88070b157afc7866d2150dab8caab5/raw/c7e17d12f237c6ae0315e220796ac00f3d3579e8/2010Realms.csv')
+ let o = await d3.csv('data/auxiliary/realm_list.csv')
  if (o) return o.filter( d => d.Realm == realm)
  else options = {}
   return options
@@ -21,10 +21,8 @@ const getRealmOptions = async(realm) => {
 
 // Create the dropdown select for Concepts based on Realm
 const getRealmSelectString = options => {
-  console.log('getRealmSelectString')
   str = `<select id='concept-select-' style='width:250px;' onchange='collectSettings(); updateConcept();'>
   <option value="" disabled selected>Select a Concept</option>`;
-  console.log(options)
   let o = options.map( d => [d.Concept, d.Name])
   o.forEach( d => {
     str += (` <option value='${d[0]}'>${d[1]}</option>`);
@@ -36,13 +34,11 @@ const getRealmSelectString = options => {
 
 // Set Realm dropdown selection list
 const setRealmSelect = str => {
-  console.log('setRealmSelect')
   $('#-concept').html(str)
 }
 
 // Clear variable dropdown select list
 const clearVariableSelect = () => {
-  console.log('clearVariableSelect')
   $('#-variable').html(`<select id="variable-select-0" style="width:250px;" onchange="collectSettings(); update();">
     <option value="" disabled selected>Select a Concept</option></select>`)
 }

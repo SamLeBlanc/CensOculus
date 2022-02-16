@@ -1,7 +1,7 @@
 //// Methods pertaining to the dynamic use of map information and other mapbox map abilities
 
 // Set the initial map controls in settings sidebar, updates the labels when the map is changed
-const threeDContolSetup = () => {
+const threeDContolSetup = map => {
   $('#zoom-v').val(3.6);
   $('#pitch-v').val(0);
   $('#bearing-v').val(0);

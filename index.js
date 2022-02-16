@@ -98,7 +98,7 @@ const updateConcept = async() => {
   let concept = SETTINGS['Concept']
   if (!(concept in LORAX)) await loadConceptData(concept)   // if concept has not previously been loaded, then retrieve it
   await loadVariablesByConcept(concept)                   // get list of variables that pertain to each concept
-  await createVariableDropdownSelect(VLbC[concept])       // set new list of variables as dropdown menu option for user to select
+  await createVariableDropdownSelect(VAR_NAMES_BY_CONCEPT[concept])       // set new list of variables as dropdown menu option for user to select
   update()
 }
 

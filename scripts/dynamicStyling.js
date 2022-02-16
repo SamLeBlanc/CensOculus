@@ -1,12 +1,13 @@
-// // Methods pertaining to dynamic CSS styling applied to the map
+// // // Methods pertaining to dynamic CSS styling applied to the map
 // Using mostly jQuery, these methods move/hide/change the styling of objects around the map
+// Lots of finicky moving of divs to account for changing labels, positions, etc.
 
 let tack = true;
 let acc = true;
 
 let initialRun = true;
 
-// Update the cursor and format the move window when tiles hovered over
+// Update the cursor and format the move window when tiles *hovered* over
 const onHoverStart_style = () => {
   $('#move-window').css('padding',"5px");
   map.getCanvas().style.cursor = "crosshair";
@@ -105,18 +106,3 @@ const updateAcc = () => {
 const updateFull = () => {
   let pass = true;
 }
-
-
-$( function() {
-  $( "#slider-range" ).slider({
-    range: true,
-    min: 0,
-    max: 100,
-    values: [ 0, 100 ],
-    slide: function( event, ui ) {
-      $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-    }
-  });
-  $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-    " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-} );

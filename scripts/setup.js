@@ -2,7 +2,7 @@
 // Not relating to Mapbox map setup function, which can be found in main()
 
 // Setup function called on first page load
-const setUpAll = () => {
+const setUpNonMapFeatures = () => {
   $('#accumulate').prop('checked', false);
   updateTitle(); // color and re-size title
   highlightAllNavButtons(); // color all left sidebar buttons
@@ -71,7 +71,7 @@ const geoControlsSetup = () => {
 
 const setLegendPadding = () => {
   if (navigator.userAgent.search("Firefox") > -1){
-    $('#LL1').css('padding-top','0px');
-    $('#LL2').css('padding-top','6px');
+    $('#legend-legel-outline-1').css('padding-top','0px');
+    $('#legend-legel-outline-2').css('padding-top','6px');
   }
 }

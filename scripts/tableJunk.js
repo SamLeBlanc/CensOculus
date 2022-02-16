@@ -8,22 +8,22 @@ const updateMoveTable = (e, geoid) => {
   let geoidFeatureStates = map.getFeatureState({ source: SOURCE_DICT[geo], sourceLayer: SOURCELAYER_DICT[geo], id: geoid });
   try {
     let filtered = almanacFilter(year, geoid, geo)[0];
-    $('#m-name').text(filtered[`NAME${year}`])
+    $('#move-window-name').text(filtered[`NAME${year}`])
   } catch (error) {
     console.log(`almanacFilter failure: ${year, geoid, geo}`)
   }
-  $('#m-val').text(formatNumber(geoidFeatureStates[variable]))
-  $('#m-val').css('font-size','36px')
-  if (variable.endsWith("D")) $('#m-val2').css(`font-size`,`24px`)
-  else $('#m-val2').css(`font-size`,`0px`)
+  $('#move-window-value').text(formatNumber(geoidFeatureStates[variable]))
+  $('#move-window-value').css('font-size','36px')
+  if (variable.endsWith("D")) $('#move-window-unit').css(`font-size`,`24px`)
+  else $('#move-window-unit').css(`font-size`,`0px`)
 
   const nickname = v => {
     if (NICKNAMES[v]) return NICKNAMES[v];
     if (NICKNAMES[v.slice(0, -1)]) return NICKNAMES[v.slice(0, -1)];
     return v
   }
-  $('#m-var').text(nickname(variable))
-  $('#m-var').css('font-size','18px')
+  $('#move-window-variable').text(nickname(variable))
+  $('#move-window-variable').css('font-size','18px')
   updateMovingWindow()
 }
 

@@ -86,6 +86,19 @@
   margin-top: 6px;
 }
 
+.iconbtn-type2 {
+  font-size: 25px;
+  cursor: pointer;
+  background-color: transparent;
+  border: solid 2px transparent;
+  margin: 3px;
+  border-radius: 10px;
+  position: relative;
+  margin-top: 6px;
+}
+
+.icon-image-type-2 { position: relative; top:4px; }
+
 
 .icon-img {
   position: relative; top:4px; padding: 0px 4px;

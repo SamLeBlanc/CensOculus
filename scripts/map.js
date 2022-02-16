@@ -2,7 +2,7 @@
 
 // Create the Mapbox map
 const initializeMap = () => {
-  return new mapboxgl.Map({
+  const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/dark-v10', // style URL
     center: [-104.80, 38.85],
@@ -10,11 +10,13 @@ const initializeMap = () => {
     pitch: 0,
     interactive: true, // true required
   });
+  setupMap(map)
+  return map
 }
 
 // Map setup
 const setupMap = map => {
-  threeDContolSetup() // set up the slider values to change when map changes
+  threeDContolSetup(map) // set up the slider values to change when map changes
   map.doubleClickZoom.disable();
 
   // Create Geolocate button

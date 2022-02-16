@@ -1,11 +1,9 @@
-// // Methods for modifying default browser behavior. IDK where else to put them
+// // // Methods for modifying default browser behavior **PLEASE DON'T CHANGE**
 
 //// Stack Overflow code for adjusting Arrow Key behavior **PLEASE DON'T CHANGE**
 // Adjusts the behavior of arrow keys when dealing with html dropdown select lists
-// Ensures that left/right arrow keys won't change selection, which causes chaos during the tour
+// Ensures that left/right arrow keys won't change dropdown selection, which causes chaos during the tour
 // Maybe a bad idea to change deafult functionality here, but I don't have a better idea
-// **PLEASE DON'T CHANGE**
-
 const ensurePreventDefault = select => {
   let selectedIndex, scrollTop;
   const saveState = () => {
@@ -20,7 +18,6 @@ const ensurePreventDefault = select => {
   setTimeout( () => {
     select.removeEventListener('change', saveState);
     if (select.selectedIndex !== selectedIndex) {
-      // Damn you, Firefox!
       select.selectedIndex = selectedIndex;
       select.scrollTop = scrollTop;
     }
@@ -37,9 +34,9 @@ document.addEventListener('keydown', event => {
 });
 
 
-// // Prevents letters/symbols from being entered in GEOID filter
+//// Actively prevents letters/symbols from being entered when filtering by GEOID
 // Only allows numbers to be inputted in text box, GEOIDs consist solely of numbers
-// Also from StackOverflow
+// Also from StackOverflow, again, **PLEASE DON'T CHANGE**
 (function($) {
   $.fn.inputFilter = function(inputFilter) {
     return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
